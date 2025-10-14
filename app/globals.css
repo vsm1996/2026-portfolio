@@ -1,0 +1,348 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* Light mode now emphasizes purple shades with gold accent instead of green */
+  --background: oklch(0.8352 0.0419 285.38); /* light cool gray */
+  --foreground: oklch(0.25 0.03 280); /* deep purple-charcoal */
+  --card: oklch(0.97 0.008 250); /* lighter gray for cards */
+  --card-foreground: oklch(0.25 0.03 280);
+  --popover: oklch(0.97 0.008 250);
+  --popover-foreground: oklch(0.25 0.03 280);
+  --primary: oklch(0.58 0.18 280); /* vibrant purple */
+  --primary-foreground: oklch(0.99 0.015 285);
+  --secondary: oklch(0.62 0.16 295); /* lighter purple shade */
+  --secondary-foreground: oklch(0.25 0.03 280);
+  --muted: oklch(0.88 0.01 250);
+  --muted-foreground: oklch(0.45 0.03 280);
+  --accent: oklch(0.68 0.16 60); /* warm gold/amber accent */
+  --accent-foreground: oklch(0.25 0.03 280);
+  --destructive: oklch(0.55 0.18 25);
+  --destructive-foreground: oklch(0.99 0.015 285);
+  --border: oklch(0.82 0.015 250);
+  --input: oklch(0.91 0.01 250);
+  --ring: oklch(0.58 0.18 280);
+  --radius: 1rem;
+  --chart-1: oklch(0.58 0.18 280);
+  --chart-2: oklch(0.62 0.16 295);
+  --chart-3: oklch(0.68 0.16 60);
+  --chart-4: oklch(0.55 0.16 270);
+  --chart-5: oklch(0.65 0.14 290);
+  --sidebar: oklch(0.94 0.008 250);
+  --sidebar-foreground: oklch(0.25 0.03 280);
+  --sidebar-primary: oklch(0.58 0.18 280);
+  --sidebar-primary-foreground: oklch(0.99 0.015 285);
+  --sidebar-accent: oklch(0.9 0.01 250);
+  --sidebar-accent-foreground: oklch(0.25 0.03 280);
+  --sidebar-border: oklch(0.82 0.015 250);
+  --sidebar-ring: oklch(0.58 0.18 280);
+}
+
+.dark {
+  /* Dark mode now emphasizes purple shades with gold accent instead of green */
+  --background: oklch(0.18 0.1 280);
+  --foreground: oklch(0.92 0.05 285);
+  --card: oklch(0.22 0.12 280);
+  --card-foreground: oklch(0.9 0.06 285);
+  --popover: oklch(0.22 0.12 280);
+  --popover-foreground: oklch(0.92 0.05 285);
+  --primary: oklch(0.75 0.22 285); /* bright vibrant lavender */
+  --primary-foreground: oklch(0.15 0.1 280);
+  --secondary: oklch(0.68 0.18 295); /* lighter purple shade */
+  --secondary-foreground: oklch(0.92 0.05 285);
+  --muted: oklch(0.3 0.14 280);
+  --muted-foreground: oklch(0.7 0.1 285);
+  --accent: oklch(0.72 0.18 60); /* warm gold/amber accent */
+  --accent-foreground: oklch(0.15 0.1 280);
+  --destructive: oklch(0.65 0.15 15);
+  --destructive-foreground: oklch(0.92 0.05 285);
+  --border: oklch(0.35 0.14 280);
+  --input: oklch(0.3 0.14 280);
+  --ring: oklch(0.75 0.22 285);
+  --chart-1: oklch(0.75 0.22 285);
+  --chart-2: oklch(0.68 0.18 295);
+  --chart-3: oklch(0.72 0.18 60);
+  --chart-4: oklch(0.7 0.18 270);
+  --chart-5: oklch(0.72 0.16 290);
+  --sidebar: oklch(0.18 0.1 280);
+  --sidebar-foreground: oklch(0.92 0.05 285);
+  --sidebar-primary: oklch(0.75 0.22 285);
+  --sidebar-primary-foreground: oklch(0.15 0.1 280);
+  --sidebar-accent: oklch(0.3 0.14 280);
+  --sidebar-accent-foreground: oklch(0.92 0.05 285);
+  --sidebar-border: oklch(0.35 0.14 280);
+  --sidebar-ring: oklch(0.75 0.22 285);
+}
+
+@theme inline {
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Added performance optimization with will-change */
+  @media (prefers-reduced-motion: no-preference) {
+    .motion-safe\:will-change-transform {
+      will-change: transform;
+    }
+  }
+
+  /* Disable animations for users who prefer reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* Updated to use softer, more calming purple gradients */
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 30% 20%, oklch(0.75 0.22 285 / 0.08) 0%, transparent 40%),
+      radial-gradient(circle at 70% 60%, oklch(0.68 0.18 295 / 0.07) 0%, transparent 45%),
+      radial-gradient(circle at 20% 80%, oklch(0.72 0.18 60 / 0.06) 0%, transparent 50%),
+      radial-gradient(circle at 90% 30%, oklch(0.7 0.18 270 / 0.05) 0%, transparent 55%);
+    pointer-events: none;
+    z-index: 0;
+    animation: ethereal-flow 34s ease-in-out infinite;
+  }
+
+  /* Softened aura overlay with gentle lavender glow */
+  body::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(ellipse at 50% 50%, oklch(0.75 0.22 285 / 0.04) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+    animation: aura-pulse 8s ease-in-out infinite;
+  }
+
+  main {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Enhanced keyframe animations with more organic, flowing movements */
+  @keyframes ethereal-flow {
+    0%,
+    100% {
+      transform: translate(0, 0) scale(1) rotate(0deg);
+      opacity: 1;
+    }
+    25% {
+      transform: translate(50px, -30px) scale(1.1) rotate(5deg);
+      opacity: 0.9;
+    }
+    50% {
+      transform: translate(-30px, 50px) scale(0.95) rotate(-3deg);
+      opacity: 0.95;
+    }
+    75% {
+      transform: translate(40px, 20px) scale(1.05) rotate(2deg);
+      opacity: 0.92;
+    }
+  }
+
+  @keyframes aura-pulse {
+    0%,
+    100% {
+      opacity: 0.3;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.6;
+      transform: scale(1.1);
+    }
+  }
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
+  }
+
+  @keyframes rotate-slow {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes rotate-reverse {
+    from {
+      transform: rotate(360deg);
+    }
+    to {
+      transform: rotate(0deg);
+    }
+  }
+
+  @keyframes pulse-glow {
+    0%,
+    100% {
+      opacity: 0.4;
+      transform: scale(1);
+      filter: blur(20px);
+    }
+    50% {
+      opacity: 0.7;
+      transform: scale(1.1);
+      filter: blur(25px);
+    }
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -1000px 0;
+    }
+    100% {
+      background-position: 1000px 0;
+    }
+  }
+
+  /* Added sacred geometry animation */
+  @keyframes sacred-spin {
+    0% {
+      transform: rotate(0deg) scale(1);
+    }
+    50% {
+      transform: rotate(180deg) scale(1.1);
+    }
+    100% {
+      transform: rotate(360deg) scale(1);
+    }
+  }
+
+  /* Added animated gradient keyframes for flowing text gradients */
+  @keyframes gradient-flow {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  @keyframes gradient-shift {
+    0%,
+    100% {
+      background-position: 0% 50%;
+    }
+    25% {
+      background-position: 50% 100%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    75% {
+      background-position: 50% 0%;
+    }
+  }
+
+  .animate-float {
+    animation: float 5s ease-in-out infinite;
+  }
+
+  .animate-float-delayed {
+    animation: float 8s ease-in-out infinite;
+    animation-delay: 1.3s;
+  }
+
+  .animate-rotate-slow {
+    animation: rotate-slow 13s linear infinite;
+  }
+
+  .animate-rotate-reverse {
+    animation: rotate-reverse 21s linear infinite;
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 5s ease-in-out infinite;
+  }
+
+  .animate-sacred-spin {
+    animation: sacred-spin 21s ease-in-out infinite;
+  }
+
+  /* Added utility classes for animated gradients */
+  .animate-gradient-flow {
+    background-size: 200% 200%;
+    animation: gradient-flow 3s ease infinite;
+  }
+
+  .animate-gradient-shift {
+    background-size: 300% 300%;
+    animation: gradient-shift 5s ease-in-out infinite;
+  }
+}
