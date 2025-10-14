@@ -1,46 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
-
 :root {
-  /* Light mode now emphasizes purple shades with gold accent instead of green */
-  --background: oklch(0.8352 0.0419 285.38); /* light cool gray */
-  --foreground: oklch(0.25 0.03 280); /* deep purple-charcoal */
-  --card: oklch(0.97 0.008 250); /* lighter gray for cards */
-  --card-foreground: oklch(0.25 0.03 280);
-  --popover: oklch(0.97 0.008 250);
-  --popover-foreground: oklch(0.25 0.03 280);
-  --primary: oklch(0.58 0.18 280); /* vibrant purple */
-  --primary-foreground: oklch(0.99 0.015 285);
-  --secondary: oklch(0.62 0.16 295); /* lighter purple shade */
-  --secondary-foreground: oklch(0.25 0.03 280);
-  --muted: oklch(0.88 0.01 250);
-  --muted-foreground: oklch(0.45 0.03 280);
-  --accent: oklch(0.68 0.16 60); /* warm gold/amber accent */
-  --accent-foreground: oklch(0.25 0.03 280);
-  --destructive: oklch(0.55 0.18 25);
-  --destructive-foreground: oklch(0.99 0.015 285);
-  --border: oklch(0.82 0.015 250);
-  --input: oklch(0.91 0.01 250);
-  --ring: oklch(0.58 0.18 280);
-  --radius: 1rem;
-  --chart-1: oklch(0.58 0.18 280);
-  --chart-2: oklch(0.62 0.16 295);
-  --chart-3: oklch(0.68 0.16 60);
-  --chart-4: oklch(0.55 0.16 270);
-  --chart-5: oklch(0.65 0.14 290);
-  --sidebar: oklch(0.94 0.008 250);
-  --sidebar-foreground: oklch(0.25 0.03 280);
-  --sidebar-primary: oklch(0.58 0.18 280);
-  --sidebar-primary-foreground: oklch(0.99 0.015 285);
-  --sidebar-accent: oklch(0.9 0.01 250);
-  --sidebar-accent-foreground: oklch(0.25 0.03 280);
-  --sidebar-border: oklch(0.82 0.015 250);
-  --sidebar-ring: oklch(0.58 0.18 280);
-}
-
-.dark {
   /* Dark mode now emphasizes purple shades with gold accent instead of green */
   --background: oklch(0.18 0.1 280);
   --foreground: oklch(0.92 0.05 285);
