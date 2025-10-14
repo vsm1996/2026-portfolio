@@ -117,27 +117,6 @@ export function AnimatedBackground() {
       />
 
       <motion.div
-        className="absolute top-20 right-20 w-40 h-40 opacity-35"
-        style={{
-          color: "oklch(0.75 0.22 285 / 0.4)",
-          filter: "drop-shadow(0 0 25px oklch(0.75 0.22 285 / 0.18))",
-        }}
-        animate={{
-          rotate: [0, 15, -12, 10, 0],
-          scale: [1, PHI, 0.85, 1.15, 1],
-          x: [0, 20, -15, 12, 0],
-          y: [0, -18, 15, -10, 0],
-        }}
-        transition={{
-          duration: 10,
-          repeat: Number.POSITIVE_INFINITY,
-          ease: "easeInOut",
-        }}
-      >
-        <LotusFlower className="w-full h-full" />
-      </motion.div>
-
-      <motion.div
         className="absolute top-1/4 left-1/3 w-24 h-24 opacity-25"
         style={{
           color: "oklch(0.72 0.18 60 / 0.35)",
@@ -259,26 +238,6 @@ export function AnimatedBackground() {
         }}
       >
         <Mandala className="w-full h-full" />
-      </motion.div>
-
-      <motion.div
-        className="absolute bottom-1/4 left-1/4 w-28 h-28 opacity-32"
-        style={{
-          color: "oklch(0.75 0.22 285 / 0.38)",
-          filter: "drop-shadow(0 0 20px oklch(0.75 0.22 285 / 0.15))",
-        }}
-        animate={{
-          scale: [1, 1.35, 0.85, 1.2, 1],
-          rotate: [0, 20, -15, 12, 0],
-          y: [0, -25, 0, -15, 0],
-        }}
-        transition={{
-          duration: 6,
-          repeat: Number.POSITIVE_INFINITY,
-          ease: "easeInOut",
-        }}
-      >
-        <LotusFlower className="w-full h-full" />
       </motion.div>
 
       <motion.div
