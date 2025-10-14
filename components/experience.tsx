@@ -58,7 +58,7 @@ const experiences = [
   {
     company: "VIDA & Co",
     position: "Web Developer",
-    period: "2021 — 2022",
+    period: "2018 — 2019",
     description: [
       "Developed pixel-perfect UIs from mockups, managing the Shopify web application and contributing to the hiring process.",
       "Enhanced the database system, leading to faster product rebuilds and improved customer experience.",
