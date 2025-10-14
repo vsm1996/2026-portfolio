@@ -323,13 +323,14 @@ export function About() {
 
             <motion.div
               variants={cardVariants}
+              className="lg:col-span-2"
               whileHover={{
                 scale: 1.05,
                 rotateY: 5,
                 transition: { duration: FIBONACCI_MS.f4 / 1000 },
               }}
             >
-              <Card className="lg:col-span-2 relative group overflow-hidden backdrop-blur-xl bg-card/50 border-border/50 rounded-3xl">
+              <Card className="relative group overflow-hidden backdrop-blur-xl bg-card/50 border-border/50 rounded-3xl">
                 <div className="aspect-square lg:aspect-auto lg:h-full bg-gradient-to-br from-accent/20 to-primary/20 flex items-center justify-center">
                   <div className="text-center space-y-4">
                     <motion.div
