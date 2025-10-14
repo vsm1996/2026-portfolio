@@ -289,8 +289,8 @@ export function Hero() {
             </motion.div>
             <div className="flex items-center gap-4">
               {[
-                { icon: Github, href: "https://github.com", label: "GitHub" },
-                { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
+                { icon: Github, href: "https://github.com/vsm1996", label: "GitHub" },
+                { icon: Linkedin, href: "https://linkedin.com/in/vsm1996", label: "LinkedIn" },
                 { icon: Mail, href: "mailto:vanessa.s.martin96@gmail.com", label: "Email" },
               ].map((social, i) => (
                 <motion.a
