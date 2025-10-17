@@ -251,7 +251,7 @@ export function Projects() {
                   transition: { duration: FIBONACCI_MS.f3 / 1000, ease: [0.34, 1.56, 0.64, 1] },
                 }}
               >
-                <Card className="h-full group overflow-hidden backdrop-blur-xl bg-card/50 border-border/50 rounded-3xl hover:shadow-2xl hover:shadow-accent/10 transition-all duration-500">
+                <Card className="h-full group pb-0 overflow-hidden backdrop-blur-xl bg-card/50 border-border/50 rounded-3xl hover:shadow-2xl hover:shadow-accent/10 transition-all duration-500">
                   <div className="h-full flex flex-col">
                     <div className="relative aspect-video lg:aspect-[16/10] overflow-hidden">
                       <motion.img
@@ -381,7 +381,7 @@ export function Projects() {
                     transition: { duration: FIBONACCI_MS.f3 / 1000, ease: [0.68, -0.6, 0.32, 1.6] },
                   }}
                 >
-                  <Card className="h-full group overflow-hidden backdrop-blur-xl bg-card/50 border-border/50 rounded-3xl hover:shadow-2xl hover:shadow-accent/10 transition-all duration-500">
+                  <Card className="h-full group pb-0 overflow-hidden backdrop-blur-xl bg-card/50 border-border/50 rounded-3xl hover:shadow-2xl hover:shadow-accent/10 transition-all duration-500">
                     <div className="h-full flex flex-col">
                       <div className="relative aspect-video overflow-hidden">
                         <motion.img
@@ -513,7 +513,7 @@ export function Projects() {
                         transition: { duration: FIBONACCI_MS.f3 / 1000, ease: [0.68, -0.6, 0.32, 1.6] },
                       }}
                     >
-                      <Card className="h-full group overflow-hidden backdrop-blur-xl bg-card/50 border-border/50 rounded-3xl hover:shadow-2xl hover:shadow-accent/10 transition-all duration-500">
+                      <Card className="h-full group pb-0 overflow-hidden backdrop-blur-xl bg-card/50 border-border/50 rounded-3xl hover:shadow-2xl hover:shadow-accent/10 transition-all duration-500">
                         <div className="h-full flex flex-col">
                           <div className="relative aspect-video overflow-hidden">
                             <motion.img
