@@ -330,9 +330,9 @@ export function About() {
                 transition: { duration: FIBONACCI_MS.f4 / 1000 },
               }}
             >
-              <Card className="relative group overflow-hidden backdrop-blur-xl bg-card/50 border-border/50 rounded-3xl">
+              <Card className="relative group pb-0 overflow-hidden backdrop-blur-xl bg-card/50 border-border/50 rounded-3xl">
                 <div className="aspect-square lg:aspect-auto lg:h-full bg-gradient-to-br from-accent/20 to-primary/20 flex items-center justify-center">
-                  <div className="text-center space-y-4">
+                  <div className="text-center space-y-4 md:pb-6 md:pt-8 md:px-4">
                     <motion.div
                       className="w-48 h-48 rounded-full bg-accent/30 mx-auto backdrop-blur-sm relative overflow-hidden"
                       animate={
