@@ -190,7 +190,7 @@ export function Experience() {
                   key={index}
                   onClick={() => setActiveIndex(index)}
                   className={`
-                    relative px-6 py-3 rounded-xl text-left whitespace-nowrap md:whitespace-normal
+                    relative px-6 py-3 rounded-3xl text-left whitespace-nowrap md:whitespace-normal
                     transition-all duration-300 font-medium
                     ${activeIndex === index
                       ? "text-foreground font-semibold shadow-lg"
@@ -202,7 +202,7 @@ export function Experience() {
                 >
                   <motion.div
                     className={`
-                      absolute inset-0 rounded-xl backdrop-blur-sm
+                      absolute inset-0 rounded-3xl backdrop-blur-sm
                       ${activeIndex === index
                         ? "bg-gradient-to-r from-primary/20 via-accent/20 to-secondary/20"
                         : "bg-muted/30 hover:bg-muted/50"
@@ -227,7 +227,7 @@ export function Experience() {
 
                   {activeIndex === index && (
                     <motion.div
-                      className="absolute inset-0 rounded-xl"
+                      className="absolute inset-0 rounded-3xl"
                       style={{
                         background:
                           "linear-gradient(135deg, oklch(0.68 0.32 290), oklch(0.75 0.25 45), oklch(0.68 0.32 290))",
@@ -279,7 +279,7 @@ export function Experience() {
                 exit="exit"
                 className="flex-1"
               >
-                <Card className="p-6 relative overflow-hidden">
+                <Card className="rounded-3xl p-6 relative overflow-hidden">
                   <motion.div
                     className="absolute inset-0 opacity-30"
                     style={{
