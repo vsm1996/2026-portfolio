@@ -86,7 +86,7 @@ function Leaf({ className, style }: { className?: string; style?: React.CSSPrope
 
 export function AnimatedBackground() {
   return (
-    <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+    <div className="hidden lg:block fixed inset-0 pointer-events-none overflow-hidden z-0">
       <motion.div
         className="absolute top-1/4 left-1/4 w-[600px] h-[600px] opacity-12"
         style={{
