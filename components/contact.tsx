@@ -131,21 +131,35 @@ export function Contact() {
                     y: { duration: 3, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" },
                   }}
                 >
-                  <Button size="lg" className="group rounded-full relative overflow-hidden">
-                    <motion.div
-                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-                      animate={{
-                        x: ["-100%", "100%"],
-                      }}
-                      transition={{
-                        duration: 2,
-                        repeat: Number.POSITIVE_INFINITY,
-                        ease: "linear",
-                      }}
-                    />
-                    <Mail className="mr-2 h-4 w-4 relative z-10" />
-                    <span className="relative z-10">Say Hello</span>
-                  </Button>
+                  <motion.a
+                    href="mailto:vanessa.s.martin96@gmail.com"
+                    className="text-muted-foreground hover:text-accent transition-colors relative"
+                    target={"initial"}
+                    rel={"initial"}
+                    whileHover={{
+                      scale: 1.3,
+                      rotate: [0, -10, 10, 0],
+                      y: -5,
+                    }}
+                    whileTap={{ scale: 0.9 }}
+                    transition={{ stiffness: 400 }}
+                  >
+                    <Button size="lg" className="group rounded-full relative overflow-hidden">
+                      <motion.div
+                        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                        animate={{
+                          x: ["-100%", "100%"],
+                        }}
+                        transition={{
+                          duration: 2,
+                          repeat: Number.POSITIVE_INFINITY,
+                          ease: "linear",
+                        }}
+                      />
+                      <Mail className="mr-2 h-4 w-4 relative z-10" />
+                      <span className="relative z-10">Say Hello</span>
+                    </Button>
+                  </motion.a>
                 </motion.div>
               </div>
             </Card>

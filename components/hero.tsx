@@ -250,7 +250,7 @@ export function Hero() {
             className="text-xl md:text-2xl text-muted-foreground max-w-3xl leading-relaxed font-normal group cursor-default"
           >
             <motion.span
-              className="inline-block transition-all duration-500 bg-gradient-to-r from-muted-foreground to-muted-foreground bg-clip-text group-hover:from-primary group-hover:via-accent group-hover:to-secondary group-hover:text-transparent"
+              className="text-balance inline-block transition-all duration-500 bg-gradient-to-r from-muted-foreground to-muted-foreground bg-clip-text group-hover:from-primary group-hover:via-accent group-hover:to-secondary group-hover:text-transparent"
               style={{ backgroundSize: "200% 200%", backgroundPosition: "0% 50%" }}
               whileHover={{
                 backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
@@ -296,8 +296,8 @@ export function Hero() {
                 <motion.a
                   key={social.label}
                   href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  target={social.label !== 'Email' ? "_blank" : "initial"}
+                  rel={social.label !== 'Email' ? "noopener noreferrer" : "initial"}
                   className="text-muted-foreground hover:text-accent transition-colors relative"
                   custom={i}
                   variants={socialVariants}
