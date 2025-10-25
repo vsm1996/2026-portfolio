@@ -1,7 +1,7 @@
 "use client"
 
 import { Card } from "@/components/ui/card"
-import { motion } from "framer-motion"
+import { cubicBezier, motion } from "framer-motion"
 import { useInView } from "framer-motion"
 import { useRef, useState, useEffect } from "react"
 import { PHI_INVERSE, FIBONACCI_MS, EASING, STAGGER, PHI, GOLDEN_ANGLE } from "@/lib/animation-constants"
@@ -189,7 +189,7 @@ export function About() {
               className="h-1 bg-gradient-to-r from-accent to-transparent rounded-full"
               initial={{ width: 0 }}
               animate={isInView ? { width: "20rem" } : { width: 0 }}
-              transition={{ duration: FIBONACCI_MS.f6 / 1000, ease: EASING.golden, delay: FIBONACCI_MS.f3 / 1000 }}
+              transition={{ duration: FIBONACCI_MS.f6 / 1000, ease: cubicBezier(...EASING.golden), delay: FIBONACCI_MS.f3 / 1000 }}
             />
           </motion.div>
 
@@ -265,7 +265,7 @@ export function About() {
                       }}
                     >
                       Fast-forward to today, and I've had the privilege of working at various companies, from startups
-                      to large corporations. My main focus these days is building interactive, dyanmic products and
+                      to large corporations. My main focus these days is building interactive, dynamic products and
                       digital experiences for a variety of clients.
                     </motion.span>
                   </p>
