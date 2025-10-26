@@ -150,7 +150,7 @@ export function Projects() {
       transition: {
         delay: i * (FIBONACCI_MS.f2 / 1000),
         duration: FIBONACCI_MS.f6 / 1000,
-        ease: EASING.golden,
+        ease: cubicBezier(EASING.golden[0], EASING.golden[1], EASING.golden[2], EASING.golden[3])
       },
     }),
   }

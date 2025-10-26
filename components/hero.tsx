@@ -2,7 +2,7 @@
 
 import { ArrowRight, Github, Linkedin, Mail, Twitter } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { motion, useMotionValue, useTransform, useSpring } from "framer-motion"
+import { motion, useMotionValue, useTransform, useSpring, cubicBezier } from "framer-motion"
 import { PHI_INVERSE, FIBONACCI_MS, EASING, STAGGER, GOLDEN_ANGLE } from "@/lib/animation-constants"
 import { useEffect, useState } from "react"
 
@@ -59,7 +59,7 @@ export function Hero() {
       scale: 1,
       transition: {
         duration: FIBONACCI_MS.f5 / 1000,
-        ease: EASING.golden,
+        ease: cubicBezier(EASING.golden[0], EASING.golden[1], EASING.golden[2], EASING.golden[3])
       },
     },
   }
@@ -73,7 +73,7 @@ export function Hero() {
       transition: {
         delay: (FIBONACCI_MS.f4 + i * FIBONACCI_MS.f2) / 1000,
         duration: FIBONACCI_MS.f4 / 1000,
-        ease: EASING.spring,
+        ease: cubicBezier(EASING.spring[0], EASING.spring[1], EASING.spring[2], EASING.spring[3]),
       },
     }),
   }

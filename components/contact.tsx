@@ -34,7 +34,7 @@ export function Contact() {
       scale: 1,
       transition: {
         duration: FIBONACCI_MS.f5 / 1000,
-        ease: EASING.golden,
+        ease: cubicBezier(EASING.golden[0], EASING.golden[1], EASING.golden[2], EASING.golden[3]),
       },
     },
   }

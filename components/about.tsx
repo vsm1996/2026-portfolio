@@ -53,7 +53,7 @@ export function About() {
       scale: 1,
       transition: {
         duration: FIBONACCI_MS.f6 / 1000,
-        ease: EASING.golden,
+        ease: cubicBezier(EASING.golden[0], EASING.golden[1], EASING.golden[2], EASING.golden[3]),
       },
     },
   }
@@ -66,7 +66,7 @@ export function About() {
       transition: {
         delay: i * (FIBONACCI_MS.f1 / 1000),
         duration: FIBONACCI_MS.f3 / 1000,
-        ease: EASING.gentle,
+        ease: cubicBezier(EASING.gentle[0], EASING.gentle[1], EASING.gentle[2], EASING.gentle[3]),
       },
     }),
   }

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "./theme-toggle"
-import { motion } from "framer-motion"
+import { cubicBezier, motion } from "framer-motion"
 import { FIBONACCI_MS, EASING, PHI_INVERSE } from "@/lib/animation-constants"
 
 export function Navigation() {
@@ -55,7 +55,7 @@ export function Navigation() {
       opacity: 1,
       transition: {
         duration: FIBONACCI_MS.f5 / 1000,
-        ease: EASING.golden,
+        ease: cubicBezier(EASING.golden[0], EASING.golden[1], EASING.golden[2], EASING.golden[3]),
         staggerChildren: FIBONACCI_MS.f1 / 1000,
       },
     },
@@ -69,24 +69,22 @@ export function Navigation() {
       scale: 1,
       transition: {
         duration: FIBONACCI_MS.f3 / 1000,
-        ease: EASING.gentle,
+        ease: cubicBezier(EASING.gentle[0], EASING.gentle[1], EASING.gentle[2], EASING.gentle[3]),
       },
     },
   }
 
   return (
     <motion.nav
-      className={`fixed top-6 left-1/2 -translate-x-1/2 z-50 transition-all duration-300 ${
-        isScrolled ? "w-auto" : "w-auto"
-      }`}
+      className={`fixed top-6 left-1/2 -translate-x-1/2 z-50 transition-all duration-300 ${isScrolled ? "w-auto" : "w-auto"
+        }`}
       variants={navVariants}
       initial="hidden"
       animate="visible"
     >
       <motion.div
-        className={`px-6 py-3 rounded-full backdrop-blur-xl border transition-all duration-300 relative overflow-hidden ${
-          isScrolled ? "bg-background/60 border-border/50 shadow-lg" : "bg-background/40 border-border/30"
-        }`}
+        className={`px-6 py-3 rounded-full backdrop-blur-xl border transition-all duration-300 relative overflow-hidden ${isScrolled ? "bg-background/60 border-border/50 shadow-lg" : "bg-background/40 border-border/30"
+          }`}
         animate={{
           scale: isScrolled ? 1 : 1.02,
         }}
@@ -144,17 +142,16 @@ export function Navigation() {
                   variant="ghost"
                   size="sm"
                   onClick={() => scrollToSection(item.id)}
-                  className={`text-sm transition-colors rounded-full ${
-                    activeSection === item.id
+                  className={`text-sm transition-colors rounded-full ${activeSection === item.id
                       ? "text-accent bg-accent/10"
                       : "text-muted-foreground hover:text-foreground"
-                  }`}
+                    }`}
                 >
                   {item.label}
                 </Button>
               </motion.div>
             ))}
-           {/* <motion.div className="ml-2" variants={itemVariants} whileHover={{ rotate: 180, scale: 1.1 }}>
+            {/* <motion.div className="ml-2" variants={itemVariants} whileHover={{ rotate: 180, scale: 1.1 }}>
               <ThemeToggle />
             </motion.div> */}
           </div>
