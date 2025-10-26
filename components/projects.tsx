@@ -99,24 +99,24 @@ const projects = [
     external: "https://www.nium.com/",
     image: "/portfolio/nium.png",
   },
-  {
-    title: "Photosnap",
-    description: "A home and pricing site for photographers and visual story tellers.",
-    context: "Built for photographers and visual storytellers to showcase their work",
-    role: "Frontend Developer",
-    category: "Creative",
-    outcomes: [
-      { label: "Visual", value: "Stunning", icon: Award },
-      { label: "Pricing", value: "Clear", icon: TrendingUp },
-    ],
-    technologies: ["Next.js", "React.js", "CSS", "Node.js", "Vercel"],
-    github: "https://github.com/vsm1996/photosnap",
-    external: "https://photosnap-roan.vercel.app/",
-    image: "/portfolio/photosnap.png",
-  },
+  // {
+  //   title: "Photosnap",
+  //   description: "A home and pricing site for photographers and visual story tellers.",
+  //   context: "Built for photographers and visual storytellers to showcase their work",
+  //   role: "Frontend Developer",
+  //   category: "Creative",
+  //   outcomes: [
+  //     { label: "Visual", value: "Stunning", icon: Award },
+  //     { label: "Pricing", value: "Clear", icon: TrendingUp },
+  //   ],
+  //   technologies: ["Next.js", "React.js", "CSS", "Node.js", "Vercel"],
+  //   github: "https://github.com/vsm1996/photosnap",
+  //   external: "https://photosnap-roan.vercel.app/",
+  //   image: "/portfolio/photosnap.png",
+  // },
 ]
 
-const categories = ["All", "Web App", "Community", "Corporate", "Creative", "Gaming"]
+const categories = ["All", "Web App", "Community", "Corporate", "Gaming"]
 
 export function Projects() {
   const ref = useRef<HTMLDivElement>(null)
