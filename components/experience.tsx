@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { Card } from "@/components/ui/card"
-import { motion, AnimatePresence } from "framer-motion"
+import { motion, AnimatePresence, cubicBezier } from "framer-motion"
 import { useInView } from "framer-motion"
 import { useRef } from "react"
 import { PHI_INVERSE, FIBONACCI_MS, EASING, PHI, GOLDEN_ANGLE } from "@/lib/animation-constants"
@@ -164,7 +164,7 @@ export function Experience() {
             className="space-y-2"
             initial={{ opacity: 0, x: -50 }}
             animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
-            transition={{ duration: FIBONACCI_MS.f5 / 1000, ease: EASING.golden }}
+            transition={{ duration: FIBONACCI_MS.f5 / 1000, ease: cubicBezier(EASING.golden[0], EASING.golden[1], EASING.golden[2], EASING.golden[3]), delay: FIBONACCI_MS.f3 / 1000 }}
           >
             <h2 className="text-3xl md:text-4xl font-bold text-foreground">
               <span className="text-accent font-mono text-xl mr-2">02.</span>
@@ -174,7 +174,7 @@ export function Experience() {
               className="h-px bg-border"
               initial={{ width: 0 }}
               animate={isInView ? { width: "20rem" } : { width: 0 }}
-              transition={{ duration: FIBONACCI_MS.f6 / 1000, ease: EASING.golden, delay: FIBONACCI_MS.f3 / 1000 }}
+              transition={{ duration: FIBONACCI_MS.f6 / 1000, ease: cubicBezier(EASING.golden[0], EASING.golden[1], EASING.golden[2], EASING.golden[3]), delay: FIBONACCI_MS.f3 / 1000 }}
             />
           </motion.div>
 
@@ -182,7 +182,7 @@ export function Experience() {
             className="flex flex-col md:flex-row gap-8"
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-            transition={{ duration: FIBONACCI_MS.f5 / 1000, ease: EASING.golden, delay: FIBONACCI_MS.f4 / 1000 }}
+            transition={{ duration: FIBONACCI_MS.f5 / 1000, ease: cubicBezier(EASING.golden[0], EASING.golden[1], EASING.golden[2], EASING.golden[3]), delay: FIBONACCI_MS.f4 / 1000 }}
           >
             <div className="flex md:flex-col gap-3 overflow-x-auto md:overflow-x-visible pb-2 md:pb-0">
               {experiences.map((exp, index) => (
@@ -204,7 +204,7 @@ export function Experience() {
                     className={`
                       absolute inset-0 rounded-3xl backdrop-blur-sm
                       ${activeIndex === index
-                        ? "bg-gradient-to-r from-primary/20 via-accent/20 to-secondary/20"
+                        ? "bg-linear-to-r from-primary/20 via-accent/20 to-secondary/20"
                         : "bg-muted/30 hover:bg-muted/50"
                       }
                     `}
@@ -340,7 +340,7 @@ export function Experience() {
                           transition={{
                             delay: (FIBONACCI_MS.f4 + i * FIBONACCI_MS.f1) / 1000,
                             duration: FIBONACCI_MS.f3 / 1000,
-                            ease: EASING.spring,
+                            ease: cubicBezier(EASING.spring[0], EASING.spring[1], EASING.spring[2], EASING.spring[3]),
                           }}
                           whileHover={{ scale: 1.1, rotate: 3 }}
                         >

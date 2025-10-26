@@ -158,11 +158,11 @@ export function About() {
             className="space-y-3"
             initial={{ opacity: 0, x: -50 }}
             animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
-            transition={{ duration: FIBONACCI_MS.f5 / 1000, ease: EASING.golden }}
+            transition={{ duration: FIBONACCI_MS.f5 / 1000, ease: cubicBezier(EASING.golden[0], EASING.golden[1], EASING.golden[2], EASING.golden[3]) }}
           >
             <h2 className="text-5xl md:text-6xl font-extrabold text-foreground text-balance group cursor-default">
               <span
-                className="transition-all duration-500 bg-gradient-to-r from-foreground to-foreground bg-clip-text group-hover:from-primary group-hover:via-accent group-hover:to-secondary group-hover:text-transparent"
+                className="transition-all duration-500 bg-linear-to-r from-foreground to-foreground bg-clip-text group-hover:from-primary group-hover:via-accent group-hover:to-secondary group-hover:text-transparent"
                 style={{ backgroundSize: "300% 300%" }}
               >
                 {"About Me".split("").map((char, i) => (
@@ -186,10 +186,10 @@ export function About() {
               </span>
             </h2>
             <motion.div
-              className="h-1 bg-gradient-to-r from-accent to-transparent rounded-full"
+              className="h-1 bg-linear-to-r from-accent to-transparent rounded-full"
               initial={{ width: 0 }}
               animate={isInView ? { width: "20rem" } : { width: 0 }}
-              transition={{ duration: FIBONACCI_MS.f6 / 1000, ease: cubicBezier(...EASING.golden), delay: FIBONACCI_MS.f3 / 1000 }}
+              transition={{ duration: FIBONACCI_MS.f6 / 1000, ease: cubicBezier(EASING.golden[0], EASING.golden[1], EASING.golden[2], EASING.golden[3]), delay: FIBONACCI_MS.f3 / 1000 }}
             />
           </motion.div>
 
@@ -225,7 +225,7 @@ export function About() {
                     }}
                   />
                   <p
-                    className="text-lg text-muted-foreground font-normal leading-relaxed relative z-10 transition-all duration-500 bg-gradient-to-r from-muted-foreground to-muted-foreground bg-clip-text group-hover:from-primary group-hover:via-accent group-hover:to-secondary group-hover:text-transparent"
+                    className="text-lg text-muted-foreground font-normal leading-relaxed relative z-10 transition-all duration-500 bg-linear-to-r from-muted-foreground to-muted-foreground bg-clip-text group-hover:from-primary group-hover:via-accent group-hover:to-secondary group-hover:text-transparent"
                     style={{ backgroundSize: "200% 200%", backgroundPosition: "0% 50%" }}
                   >
                     <motion.span
@@ -254,7 +254,7 @@ export function About() {
               >
                 <Card className="p-8 backdrop-blur-xl bg-card/50 border-border/50 rounded-3xl hover:shadow-xl hover:shadow-primary/5 transition-shadow group">
                   <p
-                    className="text-lg text-muted-foreground font-normal leading-relaxed transition-all duration-500 bg-gradient-to-r from-muted-foreground to-muted-foreground bg-clip-text group-hover:from-primary group-hover:via-accent group-hover:to-secondary group-hover:text-transparent"
+                    className="text-lg text-muted-foreground font-normal leading-relaxed transition-all duration-500 bg-linear-to-r from-muted-foreground to-muted-foreground bg-clip-text group-hover:from-primary group-hover:via-accent group-hover:to-secondary group-hover:text-transparent"
                     style={{ backgroundSize: "200% 200%", backgroundPosition: "0% 50%" }}
                   >
                     <motion.span
@@ -331,7 +331,7 @@ export function About() {
               }}
             >
               <Card className="relative group pb-0 overflow-hidden backdrop-blur-xl bg-card/50 border-border/50 rounded-3xl">
-                <div className="aspect-square lg:aspect-auto lg:h-full bg-gradient-to-br from-accent/20 to-primary/20 flex items-center justify-center">
+                <div className="aspect-square lg:aspect-auto lg:h-full bg-linear-to-br from-accent/20 to-primary/20 flex items-center justify-center">
                   <div className="text-center space-y-4 md:pb-6 md:pt-8 md:px-4">
                     <motion.div
                       className="w-48 h-48 rounded-full bg-accent/30 mx-auto backdrop-blur-sm relative overflow-hidden"
@@ -347,13 +347,13 @@ export function About() {
                         rotate: {
                           duration: FIBONACCI_MS.f7 / 1000,
                           repeat: Number.POSITIVE_INFINITY,
-                          ease: EASING.gentle,
+                          ease: cubicBezier(EASING.gentle[0], EASING.gentle[1], EASING.gentle[2], EASING.gentle[3]),
                         },
                         y: { duration: FIBONACCI_MS.f5 / 500, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" },
                       }}
                     >
                       <motion.div
-                        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                        className="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent"
                         animate={{
                           x: ["-100%", "100%"],
                         }}
@@ -368,14 +368,14 @@ export function About() {
                         alt="picture of Vanessa"
                         className="w-full h-full object-cover opacity-90"
                         whileHover={{ scale: 1.1, opacity: 1 }}
-                        transition={{ duration: FIBONACCI_MS.f6 / 1000, ease: EASING.golden }}
+                        transition={{ duration: FIBONACCI_MS.f6 / 1000, ease: cubicBezier(EASING.golden[0], EASING.golden[1], EASING.golden[2], EASING.golden[3]) }}
                         style={{ willChange: "transform" }}
                       />
                     </motion.div>
                   </div>
                 </div>
                 <motion.div
-                  className="absolute inset-0 bg-gradient-to-br from-accent/10 to-primary/10 opacity-0 group-hover:opacity-100 transition-opacity"
+                  className="absolute inset-0 bg-linear-to-br from-accent/10 to-primary/10 opacity-0 group-hover:opacity-100 transition-opacity"
                   animate={{
                     backgroundPosition: ["0% 0%", "100% 100%"],
                   }}

@@ -226,7 +226,7 @@ export function Hero() {
               transition={{ type: "spring", stiffness: 300 }}
             >
               <motion.span
-                className="bg-gradient-to-r from-muted-foreground via-[45%] via-orange-300 via-[55%] to-muted-foreground bg-clip-text text-transparent"
+                className="bg-linear-to-r from-muted-foreground via-orange-300 via-55% to-muted-foreground bg-clip-text text-transparent"
                 style={{
                   backgroundSize: "200% 100%",
                   backgroundPosition: "-100% 0",
@@ -250,7 +250,7 @@ export function Hero() {
             className="text-xl md:text-2xl text-muted-foreground max-w-3xl leading-relaxed font-normal group cursor-default"
           >
             <motion.span
-              className="text-balance inline-block transition-all duration-500 bg-gradient-to-r from-muted-foreground to-muted-foreground bg-clip-text group-hover:from-primary group-hover:via-accent group-hover:to-secondary group-hover:text-transparent"
+              className="text-balance inline-block transition-all duration-500 bg-linear-to-r from-muted-foreground to-muted-foreground bg-clip-text group-hover:from-primary group-hover:via-accent group-hover:to-secondary group-hover:text-transparent"
               style={{ backgroundSize: "200% 200%", backgroundPosition: "0% 50%" }}
               whileHover={{
                 backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
@@ -277,7 +277,7 @@ export function Hero() {
                 className="group rounded-full px-8 h-14 text-base relative overflow-hidden shadow-lg shadow-primary/20"
               >
                 <motion.span
-                  className="absolute inset-0 bg-gradient-to-r from-primary/0 via-accent/30 to-primary/0"
+                  className="absolute inset-0 bg-linear-to-r from-primary/0 via-accent/30 to-primary/0"
                   animate={{ x: ["-100%", "100%"] }}
                   transition={{ duration: 3, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
                 />

@@ -3,7 +3,7 @@
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { ExternalLink, Github, TrendingUp, Users, Award, PlaneTakeoff } from "lucide-react"
-import { motion, AnimatePresence } from "framer-motion"
+import { motion, AnimatePresence, cubicBezier } from "framer-motion"
 import { useInView } from "framer-motion"
 import { useRef, useState } from "react"
 import { PHI_INVERSE, FIBONACCI_MS, EASING, STAGGER, GOLDEN_ANGLE } from "@/lib/animation-constants"
@@ -183,7 +183,7 @@ export function Projects() {
             className="space-y-3"
             initial={{ opacity: 0, x: -50 }}
             animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
-            transition={{ duration: FIBONACCI_MS.f5 / 1000, ease: EASING.golden }}
+            transition={{ duration: FIBONACCI_MS.f5 / 1000, ease: cubicBezier(EASING.golden[0], EASING.golden[1], EASING.golden[2], EASING.golden[3]) }}
           >
             <h2 className="text-5xl md:text-6xl font-extrabold text-foreground text-balance">
               {"Featured Work".split("").map((char, i) => (
@@ -201,7 +201,7 @@ export function Projects() {
                 </motion.span>
               ))}
             </h2>
-            <div className="h-1 bg-gradient-to-r from-accent to-transparent max-w-xs rounded-full" />
+            <div className="h-1 bg-linear-to-r from-accent to-transparent max-w-xs rounded-full" />
           </motion.div>
 
           <motion.div
@@ -253,16 +253,16 @@ export function Projects() {
               >
                 <Card className="h-full group pb-0 overflow-hidden backdrop-blur-xl bg-card/50 border-border/50 rounded-3xl hover:shadow-2xl hover:shadow-accent/10 transition-all duration-500">
                   <div className="h-full flex flex-col">
-                    <div className="relative aspect-video lg:aspect-[16/10] overflow-hidden">
+                    <div className="relative aspect-video lg:aspect-16/10 overflow-hidden">
                       <motion.img
                         src={filteredProjects[0]?.image || "/placeholder.svg"}
                         alt={filteredProjects[0]?.title}
                         className="w-full h-full object-cover opacity-90"
                         whileHover={{ scale: 1.1, opacity: 1 }}
-                        transition={{ duration: FIBONACCI_MS.f6 / 1000, ease: EASING.golden }}
+                        transition={{ duration: FIBONACCI_MS.f6 / 1000, ease: cubicBezier(EASING.golden[0], EASING.golden[1], EASING.golden[2], EASING.golden[3]) }}
                         style={{ willChange: "transform" }}
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-card via-card/50 to-transparent" />
+                      <div className="absolute inset-0 bg-linear-to-t from-card via-card/50 to-transparent" />
                       <AnimatePresence>
                         {expandedProject === 0 && (
                           <motion.div
@@ -329,7 +329,7 @@ export function Projects() {
                             transition={{
                               delay: (FIBONACCI_MS.f5 + i * FIBONACCI_MS.f1) / 1000,
                               duration: FIBONACCI_MS.f3 / 1000,
-                              ease: EASING.spring,
+                              ease: cubicBezier(EASING.spring[0], EASING.spring[1], EASING.spring[2], EASING.spring[3]),
                             }}
                             whileHover={{ scale: 1.1, rotate: GOLDEN_ANGLE / 20 }}
                           >
@@ -389,10 +389,10 @@ export function Projects() {
                           alt={project.title}
                           className="w-full h-full object-cover opacity-90"
                           whileHover={{ scale: 1.15, opacity: 1 }}
-                          transition={{ duration: FIBONACCI_MS.f6 / 1000, ease: EASING.golden }}
+                          transition={{ duration: FIBONACCI_MS.f6 / 1000, ease: cubicBezier(EASING.golden[0], EASING.golden[1], EASING.golden[2], EASING.golden[3]) }}
                           style={{ willChange: "transform" }}
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-card via-card/50 to-transparent" />
+                        <div className="absolute inset-0 bg-linear-to-t from-card via-card/50 to-transparent" />
                         <AnimatePresence>
                           {expandedProject === index + 1 && (
                             <motion.div
@@ -521,10 +521,10 @@ export function Projects() {
                               alt={project.title}
                               className="w-full h-full object-cover opacity-90"
                               whileHover={{ scale: 1.15, opacity: 1 }}
-                              transition={{ duration: FIBONACCI_MS.f6 / 1000, ease: EASING.golden }}
+                              transition={{ duration: FIBONACCI_MS.f6 / 1000, ease: cubicBezier(EASING.golden[0], EASING.golden[1], EASING.golden[2], EASING.golden[3]) }}
                               style={{ willChange: "transform" }}
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-card via-card/50 to-transparent" />
+                            <div className="absolute inset-0 bg-linear-to-t from-card via-card/50 to-transparent" />
                             <AnimatePresence>
                               {expandedProject === visibleProjects.length + index && (
                                 <motion.div
@@ -620,7 +620,7 @@ export function Projects() {
             transition={{
               delay: FIBONACCI_MS.f6 / 1000,
               duration: FIBONACCI_MS.f5 / 1000,
-              ease: EASING.golden,
+              ease: cubicBezier(EASING.golden[0], EASING.golden[1], EASING.golden[2], EASING.golden[3]),
             }}
           >
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>

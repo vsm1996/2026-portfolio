@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Mail } from "lucide-react"
-import { motion } from "framer-motion"
+import { cubicBezier, motion } from "framer-motion"
 import { useInView } from "framer-motion"
 import { useRef } from "react"
 import { PHI_INVERSE, FIBONACCI_MS, EASING, PHI, GOLDEN_ANGLE } from "@/lib/animation-constants"
@@ -146,7 +146,7 @@ export function Contact() {
                   >
                     <Button size="lg" className="group rounded-full relative overflow-hidden">
                       <motion.div
-                        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                        className="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent"
                         animate={{
                           x: ["-100%", "100%"],
                         }}
@@ -174,7 +174,7 @@ export function Contact() {
               transition={{
                 duration: FIBONACCI_MS.f7 / 1000,
                 repeat: Number.POSITIVE_INFINITY,
-                ease: EASING.gentle,
+                ease: cubicBezier(EASING.gentle[0], EASING.gentle[1], EASING.gentle[2], EASING.gentle[3]),
               }}
             >
               Designed & Built by Vanessa Martin
