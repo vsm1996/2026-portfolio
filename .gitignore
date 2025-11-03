@@ -29,3 +29,5 @@ next-env.d.ts.yarn/unplugged
 .yarn/*
 .yarn/unplugged
 .yarn/cache
+
+.DS_Store

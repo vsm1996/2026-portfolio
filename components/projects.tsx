@@ -628,7 +628,7 @@ export function Projects() {
                 variant="outline"
                 size="lg"
                 onClick={handleToggleProjects}
-                className="rounded-full px-8 h-14 text-base backdrop-blur-xl bg-background/50 border-border/50 hover:bg-accent/10 hover:border-accent/50"
+                className="rounded-full px-8 h-14 text-base backdrop-blur-xl bg-background/50 border-border/50 hover:bg-accent/10 hover:border-accent/50 transition-colors"
               >
                 {showAllProjects ? "Show Less" : "View All Projects"}
               </Button>
