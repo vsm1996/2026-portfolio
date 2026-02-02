@@ -11,9 +11,9 @@ import { PHI_INVERSE, FIBONACCI_MS, EASING, STAGGER, GOLDEN_ANGLE } from "@/lib/
 const projects = [
   {
     title: "Harmonia UI",
-    description: "A framework for building interfaces that adapt to a user's current cognitive, temporal, and emotional capacity.",
-    context: "Instead of inferring or profiling users, Harmonia uses explicit inputs to derive coherent interface modes that affect layout density, content length, motion, and tone.",
-    role: "Architect",
+    description: "A framework for building interfaces that adapt to a user's current cognitive, temporal, and emotional capacity. Instead of inferring or profiling users, Harmonia uses explicit inputs to derive coherent interface modes that affect layout density, content length, motion, and tone.",
+    context: "Owned the design and implementation of a capacity-adaptive interface framework, introducing a new pattern for humane, state-aware UI without inference or profiling.",
+    role: "Systems Designer & Frontend Architect",
     category: "Creative",
     outcomes: [
       { label: "Visual", value: "Stunning", icon: Sparkles },
