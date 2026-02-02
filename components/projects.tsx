@@ -85,21 +85,6 @@ const projects = [
     image: "/portfolio/sgip.png",
   },
   {
-    title: "Siena Analytics",
-    description: "A fast and feature-rich Headless WordPress site for global supply chain AI company.",
-    context: "Created for a global supply chain AI company needing a modern, performant website",
-    role: "Frontend Developer",
-    category: "Corporate",
-    outcomes: [
-      { label: "Performance", value: "Fast", icon: TrendingUp },
-      { label: "Headless CMS", value: "WordPress", icon: Award },
-    ],
-    technologies: ["Next.js", "React.js", "CSS", "Node.js", "Vercel"],
-    // github: "https://github.com",
-    external: "https://www.peaktech.com/portfolio/siena-analytics/?redirect=siena",
-    image: "/portfolio/siena.png",
-  },
-  {
     title: "Nium",
     description: "A website redesign for a global fintech company.",
     context: "Redesigned website for a global fintech company to modernize their online presence",
