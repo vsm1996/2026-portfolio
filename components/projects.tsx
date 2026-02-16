@@ -101,7 +101,7 @@ const projects = [
   },
 ]
 
-const categories = ["All", "Web App", "Community", "Corporate", "Gaming", "Creative"]
+const categories = ["All", "Web App", "Corporate", "Gaming", "Creative"]
 
 export function Projects() {
   const ref = useRef<HTMLDivElement>(null)
