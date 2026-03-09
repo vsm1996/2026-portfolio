@@ -2,7 +2,7 @@
 
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { ExternalLink, Github, TrendingUp, Users, Award, PlaneTakeoff, Brain, Sparkles } from "lucide-react"
+import { ExternalLink, Github, TrendingUp, Users, Award, PlaneTakeoff, Brain, Sparkles, UsersRound, Shield } from "lucide-react"
 import { motion, AnimatePresence, cubicBezier } from "framer-motion"
 import { useInView } from "framer-motion"
 import { useRef, useState } from "react"
@@ -14,7 +14,7 @@ const projects = [
     description: "A framework for building interfaces that adapt to a user's current cognitive, temporal, and emotional capacity. Instead of inferring or profiling users, Harmonia uses explicit inputs to derive coherent interface modes that affect layout density, content length, motion, and tone.",
     context: "Owned the design and implementation of a capacity-adaptive interface framework, introducing a new pattern for humane, state-aware UI without inference or profiling.",
     role: "Systems Designer & Frontend Architect",
-    category: "Creative",
+    category: "Framework",
     outcomes: [
       { label: "Visual", value: "Stunning", icon: Sparkles },
       { label: "Philosophy", value: "Framework", icon: Brain },
@@ -55,19 +55,35 @@ const projects = [
     image: "/portfolio/goodwin.png",
   },
   {
-    title: "The Traveler",
-    description: "Display latest travel and aviation news using the New York Times API in a sleek, beautiful design.",
-    context: "Built to provide users with curated travel and aviation news in an elegant interface",
-    role: "Front-end Engineer",
+    title: "Grove",
+    description: "A career intelligence system that scores job opportunities on alignment, energy cost, signal strength, and positioning gaps instead of just tracking application status.",
+    context: "Built to solve the problem that job searching treats candidates as static. Confidence, energy, and narrative clarity fluctuate. The tracker should adapt.",
+    role: "Architect / Front-end Engineer",
     category: "Web App",
     outcomes: [
-      { label: "API Integration", value: "NYT API", icon: TrendingUp },
-      { label: "Design", value: "Sleek UI", icon: Award },
+      { label: "Scoring Dimensions", value: "4", icon: TrendingUp },
+      { label: "Adaptive Views", value: "Capacity-based", icon: Award },
+      { label: "Auth", value: "Google OAuth", icon: Shield },
     ],
-    technologies: ["React.js", "Next.js", "TailwindCSS", "Vercel", "JavaScript",],
-    github: "https://github.com/vsm1996/the-traveler",
-    external: "https://thetraveler.vercel.app/",
-    image: "/portfolio/thetraveler.png",
+    technologies: ["React.js", "Next.js 16", "TypeScript", "TailwindCSS", "Supabase", "Vercel"],
+    github: "https://github.com/vsm1996/grove",
+    external: "https://grove-intel.vercel.app",
+    image: "/portfolio/grove.png",
+  },
+  {
+    title: "Anime Sync",
+    description: "Plan out your anime watchlist with your friend circle!",
+    context: "Built to provide friend groups an organized means to plan watch parties",
+    role: "Front-end Systems Engineer",
+    category: "Web App",
+    outcomes: [
+      { label: "Community", value: "Building", icon: UsersRound },
+      { label: "Real-TIme", value: "Communication", icon: Award },
+    ],
+    technologies: ["React.js", "Next.js", "TailwindCSS", "PartyKit", "Lovable",],
+    github: "",
+    external: "https://anime-sync-circle.lovable.app/",
+    image: "/portfolio/anime-sync.png",
   },
   // {
   //   title: "Sincerely Grateful - Internet Practitioners",
@@ -85,6 +101,21 @@ const projects = [
   //   image: "/portfolio/sgip.png",
   // },
   {
+    title: "The Traveler",
+    description: "Display latest travel and aviation news using the New York Times API in a sleek, beautiful design.",
+    context: "Built to provide users with curated travel and aviation news in an elegant interface",
+    role: "Front-end Engineer",
+    category: "Web App",
+    outcomes: [
+      { label: "API Integration", value: "NYT API", icon: TrendingUp },
+      { label: "Design", value: "Sleek UI", icon: Award },
+    ],
+    technologies: ["React.js", "Next.js", "TailwindCSS", "Vercel", "JavaScript",],
+    github: "https://github.com/vsm1996/the-traveler",
+    external: "https://thetraveler.vercel.app/",
+    image: "/portfolio/thetraveler.png",
+  },
+  {
     title: "Nium",
     description: "A website redesign for a global fintech company.",
     context: "Redesigned website for a global fintech company to modernize their online presence",
@@ -101,7 +132,7 @@ const projects = [
   },
 ]
 
-const categories = ["All", "Web App", "Corporate", "Gaming", "Creative"]
+const categories = ["All", "Web App", "Framework", "Corporate", "Gaming"]
 
 export function Projects() {
   const ref = useRef<HTMLDivElement>(null)
