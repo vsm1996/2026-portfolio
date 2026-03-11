@@ -71,7 +71,7 @@ const projects = [
     image: "/portfolio/grove.png",
   },
   {
-    title: "Anime Sync",
+    title: "Anime Sync Circle",
     description: "Plan out your anime watchlist with your friend circle!",
     context: "Built to provide friend groups an organized means to plan watch parties",
     role: "Front-end Systems Engineer",
@@ -82,7 +82,7 @@ const projects = [
     ],
     technologies: ["React.js", "Next.js", "TailwindCSS", "PartyKit", "Lovable",],
     github: "",
-    external: "https://anime-sync-circle.lovable.app/",
+    external: "https://anime-sync-circle.vercel.app/",
     image: "/portfolio/anime-sync.png",
   },
   // {

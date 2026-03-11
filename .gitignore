@@ -31,3 +31,5 @@ next-env.d.ts.yarn/unplugged
 .yarn/cache
 
 .DS_Store
+
+CLAUDE.md
