@@ -5,7 +5,7 @@ import { cubicBezier, motion } from "framer-motion"
 import { useInView } from "framer-motion"
 import { useRef, useState, useEffect } from "react"
 import { PHI_INVERSE, FIBONACCI_MS, EASING, STAGGER, PHI, GOLDEN_ANGLE } from "@/lib/animation-constants"
-import { Code2, FileType, Component, Layers, Server, Palette, Database, GitBranch } from "lucide-react"
+import { Code2, FileType, Component, Layers, Server, Palette, Database, GitBranch, Box } from "lucide-react"
 
 export function About() {
   const ref = useRef(null)
@@ -25,6 +25,8 @@ export function About() {
     { name: "React", icon: Component },
     { name: "TypeScript", icon: FileType },
     { name: "Tailwind CSS", icon: Palette },
+    { name: "Supabase", icon: Database },
+    { name: "Zustand", icon: Box },
     { name: "JavaScript (ES6+)", icon: Code2 },
     { name: "Node.js", icon: Server },
     { name: "Prisma ORM", icon: Database },
@@ -235,9 +237,7 @@ export function About() {
                         transition: { duration: 2, ease: "easeInOut", repeat: Number.POSITIVE_INFINITY },
                       }}
                     >
-                      Hello! I'm a passionate developer who loves creating things that live on the internet. My interest
-                      in web development started back in 2018 when I decided to take a coding bootcamp for the summer — turns out
-                      I love creating web experiences!
+                      I'm a frontend architect specializing in systems design, component architecture, and the kind of engineering that makes other engineers stop and ask how it works.<br/><br/>My practice sits at the intersection of mathematics and interface design. I build things grounded in first principles, not convention. If there's a more structurally sound way to do something, I'll find it.
                     </motion.span>
                   </p>
                 </Card>
@@ -264,9 +264,7 @@ export function About() {
                         transition: { duration: 2, ease: "easeInOut", repeat: Number.POSITIVE_INFINITY },
                       }}
                     >
-                      Fast-forward to today, and I've had the privilege of working at various companies, from startups
-                      to large corporations. My main focus these days is building interactive, dynamic products and
-                      digital experiences for a variety of clients.
+                      I'm the creator of Harmonia UI, a capacity-adaptive interface framework, and Renge, a design system built on natural mathematics. Both are part of the Soka Labs ecosystem, a developer training institution I'm building to change how the industry produces architects.<br/><br/>I've diagnosed codebases others couldn't fix, shipped core products under hostile conditions, and built systems that outlasted the companies that commissioned them.
                     </motion.span>
                   </p>
                 </Card>

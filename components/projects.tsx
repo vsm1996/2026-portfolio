@@ -25,6 +25,21 @@ const projects = [
     image: "/portfolio/harmonia-ui.png",
   },
   {
+    title: "Renge UI",
+    description: "A design system built on natural mathematics. PHI, Fibonacci, and phyllotaxis — the ratios that appear in every living thing — expressed as a complete token system. Six color profiles, a live proportional scale, and 18 React components. Every token derived. Nothing arbitrary.",
+    context: "Designed and built a full-featured UI framework to standardize component patterns across projects with an opinionated but flexible design language.",
+    role: "Systems Designer & Frontend Architect",
+    category: "Framework",
+    outcomes: [
+      { label: "Visual", value: "Polished", icon: Sparkles },
+      { label: "Philosophy", value: "Framework", icon: Brain },
+    ],
+    technologies: ["Next.js", "TypeScript", "React", "TailwindCSS", "Vercel"],
+    github: "https://github.com/vsm1996/renge",
+    external: "https://renge-ui.vercel.app/",
+    image: "/portfolio/renge-ui.png",
+  },
+  {
     title: "PlayStation",
     description: "A website for a leading gaming company, specializing in branding, product, and community first.",
     context: "Developed for a leading gaming company focusing on branding and community engagement",

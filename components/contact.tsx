@@ -118,7 +118,7 @@ export function Contact() {
               {/* End of added animated shimmer effect */}
               <div className="space-y-6 relative z-10">
                 <p className="text-lg text-muted-foreground font-normal leading-relaxed">
-                  I'm always excited to collaborate on new projects or discuss opportunities. Feel free to reach out!
+                  I'm available for frontend architecture consulting, design system engagements, and fractional architect retainers.<br/><br/>If your frontend is load-bearing and you need someone who can see the whole system, not just the symptoms, let's talk.
                 </p>
 
                 <motion.div
@@ -179,7 +179,7 @@ export function Contact() {
             >
               Designed & Built by Vanessa Martin
             </motion.p>
-            <p className="text-xs text-muted-foreground font-mono">© 2025 All rights reserved</p>
+            <p className="text-xs text-muted-foreground font-mono">© 2026 All rights reserved</p>
           </motion.footer>
         </motion.div>
       </div>

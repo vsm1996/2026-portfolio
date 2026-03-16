@@ -240,7 +240,7 @@ export function Hero() {
                   },
                 }}
               >
-                I build things for the web.
+                I build frontend systems that think.
               </motion.span>
             </motion.h2>
           </div>
@@ -257,9 +257,8 @@ export function Hero() {
                 transition: { duration: 2, ease: "easeInOut", repeat: Number.POSITIVE_INFINITY },
               }}
             >
-              I'm a Front-end Engineer based in the Bay Area. I'm passionate about creating delightful web experiences
-              and building high-performance front-end systems. My mission is to explore the intersection of art and
-              technology, blending creativity with functionality.
+              Capacity-adaptive interfaces, proportional design systems, and the infrastructure that makes both
+              possible. Based in the Bay Area.
             </motion.span>
           </motion.p>
 

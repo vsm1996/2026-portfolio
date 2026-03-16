@@ -20,7 +20,7 @@ const jetbrainsMono = JetBrains_Mono({
 })
 
 export const metadata: Metadata = {
-  title: "Vanessa Martin - Web Experience Creator & Architect",
+  title: "Vanessa Martin - Frontend Architect & Systems Builder",
   description: "Software engineer specializing in building exceptional digital experiences",
   icons: {
     icon: "/favicon.ico",
