@@ -76,14 +76,14 @@ export function Navigation() {
 
   return (
     <motion.nav
-      className={`fixed top-6 left-1/2 -translate-x-1/2 z-50 transition-all duration-300 ${isScrolled ? "w-auto" : "w-auto"
+      className={`fixed top-6 left-1/2 -translate-x-1/2 z-50 transition-all duration-renge-3 ${isScrolled ? "w-auto" : "w-auto"
         }`}
       variants={navVariants}
       initial="hidden"
       animate="visible"
     >
       <motion.div
-        className={`px-6 py-3 rounded-full backdrop-blur-xl border transition-all duration-300 relative overflow-hidden ${isScrolled ? "bg-background/60 border-border/50 shadow-lg" : "bg-background/40 border-border/30"
+        className={`px-renge-3 py-renge-2 rounded-renge-full backdrop-blur-xl border transition-all duration-renge-3 relative overflow-hidden ${isScrolled ? "bg-background/60 border-border/50 shadow-lg" : "bg-background/40 border-border/30"
           }`}
         animate={{
           scale: isScrolled ? 1 : 1.02,
@@ -91,7 +91,7 @@ export function Navigation() {
         transition={{ duration: FIBONACCI_MS.f3 / 1000 }}
       >
         <motion.div
-          className="absolute inset-0 rounded-full"
+          className="absolute inset-0 rounded-renge-full"
           style={{
             background: "linear-gradient(90deg, transparent, oklch(0.68 0.32 290 / 0.1), transparent)",
           }}
@@ -104,10 +104,10 @@ export function Navigation() {
             ease: "linear",
           }}
         />
-        <div className="flex items-center gap-1 relative z-10">
+        <div className="flex items-center gap-renge-1 relative z-10">
           <motion.button
             onClick={() => scrollToSection("home")}
-            className="text-lg font-semibold text-foreground hover:text-accent transition-colors px-3"
+            className="text-renge-lg font-semibold text-foreground hover:text-accent transition-colors px-renge-2"
             whileHover={{ scale: 1.05, rotate: 2 }}
             whileTap={{ scale: 0.95 }}
             variants={itemVariants}
@@ -120,7 +120,7 @@ export function Navigation() {
           >
             VSM
           </motion.button>
-          <div className="hidden md:flex items-center gap-1">
+          <div className="hidden md:flex items-center gap-renge-1">
             {navItems.map((item, i) => (
               <motion.div
                 key={item.id}
@@ -142,7 +142,7 @@ export function Navigation() {
                   variant="ghost"
                   size="sm"
                   onClick={() => scrollToSection(item.id)}
-                  className={`text-sm transition-colors rounded-full ${activeSection === item.id
+                  className={`text-renge-sm transition-colors rounded-renge-full ${activeSection === item.id
                       ? "text-accent bg-accent/10"
                       : "text-muted-foreground hover:text-foreground"
                     }`}

@@ -74,9 +74,9 @@ export function About() {
   }
 
   return (
-    <section id="about" className="min-h-screen flex items-center justify-center px-6 py-32 relative" ref={ref}>
+    <section id="about" className="min-h-screen flex items-center justify-center px-renge-3 py-renge-7 relative" ref={ref}>
       <motion.div
-        className="absolute top-20 right-10 w-24 h-24 border-2 border-primary/20 rounded-3xl"
+        className="absolute top-20 right-10 w-24 h-24 border-2 border-primary/20 rounded-renge-3"
         animate={
           prefersReducedMotion
             ? {}
@@ -118,7 +118,7 @@ export function About() {
       />
 
       <motion.div
-        className="absolute top-1/3 left-1/4 w-20 h-20 border border-accent/20 rounded-full"
+        className="absolute top-1/3 left-1/4 w-20 h-20 border border-accent/20 rounded-renge-full"
         animate={
           prefersReducedMotion
             ? {}
@@ -136,7 +136,7 @@ export function About() {
       />
 
       <motion.div
-        className="absolute bottom-1/3 right-1/4 w-12 h-12 bg-primary/10 rounded-lg"
+        className="absolute bottom-1/3 right-1/4 w-12 h-12 bg-primary/10 rounded-renge-1"
         animate={
           prefersReducedMotion
             ? {}
@@ -155,16 +155,16 @@ export function About() {
       />
 
       <div className="max-w-6xl w-full">
-        <div className="space-y-12">
+        <div className="space-y-renge-5">
           <motion.div
-            className="space-y-3"
+            className="space-y-renge-2"
             initial={{ opacity: 0, x: -50 }}
             animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
             transition={{ duration: FIBONACCI_MS.f5 / 1000, ease: cubicBezier(EASING.golden[0], EASING.golden[1], EASING.golden[2], EASING.golden[3]) }}
           >
             <h2 className="text-5xl md:text-6xl font-extrabold text-foreground text-balance group cursor-default">
               <span
-                className="transition-all duration-500 bg-linear-to-r from-foreground to-foreground bg-clip-text group-hover:from-primary group-hover:via-accent group-hover:to-secondary group-hover:text-transparent"
+                className="transition-all duration-renge-4 bg-linear-to-r from-foreground to-foreground bg-clip-text group-hover:from-primary group-hover:via-accent group-hover:to-secondary group-hover:text-transparent"
                 style={{ backgroundSize: "300% 300%" }}
               >
                 {"About Me".split("").map((char, i) => (
@@ -188,7 +188,7 @@ export function About() {
               </span>
             </h2>
             <motion.div
-              className="h-1 bg-linear-to-r from-accent to-transparent rounded-full"
+              className="h-1 bg-linear-to-r from-accent to-transparent rounded-renge-full"
               initial={{ width: 0 }}
               animate={isInView ? { width: "20rem" } : { width: 0 }}
               transition={{ duration: FIBONACCI_MS.f6 / 1000, ease: cubicBezier(EASING.golden[0], EASING.golden[1], EASING.golden[2], EASING.golden[3]), delay: FIBONACCI_MS.f3 / 1000 }}
@@ -196,12 +196,12 @@ export function About() {
           </motion.div>
 
           <motion.div
-            className="grid lg:grid-cols-5 gap-8"
+            className="grid lg:grid-cols-5 gap-renge-4"
             variants={containerVariants}
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
           >
-            <div className="lg:col-span-3 space-y-6">
+            <div className="lg:col-span-3 space-y-renge-3">
               <motion.div
                 variants={cardVariants}
                 whileHover={{
@@ -211,9 +211,9 @@ export function About() {
                   transition: { duration: FIBONACCI_MS.f3 / 1000 },
                 }}
               >
-                <Card className="p-8 backdrop-blur-xl bg-card/50 border-border/50 rounded-3xl hover:shadow-xl hover:shadow-primary/5 transition-shadow relative overflow-hidden group">
+                <Card className="p-renge-4 backdrop-blur-xl bg-card/50 border-border/50 rounded-renge-3 hover:shadow-xl hover:shadow-primary/5 transition-shadow relative overflow-hidden group">
                   <motion.div
-                    className="absolute inset-0 rounded-3xl"
+                    className="absolute inset-0 rounded-renge-3"
                     style={{
                       background: "linear-gradient(90deg, transparent, oklch(0.68 0.32 290 / 0.1), transparent)",
                     }}
@@ -227,7 +227,7 @@ export function About() {
                     }}
                   />
                   <p
-                    className="text-lg text-muted-foreground font-normal leading-relaxed relative z-10 transition-all duration-500 bg-linear-to-r from-muted-foreground to-muted-foreground bg-clip-text group-hover:from-primary group-hover:via-accent group-hover:to-secondary group-hover:text-transparent"
+                    className="text-renge-lg text-muted-foreground font-normal leading-relaxed relative z-10 transition-all duration-renge-4 bg-linear-to-r from-muted-foreground to-muted-foreground bg-clip-text group-hover:from-primary group-hover:via-accent group-hover:to-secondary group-hover:text-transparent"
                     style={{ backgroundSize: "200% 200%", backgroundPosition: "0% 50%" }}
                   >
                     <motion.span
@@ -252,9 +252,9 @@ export function About() {
                   transition: { duration: FIBONACCI_MS.f3 / 1000 },
                 }}
               >
-                <Card className="p-8 backdrop-blur-xl bg-card/50 border-border/50 rounded-3xl hover:shadow-xl hover:shadow-primary/5 transition-shadow group">
+                <Card className="p-renge-4 backdrop-blur-xl bg-card/50 border-border/50 rounded-renge-3 hover:shadow-xl hover:shadow-primary/5 transition-shadow group">
                   <p
-                    className="text-lg text-muted-foreground font-normal leading-relaxed transition-all duration-500 bg-linear-to-r from-muted-foreground to-muted-foreground bg-clip-text group-hover:from-primary group-hover:via-accent group-hover:to-secondary group-hover:text-transparent"
+                    className="text-renge-lg text-muted-foreground font-normal leading-relaxed transition-all duration-renge-4 bg-linear-to-r from-muted-foreground to-muted-foreground bg-clip-text group-hover:from-primary group-hover:via-accent group-hover:to-secondary group-hover:text-transparent"
                     style={{ backgroundSize: "200% 200%", backgroundPosition: "0% 50%" }}
                   >
                     <motion.span
@@ -279,15 +279,15 @@ export function About() {
                   transition: { duration: FIBONACCI_MS.f3 / 1000 },
                 }}
               >
-                <Card className="p-8 backdrop-blur-xl bg-card/50 border-border/50 rounded-3xl hover:shadow-xl hover:shadow-primary/5 transition-shadow">
-                  <p className="text-lg text-foreground font-semibold mb-4">Technologies I work with:</p>
-                  <div className="grid grid-cols-2 gap-3">
+                <Card className="p-renge-4 backdrop-blur-xl bg-card/50 border-border/50 rounded-renge-3 hover:shadow-xl hover:shadow-primary/5 transition-shadow">
+                  <p className="text-renge-lg text-foreground font-semibold mb-renge-2">Technologies I work with:</p>
+                  <div className="grid grid-cols-2 gap-renge-2">
                     {skills.map((skill, i) => {
                       const Icon = skill.icon
                       return (
                         <motion.div
                           key={skill.name}
-                          className="flex items-center gap-3 group"
+                          className="flex items-center gap-renge-2 group"
                           custom={i}
                           variants={skillVariants}
                           initial="hidden"
@@ -308,7 +308,7 @@ export function About() {
                           >
                             <Icon className="w-5 h-5" />
                           </motion.div>
-                          <span className="text-base text-muted-foreground font-mono group-hover:text-foreground transition-colors">
+                          <span className="text-renge-base text-muted-foreground font-mono group-hover:text-foreground transition-colors">
                             {skill.name}
                           </span>
                         </motion.div>
@@ -328,11 +328,11 @@ export function About() {
                 transition: { duration: FIBONACCI_MS.f4 / 1000 },
               }}
             >
-              <Card className="relative group pb-0 overflow-hidden backdrop-blur-xl bg-card/50 border-border/50 rounded-3xl">
+              <Card className="relative group pb-0 overflow-hidden backdrop-blur-xl bg-card/50 border-border/50 rounded-renge-3">
                 <div className="aspect-square lg:aspect-auto lg:h-full bg-linear-to-br from-accent/20 to-primary/20 flex items-center justify-center">
-                  <div className="text-center space-y-4 md:pb-6 md:pt-8 md:px-4">
+                  <div className="text-center space-y-renge-3 md:pb-renge-3 md:pt-renge-4 md:px-renge-3">
                     <motion.div
-                      className="w-48 h-48 rounded-full bg-accent/30 mx-auto backdrop-blur-sm relative overflow-hidden"
+                      className="w-48 h-48 rounded-renge-full bg-accent/30 mx-auto backdrop-blur-sm relative overflow-hidden"
                       animate={
                         prefersReducedMotion
                           ? {}

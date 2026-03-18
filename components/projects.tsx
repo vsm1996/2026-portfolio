@@ -207,11 +207,11 @@ export function Projects() {
   }
 
   return (
-    <section id="projects" className="min-h-screen flex items-center justify-center px-6 py-32" ref={ref}>
+    <section id="projects" className="min-h-screen flex items-center justify-center px-renge-3 py-renge-7" ref={ref}>
       <div className="max-w-7xl w-full">
-        <div className="space-y-16">
+        <div className="space-y-renge-6">
           <motion.div
-            className="space-y-3"
+            className="space-y-renge-2"
             initial={{ opacity: 0, x: -50 }}
             animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
             transition={{ duration: FIBONACCI_MS.f5 / 1000, ease: cubicBezier(EASING.golden[0], EASING.golden[1], EASING.golden[2], EASING.golden[3]) }}
@@ -232,11 +232,11 @@ export function Projects() {
                 </motion.span>
               ))}
             </h2>
-            <div className="h-1 bg-linear-to-r from-accent to-transparent max-w-xs rounded-full" />
+            <div className="h-1 bg-linear-to-r from-accent to-transparent max-w-xs rounded-renge-full" />
           </motion.div>
 
           <motion.div
-            className="flex flex-wrap gap-3 justify-center"
+            className="flex flex-wrap gap-renge-2 justify-center"
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.5, delay: 0.2 }}
@@ -245,7 +245,7 @@ export function Projects() {
               <motion.button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
-                className={`px-6 py-2.5 rounded-full font-medium text-sm transition-all duration-300 ${selectedCategory === category
+                className={`px-renge-3 py-renge-2 rounded-renge-full font-medium text-renge-sm transition-all duration-renge-3 ${selectedCategory === category
                   ? "bg-accent text-accent-foreground shadow-lg shadow-accent/30"
                   : "bg-card/50 text-muted-foreground hover:bg-card hover:text-foreground border border-border/50"
                   }`}
@@ -263,7 +263,7 @@ export function Projects() {
           <AnimatePresence mode="wait">
             <motion.div
               key={selectedCategory}
-              className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr"
+              className="grid md:grid-cols-2 lg:grid-cols-3 gap-renge-3 auto-rows-fr"
               variants={containerVariants}
               initial="hidden"
               animate="visible"
@@ -282,7 +282,7 @@ export function Projects() {
                   transition: { duration: FIBONACCI_MS.f3 / 1000, ease: [0.34, 1.56, 0.64, 1] },
                 }}
               >
-                <Card className="h-full group pb-0 overflow-hidden backdrop-blur-xl bg-card/50 border-border/50 rounded-3xl hover:shadow-2xl hover:shadow-accent/10 transition-all duration-500">
+                <Card className="h-full group pb-0 overflow-hidden backdrop-blur-xl bg-card/50 border-border/50 rounded-renge-3 hover:shadow-2xl hover:shadow-accent/10 transition-all duration-renge-4">
                   <div className="h-full flex flex-col">
                     <div className="relative aspect-video lg:aspect-16/10 overflow-hidden">
                       <motion.img
@@ -302,7 +302,7 @@ export function Projects() {
                             exit={{ opacity: 0 }}
                             className="absolute inset-0 bg-card/95 backdrop-blur-sm flex items-center justify-center p-8"
                           >
-                            <div className="space-y-4 text-center">
+                            <div className="space-y-renge-3 text-center">
                               <motion.p
                                 initial={{ y: 20, opacity: 0 }}
                                 animate={{ y: 0, opacity: 1 }}
@@ -319,7 +319,7 @@ export function Projects() {
                               >
                                 Role: {filteredProjects[0]?.role}
                               </motion.p>
-                              <div className="flex gap-6 justify-center">
+                              <div className="flex gap-renge-3 justify-center">
                                 {filteredProjects[0]?.outcomes.map((outcome, i) => (
                                   <motion.div
                                     key={i}
@@ -328,8 +328,8 @@ export function Projects() {
                                     transition={{ delay: 0.2 + i * 0.1, type: "spring" }}
                                     className="text-center"
                                   >
-                                    <outcome.icon className="h-6 w-6 mx-auto mb-2 text-accent" />
-                                    <p className="text-2xl font-bold text-foreground">{outcome.value}</p>
+                                    <outcome.icon className="h-6 w-6 mx-auto mb-renge-1 text-accent" />
+                                    <p className="text-renge-2xl font-bold text-foreground">{outcome.value}</p>
                                     <p className="text-xs text-muted-foreground">{outcome.label}</p>
                                   </motion.div>
                                 ))}
@@ -340,21 +340,21 @@ export function Projects() {
                       </AnimatePresence>
                     </div>
 
-                    <div className="flex-1 p-8 space-y-4">
+                    <div className="flex-1 p-renge-4 space-y-renge-3">
                       <div>
-                        <p className="text-accent font-mono text-sm font-semibold mb-2">Featured Project</p>
-                        <h3 className="text-3xl font-bold text-foreground">{filteredProjects[0]?.title}</h3>
+                        <p className="text-accent font-mono text-renge-sm font-semibold mb-renge-1">Featured Project</p>
+                        <h3 className="text-renge-3xl font-bold text-foreground">{filteredProjects[0]?.title}</h3>
                       </div>
 
-                      <p className="text-muted-foreground leading-relaxed text-lg font-normal">
+                      <p className="text-muted-foreground leading-relaxed text-renge-lg font-normal">
                         {filteredProjects[0]?.description}
                       </p>
 
-                      <div className="flex flex-wrap gap-2">
+                      <div className="flex flex-wrap gap-renge-1">
                         {filteredProjects[0]?.technologies.map((tech, i) => (
                           <motion.span
                             key={tech}
-                            className="px-3 py-1 text-sm font-mono text-accent bg-accent/10 rounded-full"
+                            className="px-renge-2 py-renge-1 text-renge-sm font-mono text-accent bg-accent/10 rounded-renge-full"
                             initial={{ opacity: 0, scale: 0 }}
                             animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }}
                             transition={{
@@ -369,7 +369,7 @@ export function Projects() {
                         ))}
                       </div>
 
-                      <div className="flex items-center gap-4 pt-2">
+                      <div className="flex items-center gap-renge-3 pt-renge-1">
                         <motion.a
                           href={filteredProjects[0]?.github}
                           target="_blank"
@@ -412,7 +412,7 @@ export function Projects() {
                     transition: { duration: FIBONACCI_MS.f3 / 1000, ease: [0.68, -0.6, 0.32, 1.6] },
                   }}
                 >
-                  <Card className="h-full group pb-0 overflow-hidden backdrop-blur-xl bg-card/50 border-border/50 rounded-3xl hover:shadow-2xl hover:shadow-accent/10 transition-all duration-500">
+                  <Card className="h-full group pb-0 overflow-hidden backdrop-blur-xl bg-card/50 border-border/50 rounded-renge-3 hover:shadow-2xl hover:shadow-accent/10 transition-all duration-renge-4">
                     <div className="h-full flex flex-col">
                       <div className="relative aspect-video overflow-hidden">
                         <motion.img
@@ -432,7 +432,7 @@ export function Projects() {
                               exit={{ opacity: 0 }}
                               className="absolute inset-0 bg-card/95 backdrop-blur-sm flex items-center justify-center p-4"
                             >
-                              <div className="space-y-3 text-center">
+                              <div className="space-y-renge-2 text-center">
                                 <motion.p
                                   initial={{ y: 10, opacity: 0 }}
                                   animate={{ y: 0, opacity: 1 }}
@@ -440,7 +440,7 @@ export function Projects() {
                                 >
                                   {project.context}
                                 </motion.p>
-                                <div className="flex gap-4 justify-center">
+                                <div className="flex gap-renge-3 justify-center">
                                   {project.outcomes.map((outcome, i) => (
                                     <motion.div
                                       key={i}
@@ -461,17 +461,17 @@ export function Projects() {
                         </AnimatePresence>
                       </div>
 
-                      <div className="flex-1 p-6 space-y-3">
-                        <h3 className="text-xl font-bold text-foreground">{project.title}</h3>
-                        <p className="text-muted-foreground leading-relaxed text-sm font-normal line-clamp-3">
+                      <div className="flex-1 p-renge-3 space-y-renge-2">
+                        <h3 className="text-renge-xl font-bold text-foreground">{project.title}</h3>
+                        <p className="text-muted-foreground leading-relaxed text-renge-sm font-normal line-clamp-3">
                           {project.description}
                         </p>
 
-                        <div className="flex flex-wrap gap-2">
+                        <div className="flex flex-wrap gap-renge-1">
                           {project.technologies.slice(0, 4).map((tech) => (
                             <motion.span
                               key={tech}
-                              className="px-2 py-1 text-xs font-mono text-accent bg-accent/10 rounded-full"
+                              className="px-renge-1 py-renge-1 text-xs font-mono text-accent bg-accent/10 rounded-renge-full"
                               whileHover={{ scale: 1.1, rotate: 3 }}
                             >
                               {tech}
@@ -479,7 +479,7 @@ export function Projects() {
                           ))}
                         </div>
 
-                        <div className="flex items-center gap-3 pt-2">
+                        <div className="flex items-center gap-renge-2 pt-renge-1">
                           <motion.a
                             href={project.github}
                             target="_blank"
@@ -544,7 +544,7 @@ export function Projects() {
                         transition: { duration: FIBONACCI_MS.f3 / 1000, ease: [0.68, -0.6, 0.32, 1.6] },
                       }}
                     >
-                      <Card className="h-full group pb-0 overflow-hidden backdrop-blur-xl bg-card/50 border-border/50 rounded-3xl hover:shadow-2xl hover:shadow-accent/10 transition-all duration-500">
+                      <Card className="h-full group pb-0 overflow-hidden backdrop-blur-xl bg-card/50 border-border/50 rounded-renge-3 hover:shadow-2xl hover:shadow-accent/10 transition-all duration-renge-4">
                         <div className="h-full flex flex-col">
                           <div className="relative aspect-video overflow-hidden">
                             <motion.img
@@ -564,7 +564,7 @@ export function Projects() {
                                   exit={{ opacity: 0 }}
                                   className="absolute inset-0 bg-card/95 backdrop-blur-sm flex items-center justify-center p-4"
                                 >
-                                  <div className="space-y-3 text-center">
+                                  <div className="space-y-renge-2 text-center">
                                     <motion.p
                                       initial={{ y: 10, opacity: 0 }}
                                       animate={{ y: 0, opacity: 1 }}
@@ -572,7 +572,7 @@ export function Projects() {
                                     >
                                       {project.context}
                                     </motion.p>
-                                    <div className="flex gap-4 justify-center">
+                                    <div className="flex gap-renge-3 justify-center">
                                       {project.outcomes.map((outcome, i) => (
                                         <motion.div
                                           key={i}
@@ -593,17 +593,17 @@ export function Projects() {
                             </AnimatePresence>
                           </div>
 
-                          <div className="flex-1 p-6 space-y-3">
-                            <h3 className="text-xl font-bold text-foreground">{project.title}</h3>
-                            <p className="text-muted-foreground leading-relaxed text-sm font-normal line-clamp-3">
+                          <div className="flex-1 p-renge-3 space-y-renge-2">
+                            <h3 className="text-renge-xl font-bold text-foreground">{project.title}</h3>
+                            <p className="text-muted-foreground leading-relaxed text-renge-sm font-normal line-clamp-3">
                               {project.description}
                             </p>
 
-                            <div className="flex flex-wrap gap-2">
+                            <div className="flex flex-wrap gap-renge-1">
                               {project.technologies.slice(0, 4).map((tech) => (
                                 <motion.span
                                   key={tech}
-                                  className="px-2 py-1 text-xs font-mono text-accent bg-accent/10 rounded-full"
+                                  className="px-renge-1 py-renge-1 text-xs font-mono text-accent bg-accent/10 rounded-renge-full"
                                   whileHover={{ scale: 1.1, rotate: 3 }}
                                 >
                                   {tech}
@@ -611,7 +611,7 @@ export function Projects() {
                               ))}
                             </div>
 
-                            <div className="flex items-center gap-3 pt-2">
+                            <div className="flex items-center gap-renge-2 pt-renge-1">
                               <motion.a
                                 href={project.github}
                                 target="_blank"
@@ -645,7 +645,7 @@ export function Projects() {
           </AnimatePresence>
 
           <motion.div
-            className="text-center pt-8"
+            className="text-center pt-renge-4"
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
             transition={{
@@ -659,7 +659,7 @@ export function Projects() {
                 variant="outline"
                 size="lg"
                 onClick={handleToggleProjects}
-                className="rounded-full px-8 h-14 text-base backdrop-blur-xl bg-background/50 border-border/50 hover:bg-accent/10 hover:border-accent/50 transition-colors"
+                className="rounded-renge-full px-renge-4 h-14 text-base backdrop-blur-xl bg-background/50 border-border/50 hover:bg-accent/10 hover:border-accent/50 transition-colors"
               >
                 {showAllProjects ? "Show Less" : "View All Projects"}
               </Button>

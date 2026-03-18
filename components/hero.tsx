@@ -88,10 +88,10 @@ export function Hero() {
   return (
     <section
       id="home"
-      className="min-h-screen flex items-center justify-center px-6 pt-32 pb-20 relative overflow-hidden"
+      className="min-h-screen flex items-center justify-center px-renge-3 pt-renge-7 pb-renge-6 relative overflow-hidden"
     >
       <motion.div
-        className="absolute top-1/2 left-1/2 w-[800px] h-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-15"
+        className="absolute top-1/2 left-1/2 w-[800px] h-[800px] -translate-x-1/2 -translate-y-1/2 rounded-renge-full opacity-15"
         style={{
           background: "radial-gradient(circle, oklch(0.68 0.18 280 / 0.2) 0%, transparent 70%)",
           filter: "blur(80px)",
@@ -111,7 +111,7 @@ export function Hero() {
       />
 
       <motion.div
-        className="absolute top-40 right-20 w-24 h-24 border rounded-3xl opacity-20"
+        className="absolute top-40 right-20 w-24 h-24 border rounded-renge-3 opacity-20"
         style={{
           borderColor: "oklch(0.68 0.18 280 / 0.3)",
           boxShadow: "0 0 30px oklch(0.68 0.18 280 / 0.1)",
@@ -145,7 +145,7 @@ export function Hero() {
       />
 
       <motion.div
-        className="absolute bottom-40 left-20 w-20 h-20 border rounded-full opacity-25"
+        className="absolute bottom-40 left-20 w-20 h-20 border rounded-renge-full opacity-25"
         style={{
           borderColor: "oklch(0.75 0.16 170 / 0.35)",
           boxShadow: "0 0 25px oklch(0.75 0.16 170 / 0.12)",
@@ -164,7 +164,7 @@ export function Hero() {
       />
 
       <motion.div
-        className="absolute top-1/3 left-1/4 w-16 h-16 border-2 rounded-2xl opacity-18"
+        className="absolute top-1/3 left-1/4 w-16 h-16 border-2 rounded-renge-2 opacity-18"
         style={{
           borderColor: "oklch(0.72 0.18 60 / 0.3)",
           boxShadow: "0 0 20px oklch(0.72 0.18 60 / 0.1)",
@@ -183,9 +183,9 @@ export function Hero() {
       />
 
       <div className="max-w-6xl w-full relative z-10">
-        <motion.div className="space-y-8" variants={containerVariants} initial="hidden" animate="visible">
-          <div className="space-y-4">
-            <motion.p variants={itemVariants} className="text-accent text-base font-mono font-medium tracking-wide">
+        <motion.div className="space-y-renge-4" variants={containerVariants} initial="hidden" animate="visible">
+          <div className="space-y-renge-3">
+            <motion.p variants={itemVariants} className="text-accent text-renge-base font-mono font-medium tracking-wide">
               Hi, my name is
             </motion.p>
             <motion.h1
@@ -250,7 +250,7 @@ export function Hero() {
             className="text-xl md:text-2xl text-muted-foreground max-w-3xl leading-relaxed font-normal group cursor-default"
           >
             <motion.span
-              className="text-balance inline-block transition-all duration-500 bg-linear-to-r from-muted-foreground to-muted-foreground bg-clip-text group-hover:from-primary group-hover:via-accent group-hover:to-secondary group-hover:text-transparent"
+              className="text-balance inline-block transition-all duration-renge-4 bg-linear-to-r from-muted-foreground to-muted-foreground bg-clip-text group-hover:from-primary group-hover:via-accent group-hover:to-secondary group-hover:text-transparent"
               style={{ backgroundSize: "200% 200%", backgroundPosition: "0% 50%" }}
               whileHover={{
                 backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
@@ -264,7 +264,7 @@ export function Hero() {
 
           <motion.div
             variants={itemVariants}
-            className="flex flex-col sm:flex-row items-start sm:items-center gap-6 pt-6"
+            className="flex flex-col sm:flex-row items-start sm:items-center gap-renge-3 pt-renge-3"
           >
             <motion.div
               whileHover={{ scale: 1.05, rotate: 2 }}
@@ -273,7 +273,7 @@ export function Hero() {
             >
               <Button
                 size="lg"
-                className="group rounded-full px-8 h-14 text-base relative overflow-hidden shadow-lg shadow-primary/20"
+                className="group rounded-renge-full px-renge-4 h-14 text-renge-base relative overflow-hidden shadow-lg shadow-primary/20"
               >
                 <motion.span
                   className="absolute inset-0 bg-linear-to-r from-primary/0 via-accent/30 to-primary/0"
@@ -282,11 +282,11 @@ export function Hero() {
                 />
                 <span className="relative z-10 flex items-center">
                   View My Work
-                  <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+                  <ArrowRight className="ml-renge-1 h-5 w-5 transition-transform group-hover:translate-x-1" />
                 </span>
               </Button>
             </motion.div>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-renge-3">
               {[
                 { icon: Github, href: "https://github.com/vsm1996", label: "GitHub" },
                 { icon: Linkedin, href: "https://linkedin.com/in/vsm1996", label: "LinkedIn" },
@@ -309,7 +309,7 @@ export function Hero() {
                   transition={{ stiffness: 400 }}
                 >
                   <motion.div
-                    className="absolute inset-0 rounded-full bg-accent/20 blur-xl"
+                    className="absolute inset-0 rounded-renge-full bg-accent/20 blur-xl"
                     initial={{ opacity: 0 }}
                     whileHover={{ opacity: 1 }}
                   />

@@ -113,9 +113,9 @@ export function Experience() {
   }
 
   return (
-    <section id="experience" className="min-h-screen flex items-center justify-center px-6 py-20 relative" ref={ref}>
+    <section id="experience" className="min-h-screen flex items-center justify-center px-renge-3 py-renge-6 relative" ref={ref}>
       <motion.div
-        className="absolute top-10 right-20 w-16 h-16 border-2 border-accent/20 rounded-full"
+        className="absolute top-10 right-20 w-16 h-16 border-2 border-accent/20 rounded-renge-full"
         animate={{
           scale: [1, 1.4, 1],
           rotate: [0, 180, 360],
@@ -130,7 +130,7 @@ export function Experience() {
       />
 
       <motion.div
-        className="absolute bottom-20 left-20 w-20 h-20 bg-primary/5 rounded-2xl"
+        className="absolute bottom-20 left-20 w-20 h-20 bg-primary/5 rounded-renge-2"
         animate={{
           rotate: [0, GOLDEN_ANGLE, GOLDEN_ANGLE * 2, 360],
           scale: [1, PHI, 1],
@@ -159,15 +159,15 @@ export function Experience() {
       />
 
       <div className="max-w-4xl w-full">
-        <div className="space-y-8">
+        <div className="space-y-renge-4">
           <motion.div
-            className="space-y-2"
+            className="space-y-renge-1"
             initial={{ opacity: 0, x: -50 }}
             animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
             transition={{ duration: FIBONACCI_MS.f5 / 1000, ease: cubicBezier(EASING.golden[0], EASING.golden[1], EASING.golden[2], EASING.golden[3]), delay: FIBONACCI_MS.f3 / 1000 }}
           >
             <h2 className="text-3xl md:text-4xl font-bold text-foreground">
-              <span className="text-accent font-mono text-xl mr-2">02.</span>
+              <span className="text-accent font-mono text-renge-xl mr-renge-1">02.</span>
               Where I've Worked
             </h2>
             <motion.div
@@ -179,19 +179,19 @@ export function Experience() {
           </motion.div>
 
           <motion.div
-            className="flex flex-col md:flex-row gap-8"
+            className="flex flex-col md:flex-row gap-renge-4"
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
             transition={{ duration: FIBONACCI_MS.f5 / 1000, ease: cubicBezier(EASING.golden[0], EASING.golden[1], EASING.golden[2], EASING.golden[3]), delay: FIBONACCI_MS.f4 / 1000 }}
           >
-            <div className="flex md:flex-col gap-3 overflow-x-auto md:overflow-x-visible pb-2 md:pb-0">
+            <div className="flex md:flex-col gap-renge-2 overflow-x-auto md:overflow-x-visible pb-renge-1 md:pb-0">
               {experiences.map((exp, index) => (
                 <motion.button
                   key={index}
                   onClick={() => setActiveIndex(index)}
                   className={`
-                    relative px-6 py-3 rounded-3xl text-left whitespace-nowrap md:whitespace-normal
-                    transition-all duration-300 font-medium
+                    relative px-renge-3 py-renge-2 rounded-renge-3 text-left whitespace-nowrap md:whitespace-normal
+                    transition-all duration-renge-3 font-medium
                     ${activeIndex === index
                       ? "text-foreground font-semibold shadow-lg"
                       : "text-muted-foreground hover:text-foreground"
@@ -202,7 +202,7 @@ export function Experience() {
                 >
                   <motion.div
                     className={`
-                      absolute inset-0 rounded-3xl backdrop-blur-sm
+                      absolute inset-0 rounded-renge-3 backdrop-blur-sm
                       ${activeIndex === index
                         ? "bg-linear-to-r from-primary/20 via-accent/20 to-secondary/20"
                         : "bg-muted/30 hover:bg-muted/50"
@@ -227,7 +227,7 @@ export function Experience() {
 
                   {activeIndex === index && (
                     <motion.div
-                      className="absolute inset-0 rounded-3xl"
+                      className="absolute inset-0 rounded-renge-3"
                       style={{
                         background:
                           "linear-gradient(135deg, oklch(0.68 0.32 290), oklch(0.75 0.25 45), oklch(0.68 0.32 290))",
@@ -250,7 +250,7 @@ export function Experience() {
 
                   {activeIndex === index && (
                     <motion.div
-                      className="absolute inset-0 rounded-xl blur-xl opacity-30"
+                      className="absolute inset-0 rounded-renge-2 blur-xl opacity-30"
                       style={{
                         background: "linear-gradient(135deg, oklch(0.68 0.32 290), oklch(0.75 0.25 45))",
                       }}
@@ -279,7 +279,7 @@ export function Experience() {
                 exit="exit"
                 className="flex-1"
               >
-                <Card className="rounded-3xl p-6 relative overflow-hidden">
+                <Card className="rounded-renge-3 p-renge-3 relative overflow-hidden">
                   <motion.div
                     className="absolute inset-0 opacity-30"
                     style={{
@@ -295,18 +295,18 @@ export function Experience() {
                       ease: "easeInOut",
                     }}
                   />
-                  <div className="space-y-4 relative z-10">
+                  <div className="space-y-renge-3 relative z-10">
                     <div>
-                      <h3 className="text-xl font-semibold text-foreground">{experiences[activeIndex].position}</h3>
-                      <p className="text-accent font-mono text-sm">@ {experiences[activeIndex].company}</p>
-                      <p className="text-sm text-muted-foreground mt-1">{experiences[activeIndex].period}</p>
+                      <h3 className="text-renge-xl font-semibold text-foreground">{experiences[activeIndex].position}</h3>
+                      <p className="text-accent font-mono text-renge-sm">@ {experiences[activeIndex].company}</p>
+                      <p className="text-sm text-muted-foreground mt-renge-1">{experiences[activeIndex].period}</p>
                     </div>
 
-                    <ul className="space-y-3">
+                    <ul className="space-y-renge-2">
                       {experiences[activeIndex].description.map((item, i) => (
                         <motion.li
                           key={i}
-                          className="flex gap-3"
+                          className="flex gap-renge-2"
                           custom={i}
                           variants={listItemVariants}
                           initial="hidden"
@@ -330,11 +330,11 @@ export function Experience() {
                       ))}
                     </ul>
 
-                    <div className="flex flex-wrap gap-2 pt-2">
+                    <div className="flex flex-wrap gap-renge-1 pt-renge-1">
                       {experiences[activeIndex].technologies.map((tech, i) => (
                         <motion.span
                           key={tech}
-                          className="px-3 py-1 text-xs font-mono bg-accent/10 text-accent rounded-full"
+                          className="px-renge-2 py-renge-1 text-xs font-mono bg-accent/10 text-accent rounded-renge-full"
                           initial={{ opacity: 0, scale: 0 }}
                           animate={{ opacity: 1, scale: 1 }}
                           transition={{

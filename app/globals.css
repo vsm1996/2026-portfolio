@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@config "../tailwind.config.ts";
 
 :root {
   /* Dark mode now emphasizes purple shades with gold accent instead of green */
@@ -35,6 +36,178 @@
   --sidebar-accent-foreground: oklch(0.92 0.05 285);
   --sidebar-border: oklch(0.35 0.14 280);
   --sidebar-ring: oklch(0.75 0.22 285);
+}
+
+/* ============================================================
+   Renge Design System Tokens (twilight/dark profile)
+   Generated from @renge-ui/tokens — do not edit manually.
+   Re-generate: node -e "const{createRengeTheme}=require('@renge-ui/tokens');console.log(createRengeTheme({profile:'twilight',mode:'dark'}).css)" > /tmp/renge.css
+   ============================================================ */
+:root {
+  /* Spacing */
+  --renge-space-0: 0px;
+  --renge-space-1: 6px;
+  --renge-space-2: 12px;
+  --renge-space-3: 18px;
+  --renge-space-4: 30px;
+  --renge-space-5: 48px;
+  --renge-space-6: 78px;
+  --renge-space-7: 126px;
+  --renge-space-8: 204px;
+  --renge-space-9: 330px;
+  --renge-space-10: 534px;
+
+  /* Typography - Font Size */
+  --renge-font-size-xs: 6.11px;
+  --renge-font-size-sm: 9.89px;
+  --renge-font-size-base: 16px;
+  --renge-font-size-lg: 25.89px;
+  --renge-font-size-xl: 41.89px;
+  --renge-font-size-2xl: 67.78px;
+  --renge-font-size-3xl: 109.67px;
+  --renge-font-size-4xl: 177.44px;
+
+  /* Typography - Line Height */
+  --renge-line-height-xs: 1.618;
+  --renge-line-height-sm: 1.618;
+  --renge-line-height-base: 1.618;
+  --renge-line-height-lg: 1.618;
+  --renge-line-height-xl: 1.382;
+  --renge-line-height-2xl: 1.382;
+  --renge-line-height-3xl: 1.236;
+  --renge-line-height-4xl: 1.236;
+
+  /* Motion - Duration */
+  --renge-duration-0: 0ms;
+  --renge-duration-1: 100ms;
+  --renge-duration-2: 200ms;
+  --renge-duration-3: 300ms;
+  --renge-duration-4: 500ms;
+  --renge-duration-5: 800ms;
+  --renge-duration-6: 1300ms;
+  --renge-duration-7: 2100ms;
+  --renge-duration-8: 3400ms;
+  --renge-duration-9: 5500ms;
+  --renge-duration-10: 8900ms;
+
+  /* Motion - Easing */
+  --renge-easing-linear: linear;
+  --renge-easing-ease-out: cubic-bezier(0.382, 1, 0.618, 1);
+  --renge-easing-ease-in: cubic-bezier(0.382, 0, 1, 0.618);
+  --renge-easing-ease-in-out: cubic-bezier(0.382, 0, 0.618, 1);
+  --renge-easing-spring: cubic-bezier(0.382, 0.618, 0.618, 1.382);
+
+  /* Border Radius */
+  --renge-radius-none: 0px;
+  --renge-radius-1: 6px;
+  --renge-radius-2: 12px;
+  --renge-radius-3: 18px;
+  --renge-radius-4: 30px;
+  --renge-radius-5: 48px;
+  --renge-radius-full: 9999px;
+
+  /* Fractal Size Scale */
+  --renge-size-1: 6px;
+  --renge-size-2: 9.71px;
+  --renge-size-3: 15.71px;
+  --renge-size-4: 25.42px;
+  --renge-size-5: 41.12px;
+  --renge-size-6: 66.54px;
+  --renge-size-7: 107.67px;
+
+  /* Semantic Colors — twilight/dark */
+  --renge-color-bg: oklch(14% 0.10 269);
+  --renge-color-bg-subtle: oklch(20% 0.12 272);
+  --renge-color-bg-muted: oklch(28% 0.10 269);
+  --renge-color-bg-inverse: oklch(94% 0.02 45);
+  --renge-color-fg: oklch(92% 0.04 258);
+  --renge-color-fg-subtle: oklch(76% 0.06 258);
+  --renge-color-fg-muted: oklch(52% 0.08 263);
+  --renge-color-fg-inverse: oklch(14% 0.10 269);
+  --renge-color-border: oklch(34% 0.10 272);
+  --renge-color-border-subtle: oklch(24% 0.08 272);
+  --renge-color-border-focus: oklch(62% 0.2 40);
+  --renge-color-accent: oklch(62% 0.2 40);
+  --renge-color-accent-hover: oklch(68% 0.22 36);
+  --renge-color-accent-subtle: oklch(22% 0.10 40);
+  --renge-color-success: oklch(80% 0.1 170);
+  --renge-color-success-subtle: oklch(22% 0.10 170);
+  --renge-color-warning: oklch(78% 0.14 52);
+  --renge-color-warning-subtle: oklch(22% 0.08 52);
+  --renge-color-danger: oklch(76% 0.12 22);
+  --renge-color-danger-subtle: oklch(22% 0.10 22);
+  --renge-color-info: oklch(75% 0.12 210);
+  --renge-color-info-subtle: oklch(22% 0.08 210);
+}
+
+/* Renge Animation Keyframes */
+@keyframes rengeVortexReveal {
+  0%   { transform: scale(0.8) rotate(20deg); opacity: 0; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+@keyframes rengeHelixRise {
+  0%   { transform: translateY(50px) rotate(10deg); opacity: 0; }
+  100% { transform: translateY(0) rotate(0deg); opacity: 1; }
+}
+@keyframes rengeSacredFade {
+  0%   { transform: scale(0.95); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes rengeSpiralIn {
+  0%   { transform: translate(-30px, 30px) rotate(-12deg); opacity: 0; }
+  100% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+}
+@keyframes rengeMorphFadeIn {
+  0%   { opacity: 0; border-radius: 50% 30% 70% 50% / 50% 70% 30% 50%; transform: scale(0.8); }
+  50%  { border-radius: 30% 50% 50% 70% / 70% 50% 50% 30%; }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes rengeBloom {
+  0%   { transform: scale(0.9); opacity: 0.8; }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes rengePulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50%       { transform: scale(1.05); opacity: 0.8; }
+}
+@keyframes rengeVibrate {
+  0%   { transform: translate(0); }
+  25%  { transform: translate(-1px, 1px); }
+  50%  { transform: translate(1px, -1px); }
+  75%  { transform: translate(-1px, 1px); }
+  100% { transform: translate(0); }
+}
+@keyframes rengeWave {
+  0%   { transform: rotate(0deg); }
+  50%  { transform: rotate(5deg); }
+  100% { transform: rotate(0deg); }
+}
+@keyframes rengeBreathe {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.08); }
+}
+@keyframes rengeFall {
+  0%   { transform: translateY(0); }
+  50%  { transform: translateY(10px); }
+  100% { transform: translateY(0); }
+}
+@keyframes rengeFloat {
+  0%   { transform: translateY(0); }
+  50%  { transform: translateY(-10px); }
+  100% { transform: translateY(0); }
+}
+@keyframes rengeFloatWave {
+  0%   { transform: translateY(0); }
+  50%  { transform: translateY(-22px); }
+  100% { transform: translateY(0); }
+}
+@keyframes rengePulseColorShift {
+  0%, 100% { background: var(--renge-color-success); }
+  50%       { background: var(--renge-color-danger); }
+}
+@keyframes rengeSwelling {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50%       { transform: scale(1.1); opacity: 0.8; }
 }
 
 @theme inline {

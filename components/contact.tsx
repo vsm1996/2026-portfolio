@@ -40,9 +40,9 @@ export function Contact() {
   }
 
   return (
-    <section id="contact" className="min-h-screen flex items-center justify-center px-6 py-20 relative" ref={ref}>
+    <section id="contact" className="min-h-screen flex items-center justify-center px-renge-3 py-renge-6 relative" ref={ref}>
       <motion.div
-        className="absolute top-20 left-1/4 w-24 h-24 border-2 border-accent/20 rounded-full"
+        className="absolute top-20 left-1/4 w-24 h-24 border-2 border-accent/20 rounded-renge-full"
         animate={{
           scale: [1, 1.5, 1],
           rotate: [0, 360],
@@ -57,7 +57,7 @@ export function Contact() {
       />
 
       <motion.div
-        className="absolute bottom-1/4 right-1/4 w-16 h-16 bg-primary/10 rounded-2xl"
+        className="absolute bottom-1/4 right-1/4 w-16 h-16 bg-primary/10 rounded-renge-2"
         animate={{
           rotate: [0, GOLDEN_ANGLE, GOLDEN_ANGLE * 2, 360],
           scale: [1, PHI, 0.8, 1],
@@ -89,18 +89,18 @@ export function Contact() {
 
       <div className="max-w-2xl w-full">
         <motion.div
-          className="space-y-8 text-center"
+          className="space-y-renge-4 text-center"
           variants={containerVariants}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
         >
-          <motion.div className="space-y-4" variants={itemVariants}>
-            <p className="text-accent font-mono text-sm font-semibold">04. What's Next?</p>
+          <motion.div className="space-y-renge-3" variants={itemVariants}>
+            <p className="text-accent font-mono text-renge-sm font-semibold">04. What's Next?</p>
             <h2 className="text-4xl md:text-5xl font-extrabold text-foreground text-balance">Get In Touch</h2>
           </motion.div>
 
           <motion.div variants={itemVariants}>
-            <Card className="p-8 backdrop-blur-xl bg-card/50 border-border/50 rounded-3xl relative overflow-hidden">
+            <Card className="p-renge-4 backdrop-blur-xl bg-card/50 border-border/50 rounded-renge-3 relative overflow-hidden">
               <motion.div
                 className="absolute inset-0"
                 style={{
@@ -116,8 +116,8 @@ export function Contact() {
                 }}
               />
               {/* End of added animated shimmer effect */}
-              <div className="space-y-6 relative z-10">
-                <p className="text-lg text-muted-foreground font-normal leading-relaxed">
+              <div className="space-y-renge-3 relative z-10">
+                <p className="text-renge-lg text-muted-foreground font-normal leading-relaxed">
                   I'm available for frontend architecture consulting, design system engagements, and fractional architect retainers.<br/><br/>If your frontend is load-bearing and you need someone who can see the whole system, not just the symptoms, let's talk.
                 </p>
 
@@ -144,7 +144,7 @@ export function Contact() {
                     whileTap={{ scale: 0.9 }}
                     transition={{ stiffness: 400 }}
                   >
-                    <Button size="lg" className="group rounded-full relative overflow-hidden">
+                    <Button size="lg" className="group rounded-renge-full relative overflow-hidden">
                       <motion.div
                         className="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent"
                         animate={{
@@ -156,7 +156,7 @@ export function Contact() {
                           ease: "linear",
                         }}
                       />
-                      <Mail className="mr-2 h-4 w-4 relative z-10" />
+                      <Mail className="mr-renge-1 h-4 w-4 relative z-10" />
                       <span className="relative z-10">Say Hello</span>
                     </Button>
                   </motion.a>
@@ -165,9 +165,9 @@ export function Contact() {
             </Card>
           </motion.div>
 
-          <motion.footer className="pt-12 space-y-4" variants={itemVariants}>
+          <motion.footer className="pt-renge-5 space-y-renge-3" variants={itemVariants}>
             <motion.p
-              className="text-sm text-muted-foreground"
+              className="text-renge-sm text-muted-foreground"
               animate={{
                 opacity: [0.5, 1, 0.5],
               }}
