@@ -264,7 +264,7 @@ export function About() {
                         transition: { duration: 2, ease: "easeInOut", repeat: Number.POSITIVE_INFINITY },
                       }}
                     >
-                      I'm the creator of Harmonia UI, a capacity-adaptive interface framework, and Renge, a design system built on natural mathematics. Both are part of the Soka Labs ecosystem, an Human-Computer Interaction research and developer training institution I'm building to change how the industry produces architects.<br /><br />I've diagnosed codebases others couldn't fix, shipped core products under hostile conditions, and built systems that outlasted the companies that commissioned them.
+                      I'm the creator of Harmonia UI, a capacity-adaptive interface framework, and Renge, a design system built on natural mathematics. Both are part of the Soka Labs ecosystem, a Human-Computer Interaction research and developer training institution I'm building to change how the industry produces architects.<br /><br />I've diagnosed codebases others couldn't fix, shipped core products under hostile conditions, and built systems that outlasted the companies that commissioned them.
                     </motion.span>
                   </p>
                 </Card>
