@@ -258,7 +258,7 @@ export function Hero() {
               }}
             >
               Capacity-adaptive interfaces, proportional design systems, and the infrastructure that makes both
-              possible. Based in the Bay Area.
+              possible. Based in Oakland.
             </motion.span>
           </motion.p>
 
