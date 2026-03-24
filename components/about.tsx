@@ -1,16 +1,49 @@
 "use client"
 
-import { Card } from "@/components/ui/card"
-import { cubicBezier, motion } from "framer-motion"
-import { useInView } from "framer-motion"
+import { motion, useInView } from "framer-motion"
 import { useRef, useState, useEffect } from "react"
-import { PHI_INVERSE, FIBONACCI_MS, EASING, STAGGER, PHI, GOLDEN_ANGLE } from "@/lib/animation-constants"
-import { Code2, FileType, Component, Layers, Server, Palette, Database, GitBranch, Box } from "lucide-react"
+
+// Tsukuyomi — deep saturated crimson, not orange.
+// Reference: dense geometric towers, lavender-mauve against a blood-red sky.
+// A reddish moon, barely desaturated against the overwhelming red.
+
+// Deep crimson sky — hue 5–12°, heavily saturated. Not orange.
+const CRIMSON_GRADIENT =
+  "radial-gradient(ellipse at 50% 35%, oklch(0.40 0.22 10) 0%, oklch(0.25 0.20 7) 45%, oklch(0.12 0.12 5) 100%)"
+
+// Text: near-white with the faintest cool undertone — reads as pale in red light
+const TEXT_COLOR = "oklch(0.95 0.02 350)"
+const TEXT_SHADOW = "0 0 14px oklch(0.14 0.18 10)"
+
+// 7 lines. No two share an angle. Some fade before the edge.
+// strokeWidth in viewBox units (viewBox 0 0 100 100).
+// ~0.12 ≈ 1px on a 1200px section. Dark crimson — reads as a wound in the sky.
+const SCORED_LINES = [
+  // angle ~50° — long, fades at end
+  { x1: 0,   y1: 25,  x2: 75,  y2: 100, width: 0.14, fade: "end"   },
+  // angle ~68° — steep, solid
+  { x1: 28,  y1: 0,   x2: 88,  y2: 92,  width: 0.10, fade: null    },
+  // angle ~128° counter — long, fades at start
+  { x1: 100, y1: 30,  x2: 14,  y2: 90,  width: 0.16, fade: "start" },
+  // angle ~83° — near-vertical, slight tilt, full
+  { x1: 55,  y1: 0,   x2: 59,  y2: 100, width: 0.11, fade: null    },
+  // angle ~22° — very shallow, short fragment, fades
+  { x1: 0,   y1: 72,  x2: 48,  y2: 100, width: 0.18, fade: "end"   },
+  // angle ~108° — goes partway, fades
+  { x1: 88,  y1: 0,   x2: 52,  y2: 58,  width: 0.12, fade: "end"   },
+  // angle ~158° — short counter, bottom right
+  { x1: 100, y1: 78,  x2: 68,  y2: 100, width: 0.17, fade: null    },
+]
+
+function lineGradientId(i: number, dir: string) {
+  return `tsuk-line-${i}-${dir}`
+}
 
 export function About() {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: "-100px" })
+  const ref = useRef<HTMLElement>(null)
+  const isInView = useInView(ref, { once: false, amount: 0.3 })
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
+  const [flashActive, setFlashActive] = useState(false)
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
@@ -20,374 +53,241 @@ export function About() {
     return () => mediaQuery.removeEventListener("change", handleChange)
   }, [])
 
-  const skills = [
-    { name: "Next.js", icon: Layers },
-    { name: "React", icon: Component },
-    { name: "TypeScript", icon: FileType },
-    { name: "Tailwind CSS", icon: Palette },
-    { name: "Supabase", icon: Database },
-    { name: "Zustand", icon: Box },
-    { name: "JavaScript (ES6+)", icon: Code2 },
-    { name: "Node.js", icon: Server },
-    { name: "Prisma ORM", icon: Database },
-    { name: "Git", icon: GitBranch },
-  ]
+  // Single flash on entry — WCAG 2.3.1 safe (one occurrence, <3/sec).
+  useEffect(() => {
+    if (isInView && !prefersReducedMotion) {
+      setFlashActive(true)
+      const off = setTimeout(() => setFlashActive(false), 260)
+      return () => clearTimeout(off)
+    }
+  }, [isInView, prefersReducedMotion])
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: STAGGER.items,
-      },
-    },
-  }
+  const snapTransition = prefersReducedMotion
+    ? { duration: 0 }
+    : { duration: 0.25, ease: [0.9, 0, 1, 0.1] as [number, number, number, number] }
 
-  const cardVariants = {
-    hidden: {
-      opacity: 0,
-      y: 50,
-      scale: PHI_INVERSE,
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: {
-        duration: FIBONACCI_MS.f6 / 1000,
-        ease: cubicBezier(EASING.golden[0], EASING.golden[1], EASING.golden[2], EASING.golden[3]),
-      },
-    },
-  }
+  const contentTransition = prefersReducedMotion
+    ? { duration: 0 }
+    : {
+        delay: 0.2,
+        duration: 0.4,
+        ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number],
+      }
 
-  const skillVariants = {
-    hidden: { opacity: 0, x: -20 },
-    visible: (i: number) => ({
-      opacity: 1,
-      x: 0,
-      transition: {
-        delay: i * (FIBONACCI_MS.f1 / 1000),
-        duration: FIBONACCI_MS.f3 / 1000,
-        ease: cubicBezier(EASING.gentle[0], EASING.gentle[1], EASING.gentle[2], EASING.gentle[3]),
-      },
-    }),
-  }
+  // Staggered so each paragraph breathes on its own clock
+  const breatheDelays = ["0s", "2.1s", "4.4s", "6.7s"]
 
   return (
-    <section id="about" className="min-h-screen flex items-center justify-center px-6 py-32 relative" ref={ref}>
-      <motion.div
-        className="absolute top-20 right-10 w-24 h-24 border-2 border-primary/20 rounded-3xl"
-        animate={
-          prefersReducedMotion
-            ? {}
-            : {
-              rotate: [0, 360],
-              scale: [1, PHI, 1],
-              x: [0, 20, 0],
-              y: [0, -15, 0],
-            }
-        }
-        transition={{
-          rotate: { duration: 21, repeat: Number.POSITIVE_INFINITY, ease: "linear" },
-          scale: { duration: 8, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" },
-          x: { duration: 5, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" },
-          y: { duration: 7, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" },
-        }}
-        style={{ willChange: prefersReducedMotion ? "auto" : "transform" }}
-      />
-
-      <motion.div
-        className="absolute bottom-20 left-10 w-16 h-16 border-2 border-accent/30"
-        style={{ borderRadius: "30% 70% 70% 30% / 30% 30% 70% 70%" }}
-        animate={
-          prefersReducedMotion
-            ? {}
-            : {
-              rotate: [360, 0],
-              scale: [1, 1.3, 1],
-              y: [0, -30, 0],
-              x: [0, 15, 0],
-            }
-        }
-        transition={{
-          rotate: { duration: 13, repeat: Number.POSITIVE_INFINITY, ease: "linear" },
-          scale: { duration: 5, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" },
-          y: { duration: 8, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" },
-          x: { duration: 6, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" },
+    <section
+      id="about"
+      ref={ref}
+      className="min-h-screen flex items-center justify-center px-8 py-48 relative overflow-hidden"
+      style={{ background: CRIMSON_GRADIENT }}
+    >
+      {/* ── Layer 1: Vignette — aggressive edge darkness ── */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          inset: 0,
+          background:
+            "radial-gradient(ellipse at 50% 35%, transparent 0%, oklch(0.10 0.10 8 / 0.60) 50%, oklch(0.05 0.07 5 / 0.94) 100%)",
+          pointerEvents: "none",
+          zIndex: 1,
         }}
       />
 
-      <motion.div
-        className="absolute top-1/3 left-1/4 w-20 h-20 border border-accent/20 rounded-full"
-        animate={
-          prefersReducedMotion
-            ? {}
-            : {
-              scale: [1, 1.5, 1],
-              rotate: [0, GOLDEN_ANGLE, GOLDEN_ANGLE * 2, 360],
-              opacity: [0.2, 0.4, 0.2],
+      {/* ── Layer 2: Scored lines — felt, not seen ── */}
+      {/* Rumble applied here only — environment shifts, text stays still */}
+      <svg
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          inset: 0,
+          width: "100%",
+          height: "100%",
+          pointerEvents: "none",
+          zIndex: 2,
+          // Opacity: 15% — visible against the blood-orange center,
+          // naturally hidden by the vignette at dark edges.
+          opacity: 0.15,
+          animation: prefersReducedMotion
+            ? "none"
+            : "tsukuyomi-rumble 18s ease-in-out infinite",
+        }}
+        viewBox="0 0 100 100"
+        preserveAspectRatio="none"
+      >
+        <defs>
+          {SCORED_LINES.map((line, i) => {
+            if (!line.fade) return null
+            const isEnd = line.fade === "end"
+            return (
+              <linearGradient
+                key={i}
+                id={lineGradientId(i, line.fade)}
+                gradientUnits="userSpaceOnUse"
+                x1={line.x1}
+                y1={line.y1}
+                x2={line.x2}
+                y2={line.y2}
+              >
+                <stop offset="0%"   stopColor="#180203" stopOpacity={isEnd ? 1 : 0} />
+                <stop offset="60%"  stopColor="#180203" stopOpacity={isEnd ? 1 : 1} />
+                <stop offset="100%" stopColor="#180203" stopOpacity={isEnd ? 0 : 1} />
+              </linearGradient>
+            )
+          })}
+        </defs>
+
+        {SCORED_LINES.map((line, i) => (
+          <line
+            key={i}
+            x1={line.x1}
+            y1={line.y1}
+            x2={line.x2}
+            y2={line.y2}
+            stroke={
+              line.fade
+                ? `url(#${lineGradientId(i, line.fade)})`
+                : "#180203"
             }
-        }
-        transition={{
-          duration: 10,
-          repeat: Number.POSITIVE_INFINITY,
-          ease: "easeInOut",
+            strokeWidth={line.width}
+            strokeLinecap="round"
+          />
+        ))}
+      </svg>
+
+      {/* ── Layer 3: Architecture silhouettes — geometric towers, cool lavender-mauve ── */}
+      {/* Echoes the dense urban structures in the reference image.                    */}
+      {/* Still. They do not rumble — the world holds them fixed.                      */}
+      <svg
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          width: "100%",
+          height: "55%",
+          pointerEvents: "none",
+          zIndex: 2,
+          opacity: 0.28,
+        }}
+        viewBox="0 0 100 55"
+        preserveAspectRatio="none"
+      >
+        {/* Dense cityscape silhouette — angular towers, lavender-mauve fill, no outlines */}
+        <path
+          d="M0 55 L0 32 L4 32 L4 26 L7 26 L7 30 L11 30 L11 20 L14 20 L14 25 L17 25 L17 16 L20 16 L20 22 L24 22 L24 12 L27 12 L27 18 L30 18 L30 10 L33 10 L33 15 L36 15 L36 8 L39 8 L39 14 L43 14 L43 6 L46 6 L46 11 L49 11 L49 4 L52 4 L52 9 L55 9 L55 13 L58 13 L58 7 L61 7 L61 12 L64 12 L64 5 L67 5 L67 10 L70 10 L70 16 L73 16 L73 9 L76 9 L76 14 L79 14 L79 20 L82 20 L82 13 L85 13 L85 18 L88 18 L88 24 L91 24 L91 17 L94 17 L94 22 L97 22 L97 28 L100 28 L100 55 Z"
+          fill="oklch(0.22 0.06 280)"
+        />
+        {/* Second layer — slightly lighter, overlapping towers for depth */}
+        <path
+          d="M0 55 L0 40 L5 40 L5 34 L9 34 L9 38 L13 38 L13 28 L16 28 L16 32 L20 32 L20 26 L23 26 L23 30 L27 30 L27 22 L31 22 L31 18 L34 18 L34 22 L38 22 L38 15 L41 15 L41 20 L45 20 L45 24 L49 24 L49 17 L53 17 L53 21 L57 21 L57 14 L60 14 L60 18 L64 18 L64 22 L68 22 L68 16 L71 16 L71 20 L75 20 L75 26 L79 26 L79 20 L83 20 L83 24 L87 24 L87 30 L91 30 L91 24 L95 24 L95 28 L100 28 L100 55 Z"
+          fill="oklch(0.18 0.05 280)"
+        />
+      </svg>
+
+      {/* ── Layer 4: Moon — reddish-pink, desaturated against the crimson sky ── */}
+      {/* Still. Watches. Never moves.                                            */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          width: "min(38vw, 380px)",
+          height: "min(38vw, 380px)",
+          borderRadius: "50%",
+          background:
+            "radial-gradient(circle, oklch(0.72 0.06 350) 50%, oklch(0.55 0.08 350 / 0) 100%)",
+          opacity: 0.22,
+          top: "-5%",
+          right: "8%",
+          pointerEvents: "none",
+          zIndex: 4,
         }}
       />
 
+      {/* ── Layer 5: Dark entry/exit overlay ── */}
       <motion.div
-        className="absolute bottom-1/3 right-1/4 w-12 h-12 bg-primary/10 rounded-lg"
-        animate={
-          prefersReducedMotion
-            ? {}
-            : {
-              rotate: [0, 90, 180, 270, 360],
-              scale: [1, 1.2, 0.8, 1.2, 1],
-              x: [0, 20, -20, 0],
-              y: [0, -20, 20, 0],
-            }
-        }
-        transition={{
-          duration: 15,
-          repeat: Number.POSITIVE_INFINITY,
-          ease: "easeInOut",
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          inset: 0,
+          backgroundColor: "oklch(0.08 0.02 270)",
+          zIndex: 5,
+          pointerEvents: "none",
         }}
+        initial={{ opacity: 1 }}
+        animate={{ opacity: isInView ? 0 : 1 }}
+        transition={snapTransition}
       />
 
-      <div className="max-w-6xl w-full">
-        <div className="space-y-12">
-          <motion.div
-            className="space-y-3"
-            initial={{ opacity: 0, x: -50 }}
-            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
-            transition={{ duration: FIBONACCI_MS.f5 / 1000, ease: cubicBezier(EASING.golden[0], EASING.golden[1], EASING.golden[2], EASING.golden[3]) }}
-          >
-            <h2 className="text-5xl md:text-6xl font-extrabold text-foreground text-balance group cursor-default">
-              <span
-                className="transition-all duration-500 bg-linear-to-r from-foreground to-foreground bg-clip-text group-hover:from-primary group-hover:via-accent group-hover:to-secondary group-hover:text-transparent"
-                style={{ backgroundSize: "300% 300%" }}
-              >
-                {"About Me".split("").map((char, i) => (
-                  <motion.span
-                    key={i}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                    transition={{
-                      delay: i * 0.05,
-                      duration: 0.3,
-                    }}
-                    style={{ display: char === " " ? "inline" : "inline-block" }}
-                    whileHover={{
-                      backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
-                      transition: { duration: 2, ease: "easeInOut", repeat: Number.POSITIVE_INFINITY },
-                    }}
-                  >
-                    {char === " " ? "\u00A0" : char}
-                  </motion.span>
-                ))}
-              </span>
-            </h2>
-            <motion.div
-              className="h-1 bg-linear-to-r from-accent to-transparent rounded-full"
-              initial={{ width: 0 }}
-              animate={isInView ? { width: "20rem" } : { width: 0 }}
-              transition={{ duration: FIBONACCI_MS.f6 / 1000, ease: cubicBezier(EASING.golden[0], EASING.golden[1], EASING.golden[2], EASING.golden[3]), delay: FIBONACCI_MS.f3 / 1000 }}
-            />
-          </motion.div>
+      {/* ── Layer 6: Sharingan activation flash — true crimson ── */}
+      {!prefersReducedMotion && (
+        <motion.div
+          aria-hidden="true"
+          style={{
+            position: "absolute",
+            inset: 0,
+            backgroundColor: "oklch(0.55 0.26 10)",
+            zIndex: 6,
+            pointerEvents: "none",
+          }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: flashActive ? 0.38 : 0 }}
+          transition={{ duration: 0.1 }}
+        />
+      )}
 
-          <motion.div
-            className="grid lg:grid-cols-5 gap-8"
-            variants={containerVariants}
-            initial="hidden"
-            animate={isInView ? "visible" : "hidden"}
-          >
-            <div className="lg:col-span-3 space-y-6">
-              <motion.div
-                variants={cardVariants}
-                whileHover={{
-                  scale: 1.02,
-                  rotateX: 2,
-                  rotateY: -2,
-                  transition: { duration: FIBONACCI_MS.f3 / 1000 },
-                }}
-              >
-                <Card className="p-8 backdrop-blur-xl bg-card/50 border-border/50 rounded-3xl hover:shadow-xl hover:shadow-primary/5 transition-shadow relative overflow-hidden group">
-                  <motion.div
-                    className="absolute inset-0 rounded-3xl"
-                    style={{
-                      background: "linear-gradient(90deg, transparent, oklch(0.68 0.32 290 / 0.1), transparent)",
-                    }}
-                    animate={{
-                      x: ["-100%", "100%"],
-                    }}
-                    transition={{
-                      duration: 3,
-                      repeat: Number.POSITIVE_INFINITY,
-                      ease: "linear",
-                    }}
-                  />
-                  <p
-                    className="text-lg text-muted-foreground font-normal leading-relaxed relative z-10 transition-all duration-500 bg-linear-to-r from-muted-foreground to-muted-foreground bg-clip-text group-hover:from-primary group-hover:via-accent group-hover:to-secondary group-hover:text-transparent"
-                    style={{ backgroundSize: "200% 200%", backgroundPosition: "0% 50%" }}
-                  >
-                    <motion.span
-                      className="inline-block"
-                      whileHover={{
-                        backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
-                        transition: { duration: 2, ease: "easeInOut", repeat: Number.POSITIVE_INFINITY },
-                      }}
-                    >
-                      I'm a frontend architect specializing in systems design, component architecture, and the kind of engineering that makes other engineers stop and ask how it works.<br /><br />My practice sits at the intersection of mathematics and interface design. I build things grounded in first principles, not convention. If there's a more structurally sound way to do something, I'll find it.
-                    </motion.span>
-                  </p>
-                </Card>
-              </motion.div>
+      {/* ── Layer 7: Text — no movement. Unease comes from letter-spacing alone. ── */}
+      <motion.div
+        className="relative w-full"
+        style={{ maxWidth: "65ch", zIndex: 7 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: isInView ? 1 : 0 }}
+        transition={contentTransition}
+      >
+        {/* Title — marginLeft offset: nothing in Tsukuyomi is centered */}
+        <h2
+          className="mb-16"
+          style={{
+            color: TEXT_COLOR,
+            textShadow: TEXT_SHADOW,
+            letterSpacing: "0.2em",
+            fontWeight: 300,
+            fontSize: "clamp(2rem, 4.5vw, 3.5rem)",
+            marginLeft: "-0.1em",
+          }}
+        >
+          About
+        </h2>
 
-              <motion.div
-                variants={cardVariants}
-                whileHover={{
-                  scale: 1.02,
-                  rotateX: -2,
-                  rotateY: 2,
-                  transition: { duration: FIBONACCI_MS.f3 / 1000 },
-                }}
-              >
-                <Card className="p-8 backdrop-blur-xl bg-card/50 border-border/50 rounded-3xl hover:shadow-xl hover:shadow-primary/5 transition-shadow group">
-                  <p
-                    className="text-lg text-muted-foreground font-normal leading-relaxed transition-all duration-500 bg-linear-to-r from-muted-foreground to-muted-foreground bg-clip-text group-hover:from-primary group-hover:via-accent group-hover:to-secondary group-hover:text-transparent"
-                    style={{ backgroundSize: "200% 200%", backgroundPosition: "0% 50%" }}
-                  >
-                    <motion.span
-                      className="inline-block"
-                      whileHover={{
-                        backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
-                        transition: { duration: 2, ease: "easeInOut", repeat: Number.POSITIVE_INFINITY },
-                      }}
-                    >
-                      I'm the creator of Harmonia UI, a capacity-adaptive interface framework, and Renge, a design system built on natural mathematics. Both are part of the Soka Labs ecosystem, a Human-Computer Interaction research and developer training institution I'm building to change how the industry produces architects.<br /><br />I've diagnosed codebases others couldn't fix, shipped core products under hostile conditions, and built systems that outlasted the companies that commissioned them.
-                    </motion.span>
-                  </p>
-                </Card>
-              </motion.div>
-
-              <motion.div
-                variants={cardVariants}
-                whileHover={{
-                  scale: 1.02,
-                  rotateX: 2,
-                  rotateY: 2,
-                  transition: { duration: FIBONACCI_MS.f3 / 1000 },
-                }}
-              >
-                <Card className="p-8 backdrop-blur-xl bg-card/50 border-border/50 rounded-3xl hover:shadow-xl hover:shadow-primary/5 transition-shadow">
-                  <p className="text-lg text-foreground font-semibold mb-4">Technologies I work with:</p>
-                  <div className="grid grid-cols-2 gap-3">
-                    {skills.map((skill, i) => {
-                      const Icon = skill.icon
-                      return (
-                        <motion.div
-                          key={skill.name}
-                          className="flex items-center gap-3 group"
-                          custom={i}
-                          variants={skillVariants}
-                          initial="hidden"
-                          animate={isInView ? "visible" : "hidden"}
-                          whileHover={{ x: 10, scale: 1.05 }}
-                        >
-                          <motion.div
-                            className="text-accent"
-                            animate={{
-                              scale: [1, 1.2, 1],
-                              rotate: [0, 5, -5, 0],
-                            }}
-                            transition={{
-                              duration: 2,
-                              repeat: Number.POSITIVE_INFINITY,
-                              delay: i * 0.2,
-                            }}
-                          >
-                            <Icon className="w-5 h-5" />
-                          </motion.div>
-                          <span className="text-base text-muted-foreground font-mono group-hover:text-foreground transition-colors">
-                            {skill.name}
-                          </span>
-                        </motion.div>
-                      )
-                    })}
-                  </div>
-                </Card>
-              </motion.div>
-            </div>
-
-            <motion.div
-              variants={cardVariants}
-              className="lg:col-span-2"
-              whileHover={{
-                scale: 1.05,
-                rotateY: 5,
-                transition: { duration: FIBONACCI_MS.f4 / 1000 },
+        <div className="space-y-8">
+          {[
+            "I'm a frontend architect specializing in systems design, component architecture, and the kind of engineering that makes other engineers stop and ask how it works.",
+            "My practice sits at the intersection of mathematics and interface design. I build things grounded in first principles, not convention. If there's a more structurally sound way to do something, I'll find it.",
+            "I'm the creator of Harmonia UI, a capacity-adaptive interface framework, and Renge, a design system built on natural mathematics. Both are part of the Soka Labs ecosystem, a Human-Computer Interaction research and developer training institution I'm building to change how the industry produces architects.",
+            "I've diagnosed codebases others couldn't fix, shipped core products under hostile conditions, and built systems that outlasted the companies that commissioned them.",
+          ].map((text, i) => (
+            <p
+              key={i}
+              style={{
+                fontSize: "1.0625rem",
+                lineHeight: "1.9",
+                color: TEXT_COLOR,
+                textShadow: TEXT_SHADOW,
+                // Each paragraph breathes on a different clock
+                animation: prefersReducedMotion
+                  ? "none"
+                  : `tsukuyomi-breathe 8s ease-in-out ${breatheDelays[i]} infinite`,
               }}
             >
-              <Card className="relative group pb-0 overflow-hidden backdrop-blur-xl bg-card/50 border-border/50 rounded-3xl">
-                <div className="aspect-square lg:aspect-auto lg:h-full bg-linear-to-br from-accent/20 to-primary/20 flex items-center justify-center">
-                  <div className="text-center space-y-4 md:pb-6 md:pt-8 md:px-4">
-                    <motion.div
-                      className="w-48 h-48 rounded-full bg-accent/30 mx-auto backdrop-blur-sm relative overflow-hidden"
-                      animate={
-                        prefersReducedMotion
-                          ? {}
-                          : {
-                            rotate: [0, 7, -7, 0],
-                            y: [0, -7, 0],
-                          }
-                      }
-                      transition={{
-                        rotate: {
-                          duration: FIBONACCI_MS.f7 / 1000,
-                          repeat: Number.POSITIVE_INFINITY,
-                          ease: cubicBezier(EASING.gentle[0], EASING.gentle[1], EASING.gentle[2], EASING.gentle[3]),
-                        },
-                        y: { duration: FIBONACCI_MS.f5 / 500, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" },
-                      }}
-                    >
-                      <motion.div
-                        className="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent"
-                        animate={{
-                          x: ["-100%", "100%"],
-                        }}
-                        transition={{
-                          duration: 3,
-                          repeat: Number.POSITIVE_INFINITY,
-                          ease: "linear",
-                        }}
-                      />
-                      <motion.img
-                        src={"/self.jpeg"}
-                        alt="picture of Vanessa"
-                        className="w-full h-full object-cover opacity-90"
-                        whileHover={{ scale: 1.1, opacity: 1 }}
-                        transition={{ duration: FIBONACCI_MS.f6 / 1000, ease: cubicBezier(EASING.golden[0], EASING.golden[1], EASING.golden[2], EASING.golden[3]) }}
-                        style={{ willChange: "transform" }}
-                      />
-                    </motion.div>
-                  </div>
-                </div>
-                <motion.div
-                  className="absolute inset-0 bg-linear-to-br from-accent/10 to-primary/10 opacity-0 group-hover:opacity-100 transition-opacity"
-                  animate={{
-                    backgroundPosition: ["0% 0%", "100% 100%"],
-                  }}
-                  transition={{
-                    duration: 5,
-                    repeat: Number.POSITIVE_INFINITY,
-                    ease: "linear",
-                  }}
-                />
-              </Card>
-            </motion.div>
-          </motion.div>
+              {text}
+            </p>
+          ))}
         </div>
-      </div>
+      </motion.div>
     </section>
   )
 }

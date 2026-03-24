@@ -1,324 +1,313 @@
 "use client"
 
-import { ArrowRight, Github, Linkedin, Mail, Twitter } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { motion, useMotionValue, useTransform, useSpring, cubicBezier } from "framer-motion"
-import { PHI_INVERSE, FIBONACCI_MS, EASING, STAGGER, GOLDEN_ANGLE } from "@/lib/animation-constants"
-import { useEffect, useState } from "react"
+import { motion, useReducedMotion } from "framer-motion"
+import { GithubIcon, LinkedinIcon, Mail } from "lucide-react"
+
+// ─── SVG paths ────────────────────────────────────────────────────────────────
+// viewBox: -21 -7 44 13  (44 × 13 units — horizontal, 3.4:1 ratio, bird faces right)
+// Origin (0,0) = wing attachment point at body centre.
+//
+// Wing anatomy:
+//   Each wing is a CLOSED shape: leading edge out → around pointed tip → trailing
+//   edge back. Five C-curves each; identical command structure so Framer Motion
+//   can interpolate the d attribute between UP and DOWN positions.
+//
+//   The M-shape comes from the outer panel dropping relative to the wrist:
+//   inner panel rises to wrist at y≈-5, outer panel drops to tip at y≈-3.5.
+//   This kink is the anatomical crow hallmark — a bat wing has no such inflection.
+//
+//   Chord is narrow: ~1 unit at root, ~2 at wrist, ~1.5 at tip.
+//   Span is long: 20 units per side.  Aspect ratio ≈ 13:1 (very crow-like).
+
+// Wing UP  →  wings arching above body (top of downstroke)
+// Wing DOWN →  wings sweeping below body (bottom of downstroke)
+const WING_L_UP   = "M 0 -0.5 C -4 -2 -9 -5.5 -11 -5 C -15 -4.5 -19 -4 -20 -3.5 C -20 -2 -17 -1.5 -14 -2 C -11 -2.5 -8 -2 -6 -1.5 C -3 -1 -1 0 0 0.5 Z"
+const WING_L_DOWN = "M 0 -0.5 C -4  2 -9  4.5 -11  4 C -15  3.5 -19  3 -20  2.5 C -20  1 -17  0.5 -14  1 C -11  1.5 -8  1 -6  0 C -3 -0.5 -1 0 0 0.5 Z"
+const WING_R_UP   = "M 0 -0.5 C  4 -2  9 -5.5  11 -5 C  15 -4.5  19 -4  20 -3.5 C  20 -2  17 -1.5  14 -2 C  11 -2.5  8 -2  6 -1.5 C  3 -1  1 0 0 0.5 Z"
+const WING_R_DOWN = "M 0 -0.5 C  4  2  9  4.5  11  4 C  15  3.5  19  3  20  2.5 C  20  1  17  0.5  14  1 C  11  1.5  8  1  6  0 C  3 -0.5  1 0 0 0.5 Z"
+
+// Body: elongated, front-heavy oval. x=-5 (rear) to x=7 (chest).
+const BODY = "M 7 0 C 6 -2 3 -2 0 -1.5 C -2 -1 -4 -0.5 -5 0 C -5 0.5 -4 1 -2 1 C 0 1 3 1.5 6 1.5 C 7 1.5 8 1 7 0 Z"
+// Head + short forward beak. Beak tip at x=12, roughly horizontal.
+const HEAD = "M 7 0 C 7.5 -2 9.5 -2 10 -1 C 11 -0.5 12 0.5 11 1 C 10 1.5 9 1.5 8 1.5 C 7.5 1.5 7 1 7 0 Z"
+// Tail: short squared fan. x=-5 to x=-10.
+const TAIL = "M -5 0 C -6 -0.5 -7 -1 -8 -1 C -9 -1 -10 -0.5 -10 0 C -10 0.5 -9 1 -8 1 C -7 1 -6 0.5 -5 0 Z"
+
+// ─── Types ────────────────────────────────────────────────────────────────────
+
+interface CrowConfig {
+  id: number
+  /** Rendered width in px. Height derived from viewBox aspect ratio (44 × 13 → ~0.3×). */
+  size: number
+  /** Mirror the bird so it faces left (for crows entering from the right). */
+  facingLeft: boolean
+  /** Starting position, relative to hero center (off-screen). */
+  startX: number
+  startY: number
+  /** Assembly position, relative to hero center (near the text). */
+  assembleX: number
+  assembleY: number
+  /** Disperse destination, relative to hero center (off-screen, different from start). */
+  disperseX: number
+  disperseY: number
+  /** Seconds from page load before this crow begins flying. */
+  delay: number
+  flyInDur: number
+  holdDur: number
+  disperseDur: number
+  /** Full wing-beat cycle in seconds. */
+  wingPeriod: number
+  /** Z-axis rotation at each phase (degrees). */
+  startRot: number
+  assembleRot: number
+  disperseRot: number
+}
+
+// ─── Crow configurations ──────────────────────────────────────────────────────
+// Assembly positions cluster around (±350 x, ±180 y) relative to hero center,
+// leaving the center clear for the name and tagline.
+// Start/disperse positions are at ±900-950 x / ±550 y (reliably off-screen).
+
+const CROWS: CrowConfig[] = [
+  // ── From left edge ──────────────────────────────────────────────────────────
+  {
+    id: 0,   size: 72, facingLeft: false,
+    startX: -950, startY:  -60,   assembleX: -330, assembleY:  -70,   disperseX: -800, disperseY: -380,
+    delay: 1.8,  flyInDur: 1.7, holdDur: 2.4, disperseDur: 2.0,
+    wingPeriod: 0.48, startRot: -8,  assembleRot: -3,  disperseRot: -18,
+  },
+  {
+    id: 1,   size: 56, facingLeft: false,
+    startX: -820, startY: -280,   assembleX: -230, assembleY: -125,   disperseX: -700, disperseY: -520,
+    delay: 2.0,  flyInDur: 1.5, holdDur: 2.2, disperseDur: 1.9,
+    wingPeriod: 0.44, startRot: -15, assembleRot: -6,  disperseRot: -24,
+  },
+  // ── From top ────────────────────────────────────────────────────────────────
+  {
+    id: 2,   size: 48, facingLeft: false,
+    startX: -240, startY: -580,   assembleX:  -95, assembleY: -160,   disperseX: -350, disperseY: -580,
+    delay: 2.15, flyInDur: 1.4, holdDur: 2.1, disperseDur: 2.0,
+    wingPeriod: 0.52, startRot: -22, assembleRot: -9,  disperseRot: -30,
+  },
+  {
+    id: 3,   size: 52, facingLeft: false,
+    startX:  120, startY: -580,   assembleX:   50, assembleY: -165,   disperseX:  220, disperseY: -580,
+    delay: 2.3,  flyInDur: 1.4, holdDur: 2.0, disperseDur: 1.8,
+    wingPeriod: 0.56, startRot:  20, assembleRot:  8,  disperseRot:  28,
+  },
+  // ── From right edge ─────────────────────────────────────────────────────────
+  {
+    id: 4,   size: 64, facingLeft: true,
+    startX:  920, startY: -195,   assembleX:  260, assembleY:  -88,   disperseX:  860, disperseY: -400,
+    delay: 2.45, flyInDur: 1.5, holdDur: 1.9, disperseDur: 2.0,
+    wingPeriod: 0.46, startRot:  12, assembleRot:  4,  disperseRot:  18,
+  },
+  {
+    id: 5,   size: 80, facingLeft: true,
+    startX:  950, startY:   55,   assembleX:  335, assembleY:   18,   disperseX:  920, disperseY:  260,
+    delay: 2.6,  flyInDur: 1.6, holdDur: 1.8, disperseDur: 2.1,
+    wingPeriod: 0.50, startRot:   8, assembleRot:  2,  disperseRot:  15,
+  },
+  // ── From bottom-right ───────────────────────────────────────────────────────
+  {
+    id: 6,   size: 60, facingLeft: true,
+    startX:  760, startY:  380,   assembleX:  200, assembleY:   98,   disperseX:  720, disperseY:  480,
+    delay: 2.75, flyInDur: 1.5, holdDur: 1.7, disperseDur: 1.9,
+    wingPeriod: 0.43, startRot:  22, assembleRot:  7,  disperseRot:  28,
+  },
+  // ── From bottom ─────────────────────────────────────────────────────────────
+  {
+    id: 7,   size: 48, facingLeft: false,
+    startX:  210, startY:  560,   assembleX:   65, assembleY:  138,   disperseX:  420, disperseY:  560,
+    delay: 2.9,  flyInDur: 1.4, holdDur: 1.6, disperseDur: 2.0,
+    wingPeriod: 0.58, startRot:  28, assembleRot: 11,  disperseRot:  35,
+  },
+  // ── From bottom-left ────────────────────────────────────────────────────────
+  {
+    id: 8,   size: 56, facingLeft: false,
+    startX: -420, startY:  560,   assembleX: -150, assembleY:  118,   disperseX: -620, disperseY:  510,
+    delay: 3.05, flyInDur: 1.4, holdDur: 1.5, disperseDur: 1.9,
+    wingPeriod: 0.49, startRot: -26, assembleRot: -8,  disperseRot: -32,
+  },
+  // ── From left edge, lower ───────────────────────────────────────────────────
+  {
+    id: 9,   size: 68, facingLeft: false,
+    startX: -960, startY:  240,   assembleX: -295, assembleY:   38,   disperseX: -860, disperseY:  370,
+    delay: 3.2,  flyInDur: 1.6, holdDur: 1.4, disperseDur: 2.2,
+    wingPeriod: 0.47, startRot: -10, assembleRot: -3,  disperseRot: -18,
+  },
+]
+
+// ─── Crow SVG ─────────────────────────────────────────────────────────────────
+
+// viewBox width=44, height=13 → aspect ratio for rendered height
+const CROW_H = (size: number) => Math.round(size * 13 / 44)
+
+function CrowSVG({ size, wingPeriod }: { size: number; wingPeriod: number }) {
+  const halfPeriod = wingPeriod / 2
+
+  return (
+    <svg
+      viewBox="-21 -7 44 13"
+      width={size}
+      height={CROW_H(size)}
+      style={{ color: "var(--itachi-crow)", overflow: "visible" }}
+      aria-hidden="true"
+    >
+      <g fill="currentColor">
+        <path d={TAIL} />
+        <path d={BODY} />
+        <path d={HEAD} />
+        {/* Left wing — up-stroke to down-stroke, reversed */}
+        <motion.path
+          d={WING_L_UP}
+          animate={{ d: WING_L_DOWN }}
+          transition={{
+            duration: halfPeriod,
+            repeat: Infinity,
+            repeatType: "reverse",
+            ease: "easeInOut",
+          }}
+        />
+        {/* Right wing — in phase with left */}
+        <motion.path
+          d={WING_R_UP}
+          animate={{ d: WING_R_DOWN }}
+          transition={{
+            duration: halfPeriod,
+            repeat: Infinity,
+            repeatType: "reverse",
+            ease: "easeInOut",
+          }}
+        />
+      </g>
+    </svg>
+  )
+}
+
+// ─── Single crow: position + opacity orchestration ────────────────────────────
+
+function Crow({ c }: { c: CrowConfig }) {
+  const totalDur  = c.flyInDur + c.holdDur + c.disperseDur
+  const flyInFrac = c.flyInDur / totalDur
+  const holdFrac  = (c.flyInDur + c.holdDur) / totalDur
+
+  return (
+    <motion.div
+      aria-hidden="true"
+      style={{
+        position: "absolute",
+        top:  "50%",
+        left: "50%",
+        pointerEvents: "none",
+        scaleX: c.facingLeft ? -1 : 1,
+      }}
+      initial={{
+        x:       c.startX,
+        y:       c.startY,
+        opacity: 0,
+        rotate:  c.startRot,
+      }}
+      animate={{
+        x:       [c.startX,    c.assembleX, c.assembleX, c.disperseX],
+        y:       [c.startY,    c.assembleY, c.assembleY, c.disperseY],
+        opacity: [0,            1,           1,           0          ],
+        rotate:  [c.startRot,  c.assembleRot, c.assembleRot, c.disperseRot],
+      }}
+      transition={{
+        duration: totalDur,
+        times:    [0, flyInFrac, holdFrac, 1],
+        ease:     "easeInOut",
+        delay:    c.delay,
+      }}
+    >
+      <CrowSVG size={c.size} wingPeriod={c.wingPeriod} />
+    </motion.div>
+  )
+}
+
+// ─── Hero ─────────────────────────────────────────────────────────────────────
 
 export function Hero() {
-  const mouseX = useMotionValue(0)
-  const mouseY = useMotionValue(0)
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
-  const xTransform = useTransform(mouseX, [0, 1], [-20, 20])
-  const yTransform = useTransform(mouseY, [0, 1], [-20, 20])
-  const x = useSpring(xTransform, { damping: 25, stiffness: 150 })
-  const y = useSpring(yTransform, { damping: 25, stiffness: 150 })
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
-    setPrefersReducedMotion(mediaQuery.matches)
-
-    const handleMotionChange = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches)
-    mediaQuery.addEventListener("change", handleMotionChange)
-
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!prefersReducedMotion) {
-        mouseX.set(e.clientX / window.innerWidth)
-        mouseY.set(e.clientY / window.innerHeight)
-      }
-    }
-
-    window.addEventListener("mousemove", handleMouseMove)
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove)
-      mediaQuery.removeEventListener("change", handleMotionChange)
-    }
-  }, [mouseX, mouseY, prefersReducedMotion])
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: STAGGER.children,
-        delayChildren: FIBONACCI_MS.f2 / 1000,
-      },
-    },
-  }
-
-  const itemVariants = {
-    hidden: {
-      opacity: 0,
-      y: 30,
-      scale: PHI_INVERSE,
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: {
-        duration: FIBONACCI_MS.f5 / 1000,
-        ease: cubicBezier(EASING.golden[0], EASING.golden[1], EASING.golden[2], EASING.golden[3])
-      },
-    },
-  }
-
-  const socialVariants = {
-    hidden: { opacity: 0, scale: 0, rotate: -GOLDEN_ANGLE },
-    visible: (i: number) => ({
-      opacity: 1,
-      scale: 1,
-      rotate: 0,
-      transition: {
-        delay: (FIBONACCI_MS.f4 + i * FIBONACCI_MS.f2) / 1000,
-        duration: FIBONACCI_MS.f4 / 1000,
-        ease: cubicBezier(EASING.spring[0], EASING.spring[1], EASING.spring[2], EASING.spring[3]),
-      },
-    }),
-  }
-
-  const gradientFlow = {
-    keyframes: [{ backgroundPosition: "0% 50%" }, { backgroundPosition: "100% 50%" }],
-    duration: 3000,
-    ease: "linear",
-    iterations: Number.POSITIVE_INFINITY,
-  }
+  const reducedMotion = useReducedMotion()
 
   return (
     <section
       id="home"
-      className="min-h-screen flex items-center justify-center px-6 pt-32 pb-20 relative overflow-hidden"
+      className="min-h-screen flex items-center justify-center relative overflow-hidden"
     >
-      <motion.div
-        className="absolute top-1/2 left-1/2 w-[800px] h-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-15"
-        style={{
-          background: "radial-gradient(circle, oklch(0.68 0.18 280 / 0.2) 0%, transparent 70%)",
-          filter: "blur(80px)",
-          x: prefersReducedMotion ? 0 : x,
-          y: prefersReducedMotion ? 0 : y,
-        }}
-        animate={{
-          scale: prefersReducedMotion ? 1 : [1, 1.3, 0.9, 1.2, 1],
-          opacity: prefersReducedMotion ? 0.1 : [0.1, 0.25, 0.12, 0.2, 0.1],
-          rotate: prefersReducedMotion ? 0 : [0, 90, 180, 270, 360],
-        }}
-        transition={{
-          duration: 12,
-          repeat: prefersReducedMotion ? 0 : Number.POSITIVE_INFINITY,
-          ease: "easeInOut",
-        }}
-      />
+      {/* Crow layer — conditionally rendered */}
+      {!reducedMotion && (
+        <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+          {CROWS.map((c) => (
+            <Crow key={c.id} c={c} />
+          ))}
+        </div>
+      )}
 
-      <motion.div
-        className="absolute top-40 right-20 w-24 h-24 border rounded-3xl opacity-20"
-        style={{
-          borderColor: "oklch(0.68 0.18 280 / 0.3)",
-          boxShadow: "0 0 30px oklch(0.68 0.18 280 / 0.1)",
-          x: prefersReducedMotion ? 0 : xTransform.get() * 0.5,
-          y: prefersReducedMotion ? 0 : yTransform.get() * -0.5,
-        }}
-        animate={{
-          rotate: prefersReducedMotion ? 0 : [0, 360],
-          y: prefersReducedMotion ? 0 : [0, -35, 10, -25, 0],
-          scale: prefersReducedMotion ? 1 : [1, 1.2, 0.9, 1.15, 1],
-          opacity: prefersReducedMotion ? 0.15 : [0.15, 0.3, 0.18, 0.25, 0.15],
-        }}
-        transition={{
-          rotate: {
-            duration: 15,
-            repeat: prefersReducedMotion ? 0 : Number.POSITIVE_INFINITY,
-            ease: "easeInOut",
-          },
-          y: {
-            duration: 6,
-            repeat: prefersReducedMotion ? 0 : Number.POSITIVE_INFINITY,
-            ease: "easeInOut",
-          },
-          scale: {
-            duration: 6,
-            repeat: prefersReducedMotion ? 0 : Number.POSITIVE_INFINITY,
-            ease: "easeInOut",
-          },
-          opacity: { duration: 6, repeat: prefersReducedMotion ? 0 : Number.POSITIVE_INFINITY, ease: "easeInOut" },
-        }}
-      />
+      {/* Text — appears first, before the crows arrive */}
+      <div className="relative z-10 text-center px-6 select-none">
+        <motion.h1
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 2.1, delay: 0.2, ease: "easeOut" }}
+          style={{
+            fontSize:      "clamp(3.2rem, 9vw, 8rem)",
+            fontWeight:    200,
+            letterSpacing: "0.1em",
+            lineHeight:    1.05,
+            color:         "var(--itachi-text)",
+          }}
+        >
+          Vanessa Martin
+        </motion.h1>
 
-      <motion.div
-        className="absolute bottom-40 left-20 w-20 h-20 border rounded-full opacity-25"
-        style={{
-          borderColor: "oklch(0.75 0.16 170 / 0.35)",
-          boxShadow: "0 0 25px oklch(0.75 0.16 170 / 0.12)",
-        }}
-        animate={{
-          scale: prefersReducedMotion ? 1 : [1, 1.4, 0.85, 1.3, 1],
-          x: prefersReducedMotion ? 0 : [0, 35, -25, 20, 0],
-          y: prefersReducedMotion ? 0 : [0, -25, 20, -15, 0],
-          opacity: prefersReducedMotion ? 0.2 : [0.2, 0.35, 0.18, 0.28, 0.2],
-        }}
-        transition={{
-          duration: 10,
-          repeat: prefersReducedMotion ? 0 : Number.POSITIVE_INFINITY,
-          ease: "easeInOut",
-        }}
-      />
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.8, delay: 0.9, ease: "easeOut" }}
+          style={{
+            fontSize:      "clamp(0.75rem, 1.8vw, 1.1rem)",
+            fontWeight:    300,
+            letterSpacing: "0.25em",
+            color:         "var(--itachi-subtle)",
+            marginTop:     "var(--renge-space-4, 20px)",
+            textTransform: "uppercase",
+          }}
+        >
+          I build frontend systems that think.
+        </motion.p>
 
-      <motion.div
-        className="absolute top-1/3 left-1/4 w-16 h-16 border-2 rounded-2xl opacity-18"
-        style={{
-          borderColor: "oklch(0.72 0.18 60 / 0.3)",
-          boxShadow: "0 0 20px oklch(0.72 0.18 60 / 0.1)",
-        }}
-        animate={{
-          rotate: prefersReducedMotion ? 0 : [0, -360],
-          scale: prefersReducedMotion ? 1 : [1, 1.3, 0.8, 1.2, 1],
-          x: prefersReducedMotion ? 0 : [0, 20, -15, 12, 0],
-          y: prefersReducedMotion ? 0 : [0, -15, 12, -8, 0],
-        }}
-        transition={{
-          duration: 13,
-          repeat: prefersReducedMotion ? 0 : Number.POSITIVE_INFINITY,
-          ease: "easeInOut",
-        }}
-      />
-
-      <div className="max-w-6xl w-full relative z-10">
-        <motion.div className="space-y-8" variants={containerVariants} initial="hidden" animate="visible">
-          <div className="space-y-4">
-            <motion.p variants={itemVariants} className="text-accent text-base font-mono font-medium tracking-wide">
-              Hi, my name is
-            </motion.p>
-            <motion.h1
-              variants={itemVariants}
-              className="text-6xl md:text-8xl lg:text-9xl font-extrabold text-foreground text-balance leading-[0.9]"
-              style={{
-                textShadow: "0 0 40px oklch(0.72 0.22 280 / 0.2)",
-                willChange: "transform",
-              }}
-              whileHover={{ scale: 1.02, x: 10 }}
-              transition={{ type: "spring", stiffness: 300 }}
+        {/* Social links — minimal, low-key, below tagline */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.5, delay: 1.6, ease: "easeOut" }}
+          style={{
+            display:       "flex",
+            justifyContent:"center",
+            gap:           "var(--renge-space-5, 32px)",
+            marginTop:     "var(--renge-space-6, 52px)",
+          }}
+        >
+          {[
+            { icon: GithubIcon,   href: "https://github.com/vsm1996",          label: "GitHub"   },
+            { icon: LinkedinIcon, href: "https://linkedin.com/in/vsm1996",       label: "LinkedIn" },
+            { icon: Mail,     href: "mailto:vanessa.s.martin96@gmail.com",       label: "Email"    },
+          ].map(({ icon: Icon, href, label }) => (
+            <motion.a
+              key={label}
+              href={href}
+              target={label !== "Email" ? "_blank" : undefined}
+              rel={label !== "Email" ? "noopener noreferrer" : undefined}
+              aria-label={label}
+              style={{ color: "var(--itachi-ghost)" }}
+              whileHover={{ color: "var(--itachi-text)" }}
+              transition={{ duration: 0.2 }}
             >
-              {"Vanessa.".split("").map((char, i) => (
-                <motion.span
-                  key={i}
-                  initial={{ opacity: 0, y: 50 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{
-                    delay: 0.5 + i * 0.035,
-                    duration: 0.25,
-                    ease: "easeOut",
-                  }}
-                  whileHover={{
-                    y: prefersReducedMotion ? 0 : -10,
-                    color: "oklch(0.72 0.22 280)",
-                    transition: { duration: 0.2 },
-                  }}
-                  style={{ display: "inline-block", willChange: "transform" }}
-                >
-                  {char}
-                </motion.span>
-              ))}
-            </motion.h1>
-            <motion.h2
-              variants={itemVariants}
-              className="text-4xl md:text-6xl lg:text-7xl font-semibold text-balance leading-tight relative inline-block cursor-default group"
-              whileHover={{ scale: 1.02, x: 10 }}
-              transition={{ type: "spring", stiffness: 300 }}
-            >
-              <motion.span
-                className="bg-linear-to-r from-muted-foreground via-orange-300 via-55% to-muted-foreground bg-clip-text text-transparent"
-                style={{
-                  backgroundSize: "200% 100%",
-                  backgroundPosition: "-100% 0",
-                  willChange: "background-position",
-                }}
-                whileHover={{
-                  backgroundPosition: ["200% 0", "-100% 0"],
-                  transition: {
-                    duration: 1.5,
-                    ease: [0.65, 0, 0.35, 1],
-                  },
-                }}
-              >
-                I build frontend systems that think.
-              </motion.span>
-            </motion.h2>
-          </div>
-
-          <motion.p
-            variants={itemVariants}
-            className="text-xl md:text-2xl text-muted-foreground max-w-3xl leading-relaxed font-normal group cursor-default"
-          >
-            <motion.span
-              className="text-balance inline-block transition-all duration-500 bg-linear-to-r from-muted-foreground to-muted-foreground bg-clip-text group-hover:from-primary group-hover:via-accent group-hover:to-secondary group-hover:text-transparent"
-              style={{ backgroundSize: "200% 200%", backgroundPosition: "0% 50%" }}
-              whileHover={{
-                backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
-                transition: { duration: 2, ease: "easeInOut", repeat: Number.POSITIVE_INFINITY },
-              }}
-            >
-              Capacity-adaptive interfaces, proportional design systems, and the infrastructure that makes both
-              possible. Based in Oakland.
-            </motion.span>
-          </motion.p>
-
-          <motion.div
-            variants={itemVariants}
-            className="flex flex-col sm:flex-row items-start sm:items-center gap-6 pt-6"
-          >
-            <motion.div
-              whileHover={{ scale: 1.05, rotate: 2 }}
-              whileTap={{ scale: 0.95, rotate: -2 }}
-              transition={{ type: "spring", stiffness: 400 }}
-            >
-              <Button
-                size="lg"
-                className="group rounded-full px-8 h-14 text-base relative overflow-hidden shadow-lg shadow-primary/20"
-              >
-                <motion.span
-                  className="absolute inset-0 bg-linear-to-r from-primary/0 via-accent/30 to-primary/0"
-                  animate={{ x: ["-100%", "100%"] }}
-                  transition={{ duration: 3, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
-                />
-                <span className="relative z-10 flex items-center">
-                  View My Work
-                  <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
-                </span>
-              </Button>
-            </motion.div>
-            <div className="flex items-center gap-4">
-              {[
-                { icon: Github, href: "https://github.com/vsm1996", label: "GitHub" },
-                { icon: Linkedin, href: "https://linkedin.com/in/vsm1996", label: "LinkedIn" },
-                { icon: Mail, href: "mailto:vanessa.s.martin96@gmail.com", label: "Email" },
-              ].map((social, i) => (
-                <motion.a
-                  key={social.label}
-                  href={social.href}
-                  target={social.label !== 'Email' ? "_blank" : "initial"}
-                  rel={social.label !== 'Email' ? "noopener noreferrer" : "initial"}
-                  className="text-muted-foreground hover:text-accent transition-colors relative"
-                  custom={i}
-                  variants={socialVariants}
-                  whileHover={{
-                    scale: 1.3,
-                    rotate: [0, -10, 10, 0],
-                    y: -5,
-                  }}
-                  whileTap={{ scale: 0.9 }}
-                  transition={{ stiffness: 400 }}
-                >
-                  <motion.div
-                    className="absolute inset-0 rounded-full bg-accent/20 blur-xl"
-                    initial={{ opacity: 0 }}
-                    whileHover={{ opacity: 1 }}
-                  />
-                  <social.icon className="h-6 w-6 relative z-10" />
-                  <span className="sr-only">{social.label}</span>
-                </motion.a>
-              ))}
-            </div>
-          </motion.div>
+              <Icon size={18} strokeWidth={1.5} />
+            </motion.a>
+          ))}
         </motion.div>
       </div>
     </section>

@@ -5,7 +5,16 @@ import { JetBrains_Mono } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { Suspense } from "react"
 import { ThemeProvider } from "@/components/theme-provider"
+import { createRengeTheme } from "@renge-ui/tokens"
 import "./globals.css"
+
+const rengeTheme = createRengeTheme({
+  profile: "twilight",
+  mode: "dark",
+  baseUnit: 4,
+  typeBase: 16,
+  scaleRatio: 1.618,
+})
 
 const inter = Inter({
   subsets: ["latin"],
@@ -34,6 +43,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        {/* Renge design system tokens — spacing, typography, motion, radius */}
+        <style dangerouslySetInnerHTML={{ __html: rengeTheme.css }} />
+      </head>
       <body className={`font-sans ${inter.variable} ${jetbrainsMono.variable} antialiased`}>
         <ThemeProvider>
           <Suspense fallback={null}>{children}</Suspense>

@@ -1,103 +1,355 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* ============================================
+   ITACHI UCHIHA DESIGN SYSTEM
+   Power through restraint. Everything intentional.
+   ============================================ */
+
 :root {
-  /* Dark mode now emphasizes purple shades with gold accent instead of green */
-  --background: oklch(0.18 0.1 280);
-  --foreground: oklch(0.92 0.05 285);
-  --card: oklch(0.22 0.12 280);
-  --card-foreground: oklch(0.9 0.06 285);
-  --popover: oklch(0.22 0.12 280);
-  --popover-foreground: oklch(0.92 0.05 285);
-  --primary: oklch(0.75 0.22 285); /* bright vibrant lavender */
-  --primary-foreground: oklch(0.15 0.1 280);
-  --secondary: oklch(0.68 0.18 295); /* lighter purple shade */
-  --secondary-foreground: oklch(0.92 0.05 285);
-  --muted: oklch(0.3 0.14 280);
-  --muted-foreground: oklch(0.7 0.1 285);
-  --accent: oklch(0.72 0.18 60); /* warm gold/amber accent */
-  --accent-foreground: oklch(0.15 0.1 280);
-  --destructive: oklch(0.65 0.15 15);
-  --destructive-foreground: oklch(0.92 0.05 285);
-  --border: oklch(0.35 0.14 280);
-  --input: oklch(0.3 0.14 280);
-  --ring: oklch(0.75 0.22 285);
-  --chart-1: oklch(0.75 0.22 285);
-  --chart-2: oklch(0.68 0.18 295);
-  --chart-3: oklch(0.72 0.18 60);
-  --chart-4: oklch(0.7 0.18 270);
-  --chart-5: oklch(0.72 0.16 290);
-  --sidebar: oklch(0.18 0.1 280);
-  --sidebar-foreground: oklch(0.92 0.05 285);
-  --sidebar-primary: oklch(0.75 0.22 285);
-  --sidebar-primary-foreground: oklch(0.15 0.1 280);
-  --sidebar-accent: oklch(0.3 0.14 280);
-  --sidebar-accent-foreground: oklch(0.92 0.05 285);
-  --sidebar-border: oklch(0.35 0.14 280);
-  --sidebar-ring: oklch(0.75 0.22 285);
+  /* --- Core Itachi Palette --- */
+  --itachi-base:       oklch(0.08 0.02 270);   /* near black, whisper of cool purple */
+  --itachi-surface:    oklch(0.12 0.03 270);   /* card surfaces */
+  --itachi-surface-2:  oklch(0.15 0.035 270);  /* elevated surfaces */
+  --itachi-crow:       oklch(0.25 0.06 270);   /* crow iridescence — dark blue-purple */
+  --itachi-sharingan:  oklch(0.45 0.18 20);    /* deep blood red — used SPARINGLY */
+  --itachi-sharingan-glow: oklch(0.55 0.22 20 / 0.4); /* sharingan glow state */
+  --itachi-tsukuyomi:  oklch(0.40 0.22 10);    /* crimson genjutsu sky — deep blood red */
+  --itachi-text:       oklch(0.90 0.02 270);   /* primary text */
+  --itachi-subtle:     oklch(0.55 0.03 270);   /* secondary/subtle text */
+  --itachi-ghost:      oklch(0.30 0.04 270);   /* ghost text, barely there */
+  --itachi-border:     oklch(0.20 0.04 270);   /* borders — nearly invisible */
+  --itachi-border-crow: oklch(0.28 0.07 270 / 0.6); /* crow iridescence border */
+
+  /* --- Shadcn/UI Compatibility Mapping --- */
+  --background:           var(--itachi-base);
+  --foreground:           var(--itachi-text);
+  --card:                 var(--itachi-surface);
+  --card-foreground:      var(--itachi-text);
+  --popover:              var(--itachi-surface);
+  --popover-foreground:   var(--itachi-text);
+  --primary:              var(--itachi-sharingan);
+  --primary-foreground:   var(--itachi-tsukuyomi);
+  --secondary:            var(--itachi-surface-2);
+  --secondary-foreground: var(--itachi-text);
+  --muted:                var(--itachi-crow);
+  --muted-foreground:     var(--itachi-subtle);
+  --accent:               var(--itachi-sharingan);
+  --accent-foreground:    var(--itachi-tsukuyomi);
+  --destructive:          oklch(0.55 0.2 15);
+  --destructive-foreground: var(--itachi-tsukuyomi);
+  --border:               var(--itachi-border);
+  --input:                var(--itachi-surface-2);
+  --ring:                 var(--itachi-sharingan);
+  --radius:               0.25rem;
+
+  /* --- Chart colors (minimal use) --- */
+  --chart-1: var(--itachi-sharingan);
+  --chart-2: var(--itachi-crow);
+  --chart-3: var(--itachi-subtle);
+  --chart-4: var(--itachi-surface-2);
+  --chart-5: var(--itachi-ghost);
+
+  /* --- Sidebar --- */
+  --sidebar:                  var(--itachi-surface);
+  --sidebar-foreground:       var(--itachi-text);
+  --sidebar-primary:          var(--itachi-sharingan);
+  --sidebar-primary-foreground: var(--itachi-tsukuyomi);
+  --sidebar-accent:           var(--itachi-crow);
+  --sidebar-accent-foreground: var(--itachi-text);
+  --sidebar-border:           var(--itachi-border);
+  --sidebar-ring:             var(--itachi-sharingan);
+
+  /* --- Tsukuyomi section override --- */
+  --tsukuyomi-bg:       var(--itachi-tsukuyomi);
+  --tsukuyomi-text:     oklch(0.15 0.03 270);
+  --tsukuyomi-subtle:   oklch(0.40 0.03 270);
 }
 
 @theme inline {
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+  --color-background:            var(--background);
+  --color-foreground:            var(--foreground);
+  --color-card:                  var(--card);
+  --color-card-foreground:       var(--card-foreground);
+  --color-popover:               var(--popover);
+  --color-popover-foreground:    var(--popover-foreground);
+  --color-primary:               var(--primary);
+  --color-primary-foreground:    var(--primary-foreground);
+  --color-secondary:             var(--secondary);
+  --color-secondary-foreground:  var(--secondary-foreground);
+  --color-muted:                 var(--muted);
+  --color-muted-foreground:      var(--muted-foreground);
+  --color-accent:                var(--accent);
+  --color-accent-foreground:     var(--accent-foreground);
+  --color-destructive:           var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+  --color-border:                var(--border);
+  --color-input:                 var(--input);
+  --color-ring:                  var(--ring);
+  --radius-sm:  calc(var(--radius) - 2px);
+  --radius-md:  var(--radius);
+  --radius-lg:  calc(var(--radius) + 4px);
+  --radius-xl:  calc(var(--radius) + 8px);
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar:                    var(--sidebar);
+  --color-sidebar-foreground:         var(--sidebar-foreground);
+  --color-sidebar-primary:            var(--sidebar-primary);
   --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-accent:             var(--sidebar-accent);
+  --color-sidebar-accent-foreground:  var(--sidebar-accent-foreground);
+  --color-sidebar-border:             var(--sidebar-border);
+  --color-sidebar-ring:               var(--sidebar-ring);
 }
+
+/* ============================================
+   BASE LAYER
+   ============================================ */
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
-  body {
-    @apply bg-background text-foreground;
-  }
 
   html {
     scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Added performance optimization with will-change */
-  @media (prefers-reduced-motion: no-preference) {
-    .motion-safe\:will-change-transform {
-      will-change: transform;
+  body {
+    @apply bg-background text-foreground;
+    background-color: var(--itachi-base);
+    /* No ambient glow. Darkness is intentional. */
+  }
+
+  /* Typography baseline — restraint */
+  h1, h2, h3, h4, h5, h6 {
+    letter-spacing: 0.05em;
+    font-weight: 300;
+    color: var(--itachi-text);
+  }
+
+  /* Scrollbar — minimal */
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--itachi-base);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--itachi-crow);
+    border-radius: 2px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--itachi-sharingan);
+  }
+
+  /* Selection */
+  ::selection {
+    background: oklch(0.45 0.18 20 / 0.3);
+    color: var(--itachi-text);
+  }
+
+  /* ============================================
+     TSUKUYOMI SECTION
+     Full inversion — entering the genjutsu
+     ============================================ */
+  .tsukuyomi {
+    background-color: var(--tsukuyomi-bg);
+    color: var(--tsukuyomi-text);
+  }
+
+  .tsukuyomi h1,
+  .tsukuyomi h2,
+  .tsukuyomi h3,
+  .tsukuyomi p {
+    color: var(--tsukuyomi-text);
+  }
+
+  /* ============================================
+     TSUKUYOMI TEXT BREATHE
+     Letter-spacing oscillation — words breathing wrong.
+     Period: 5s. Almost invisible. Always felt.
+     ============================================ */
+
+  @keyframes tsukuyomi-breathe {
+    0%, 100% { letter-spacing: 0.01em; }
+    50%       { letter-spacing: 0.022em; }
+  }
+  /* Period controlled at use-site: 8s */
+
+  /* ============================================
+     CROW ANIMATION KEYFRAMES
+     Durations use --renge-duration-* tokens
+     ============================================ */
+
+  @keyframes crow-fly-in-left {
+    0% {
+      transform: translateX(-120vw) translateY(var(--crow-offset-y, 0px)) rotate(var(--crow-angle-start, -15deg)) scaleX(-1);
+      opacity: 0;
+    }
+    20% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateX(var(--crow-target-x, 0px)) translateY(var(--crow-target-y, 0px)) rotate(var(--crow-angle-end, 0deg)) scaleX(-1);
+      opacity: 1;
     }
   }
 
-  /* Disable animations for users who prefer reduced motion */
+  @keyframes crow-fly-in-right {
+    0% {
+      transform: translateX(120vw) translateY(var(--crow-offset-y, 0px)) rotate(var(--crow-angle-start, 15deg));
+      opacity: 0;
+    }
+    20% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateX(var(--crow-target-x, 0px)) translateY(var(--crow-target-y, 0px)) rotate(var(--crow-angle-end, 0deg));
+      opacity: 1;
+    }
+  }
+
+  @keyframes crow-disperse {
+    0% {
+      opacity: 1;
+      transform: translateX(var(--crow-target-x, 0px)) translateY(var(--crow-target-y, 0px));
+    }
+    100% {
+      opacity: 0;
+      transform: translateX(var(--crow-disperse-x, 50px)) translateY(var(--crow-disperse-y, -80px)) rotate(var(--crow-disperse-angle, 20deg));
+    }
+  }
+
+  @keyframes crow-wing-beat {
+    0%, 100% {
+      d: path("M 0 0 C -8 -6 -16 -4 -20 0 C -16 4 -8 6 0 0");
+    }
+    50% {
+      d: path("M 0 0 C -8 2 -16 8 -20 4 C -16 0 -8 -2 0 0");
+    }
+  }
+
+  @keyframes crow-hover {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-4px);
+    }
+  }
+
+  /* ============================================
+     TSUKUYOMI RUMBLE
+     Micro-vibration — the world breathing wrong
+     Gated behind prefers-reduced-motion
+     ============================================ */
+
+  @keyframes tsukuyomi-rumble {
+    /* Long holds near origin — breath held, not shaking.
+       Brief micro-shifts between. Max displacement: 0.25px. */
+    0%, 12%    { transform: translate(0px, 0px); }
+    17%        { transform: translate(0.22px, -0.14px); }
+    24%, 40%   { transform: translate(0.08px, 0px); }
+    46%        { transform: translate(-0.18px, 0.16px); }
+    54%, 67%   { transform: translate(0px, 0.07px); }
+    72%        { transform: translate(0.15px, -0.18px); }
+    80%, 91%   { transform: translate(0.04px, 0px); }
+    95%        { transform: translate(-0.1px, 0.08px); }
+    94%  { transform: translate(-0.3px, 0.2px); }
+    100% { transform: translate(0px, 0px); }
+  }
+
+  /* ============================================
+     TSUKUYOMI TRANSITION KEYFRAMES
+     Entering and leaving the blood world
+     ============================================ */
+
+  @keyframes tsukuyomi-enter {
+    0% {
+      background-color: var(--itachi-base);
+      color: var(--itachi-text);
+    }
+    100% {
+      background-color: var(--tsukuyomi-bg);
+      color: var(--tsukuyomi-text);
+    }
+  }
+
+  @keyframes tsukuyomi-exit {
+    0% {
+      background-color: var(--tsukuyomi-bg);
+      color: var(--tsukuyomi-text);
+    }
+    100% {
+      background-color: var(--itachi-base);
+      color: var(--itachi-text);
+    }
+  }
+
+  /* ============================================
+     SHARINGAN / MANGEKYOU KEYFRAMES
+     ============================================ */
+
+  @keyframes sharingan-pulse {
+    0%, 100% {
+      opacity: 0.03;
+      transform: scale(1) rotate(0deg);
+    }
+    50% {
+      opacity: 0.06;
+      transform: scale(1.02) rotate(3deg);
+    }
+  }
+
+  @keyframes sharingan-reveal {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 0.12;
+    }
+  }
+
+  /* ============================================
+     UTILITY ANIMATION CLASSES
+     Uses --renge-duration-* and --renge-easing-* tokens
+     ============================================ */
+
+  .animate-crow-hover {
+    animation: crow-hover var(--renge-duration-5, 800ms) var(--renge-easing-ease-in-out, ease-in-out) infinite;
+  }
+
+  .animate-sharingan-pulse {
+    animation: sharingan-pulse var(--renge-duration-6, 1300ms) var(--renge-easing-ease-in-out, ease-in-out) infinite;
+  }
+
+  /* ============================================
+     UTILITY: ITACHI LINK HOVER
+     Text links that reveal crimson on hover.
+     Used in Projects + Contact.
+     ============================================ */
+
+  .itachi-link {
+    color: var(--itachi-subtle);
+    transition: color 0.2s ease;
+    text-decoration: none;
+  }
+  .itachi-link:hover {
+    color: var(--itachi-sharingan);
+  }
+
+  /* ============================================
+     REDUCED MOTION — NON-NEGOTIABLE
+     ============================================ */
+
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -109,201 +361,9 @@
     }
   }
 
-  /* Updated to use softer, more calming purple gradients */
-  body::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: radial-gradient(circle at 30% 20%, oklch(0.75 0.22 285 / 0.08) 0%, transparent 40%),
-      radial-gradient(circle at 70% 60%, oklch(0.68 0.18 295 / 0.07) 0%, transparent 45%),
-      radial-gradient(circle at 20% 80%, oklch(0.72 0.18 60 / 0.06) 0%, transparent 50%),
-      radial-gradient(circle at 90% 30%, oklch(0.7 0.18 270 / 0.05) 0%, transparent 55%);
-    pointer-events: none;
-    z-index: 0;
-    animation: ethereal-flow 34s ease-in-out infinite;
-  }
-
-  /* Softened aura overlay with gentle lavender glow */
-  body::after {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: radial-gradient(ellipse at 50% 50%, oklch(0.75 0.22 285 / 0.04) 0%, transparent 60%);
-    pointer-events: none;
-    z-index: 0;
-    animation: aura-pulse 8s ease-in-out infinite;
-  }
-
-  main {
-    position: relative;
-    z-index: 1;
-  }
-
-  /* Enhanced keyframe animations with more organic, flowing movements */
-  @keyframes ethereal-flow {
-    0%,
-    100% {
-      transform: translate(0, 0) scale(1) rotate(0deg);
-      opacity: 1;
+  @media (prefers-reduced-motion: no-preference) {
+    .motion-safe\:will-change-transform {
+      will-change: transform;
     }
-    25% {
-      transform: translate(50px, -30px) scale(1.1) rotate(5deg);
-      opacity: 0.9;
-    }
-    50% {
-      transform: translate(-30px, 50px) scale(0.95) rotate(-3deg);
-      opacity: 0.95;
-    }
-    75% {
-      transform: translate(40px, 20px) scale(1.05) rotate(2deg);
-      opacity: 0.92;
-    }
-  }
-
-  @keyframes aura-pulse {
-    0%,
-    100% {
-      opacity: 0.3;
-      transform: scale(1);
-    }
-    50% {
-      opacity: 0.6;
-      transform: scale(1.1);
-    }
-  }
-
-  @keyframes float {
-    0%,
-    100% {
-      transform: translateY(0px);
-    }
-    50% {
-      transform: translateY(-20px);
-    }
-  }
-
-  @keyframes rotate-slow {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-
-  @keyframes rotate-reverse {
-    from {
-      transform: rotate(360deg);
-    }
-    to {
-      transform: rotate(0deg);
-    }
-  }
-
-  @keyframes pulse-glow {
-    0%,
-    100% {
-      opacity: 0.4;
-      transform: scale(1);
-      filter: blur(20px);
-    }
-    50% {
-      opacity: 0.7;
-      transform: scale(1.1);
-      filter: blur(25px);
-    }
-  }
-
-  @keyframes shimmer {
-    0% {
-      background-position: -1000px 0;
-    }
-    100% {
-      background-position: 1000px 0;
-    }
-  }
-
-  /* Added sacred geometry animation */
-  @keyframes sacred-spin {
-    0% {
-      transform: rotate(0deg) scale(1);
-    }
-    50% {
-      transform: rotate(180deg) scale(1.1);
-    }
-    100% {
-      transform: rotate(360deg) scale(1);
-    }
-  }
-
-  /* Added animated gradient keyframes for flowing text gradients */
-  @keyframes gradient-flow {
-    0% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
-    100% {
-      background-position: 0% 50%;
-    }
-  }
-
-  @keyframes gradient-shift {
-    0%,
-    100% {
-      background-position: 0% 50%;
-    }
-    25% {
-      background-position: 50% 100%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
-    75% {
-      background-position: 50% 0%;
-    }
-  }
-
-  .animate-float {
-    animation: float 5s ease-in-out infinite;
-  }
-
-  .animate-float-delayed {
-    animation: float 8s ease-in-out infinite;
-    animation-delay: 1.3s;
-  }
-
-  .animate-rotate-slow {
-    animation: rotate-slow 13s linear infinite;
-  }
-
-  .animate-rotate-reverse {
-    animation: rotate-reverse 21s linear infinite;
-  }
-
-  .animate-pulse-glow {
-    animation: pulse-glow 5s ease-in-out infinite;
-  }
-
-  .animate-sacred-spin {
-    animation: sacred-spin 21s ease-in-out infinite;
-  }
-
-  /* Added utility classes for animated gradients */
-  .animate-gradient-flow {
-    background-size: 200% 200%;
-    animation: gradient-flow 3s ease infinite;
-  }
-
-  .animate-gradient-shift {
-    background-size: 300% 300%;
-    animation: gradient-shift 5s ease-in-out infinite;
   }
 }
