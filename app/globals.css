@@ -122,6 +122,13 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
+  /* Hide native cursor on pointer devices — replaced by custom Cursor component */
+  @media (pointer: fine) {
+    *, *::before, *::after {
+      cursor: none !important;
+    }
+  }
+
   body {
     @apply bg-background text-foreground;
     background-color: var(--itachi-base);

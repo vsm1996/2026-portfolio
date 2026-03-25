@@ -1,188 +1,102 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { Mail } from "lucide-react"
-import { cubicBezier, motion } from "framer-motion"
-import { useInView } from "framer-motion"
+// Contact — near darkness.
+// One reason to reach out. One way to do it. Nothing else.
+
+import { motion, useInView } from "framer-motion"
 import { useRef } from "react"
-import { PHI_INVERSE, FIBONACCI_MS, EASING, PHI, GOLDEN_ANGLE } from "@/lib/animation-constants"
+import { ParticleField } from "@/components/particle-field"
 
 export function Contact() {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: "-100px" })
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: FIBONACCI_MS.f3 / 1000,
-      },
-    },
-  }
-
-  const itemVariants = {
-    hidden: {
-      opacity: 0,
-      y: 30,
-      scale: PHI_INVERSE,
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: {
-        duration: FIBONACCI_MS.f5 / 1000,
-        ease: cubicBezier(EASING.golden[0], EASING.golden[1], EASING.golden[2], EASING.golden[3]),
-      },
-    },
-  }
+  const ref = useRef<HTMLElement>(null)
+  const isInView = useInView(ref, { once: true, amount: 0.3 })
 
   return (
-    <section id="contact" className="min-h-screen flex items-center justify-center px-6 py-20 relative" ref={ref}>
-      <motion.div
-        className="absolute top-20 left-1/4 w-24 h-24 border-2 border-accent/20 rounded-full"
-        animate={{
-          scale: [1, 1.5, 1],
-          rotate: [0, 360],
-          x: [0, 40, 0],
-          y: [0, -30, 0],
-        }}
-        transition={{
-          duration: 16,
-          repeat: Number.POSITIVE_INFINITY,
-          ease: "easeInOut",
-        }}
-      />
+    <section
+      id="contact"
+      ref={ref}
+      className="min-h-screen flex items-center justify-center px-8 py-32 relative overflow-hidden"
+      style={{ backgroundColor: "var(--itachi-base)" }}
+    >
+      <ParticleField count={14} />
 
       <motion.div
-        className="absolute bottom-1/4 right-1/4 w-16 h-16 bg-primary/10 rounded-2xl"
-        animate={{
-          rotate: [0, GOLDEN_ANGLE, GOLDEN_ANGLE * 2, 360],
-          scale: [1, PHI, 0.8, 1],
-          x: [0, -30, 0],
-          y: [0, 20, 0],
-        }}
-        transition={{
-          duration: 14,
-          repeat: Number.POSITIVE_INFINITY,
-          ease: "easeInOut",
-        }}
-      />
-
-      <motion.div
-        className="absolute top-1/3 right-20 w-20 h-20 border border-accent/30"
-        style={{ borderRadius: "50% 50% 30% 70% / 30% 70% 50% 50%" }}
-        animate={{
-          rotate: [360, 0],
-          scale: [1, 1.3, 1],
-          y: [0, -40, 0],
-        }}
-        transition={{
-          duration: 12,
-          repeat: Number.POSITIVE_INFINITY,
-          ease: "easeInOut",
-        }}
-      />
-      {/* End of added floating animated decorative elements */}
-
-      <div className="max-w-2xl w-full">
-        <motion.div
-          className="space-y-8 text-center"
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
+        className="relative"
+        style={{ maxWidth: "52ch", zIndex: 1, textAlign: "center" }}
+        initial={{ opacity: 0, y: 24 }}
+        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+        transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+      >
+        <h2
+          style={{
+            color: "var(--itachi-text)",
+            fontWeight: 300,
+            letterSpacing: "0.2em",
+            fontSize: "clamp(2rem, 4.5vw, 3.5rem)",
+            marginBottom: "2rem",
+            textShadow: "0 0 20px oklch(0.15 0.03 270)",
+          }}
         >
-          <motion.div className="space-y-4" variants={itemVariants}>
-            <p className="text-accent font-mono text-sm font-semibold">04. What's Next?</p>
-            <h2 className="text-4xl md:text-5xl font-extrabold text-foreground text-balance">Get In Touch</h2>
-          </motion.div>
+          Contact
+        </h2>
 
-          <motion.div variants={itemVariants}>
-            <Card className="p-8 backdrop-blur-xl bg-card/50 border-border/50 rounded-3xl relative overflow-hidden">
-              <motion.div
-                className="absolute inset-0"
-                style={{
-                  background: "linear-gradient(90deg, transparent, oklch(0.68 0.32 290 / 0.08), transparent)",
-                }}
-                animate={{
-                  x: ["-100%", "100%"],
-                }}
-                transition={{
-                  duration: 4,
-                  repeat: Number.POSITIVE_INFINITY,
-                  ease: "linear",
-                }}
-              />
-              {/* End of added animated shimmer effect */}
-              <div className="space-y-6 relative z-10">
-                <p className="text-lg text-muted-foreground font-normal leading-relaxed">
-                  I'm available for frontend architecture consulting, design system engagements, and fractional architect retainers.<br/><br/>If your frontend is load-bearing and you need someone who can see the whole system, not just the symptoms, let's talk.
-                </p>
+        <p
+          style={{
+            color: "var(--itachi-subtle)",
+            fontSize: "0.9375rem",
+            lineHeight: "1.85",
+            fontWeight: 300,
+            letterSpacing: "0.02em",
+            marginBottom: "3rem",
+          }}
+        >
+          Available for frontend architecture consulting, design system engagements,
+          and fractional architect retainers. If your frontend is load-bearing and you
+          need someone who can see the whole system — not just the symptoms — let's talk.
+        </p>
 
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  animate={{
-                    y: [0, -5, 0],
-                  }}
-                  transition={{
-                    y: { duration: 3, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" },
-                  }}
-                >
-                  <motion.a
-                    href="mailto:vanessa.s.martin96@gmail.com"
-                    className="text-muted-foreground hover:text-accent transition-colors relative"
-                    target={"initial"}
-                    rel={"initial"}
-                    whileHover={{
-                      scale: 1.3,
-                      rotate: [0, -10, 10, 0],
-                      y: -5,
-                    }}
-                    whileTap={{ scale: 0.9 }}
-                    transition={{ stiffness: 400 }}
-                  >
-                    <Button size="lg" className="group rounded-full relative overflow-hidden">
-                      <motion.div
-                        className="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent"
-                        animate={{
-                          x: ["-100%", "100%"],
-                        }}
-                        transition={{
-                          duration: 2,
-                          repeat: Number.POSITIVE_INFINITY,
-                          ease: "linear",
-                        }}
-                      />
-                      <Mail className="mr-2 h-4 w-4 relative z-10" />
-                      <span className="relative z-10">Say Hello</span>
-                    </Button>
-                  </motion.a>
-                </motion.div>
-              </div>
-            </Card>
-          </motion.div>
+        {/* Single CTA — sharingan crimson */}
+        <a
+          href="mailto:vanessa.s.martin96@gmail.com"
+          style={{
+            display: "inline-block",
+            color: "var(--itachi-sharingan)",
+            fontSize: "0.75rem",
+            letterSpacing: "0.2em",
+            textTransform: "uppercase",
+            fontWeight: 300,
+            textDecoration: "none",
+            padding: "0.875rem 2.5rem",
+            border: "1px solid var(--itachi-sharingan)",
+            borderRadius: "var(--radius)",
+            transition: "background-color 0.2s ease, color 0.2s ease",
+          }}
+          onMouseEnter={(e) => {
+            const el = e.currentTarget
+            el.style.backgroundColor = "oklch(0.45 0.18 20 / 0.1)"
+          }}
+          onMouseLeave={(e) => {
+            const el = e.currentTarget
+            el.style.backgroundColor = "transparent"
+          }}
+        >
+          Say Hello
+        </a>
 
-          <motion.footer className="pt-12 space-y-4" variants={itemVariants}>
-            <motion.p
-              className="text-sm text-muted-foreground"
-              animate={{
-                opacity: [0.5, 1, 0.5],
-              }}
-              transition={{
-                duration: FIBONACCI_MS.f7 / 1000,
-                repeat: Number.POSITIVE_INFINITY,
-                ease: cubicBezier(EASING.gentle[0], EASING.gentle[1], EASING.gentle[2], EASING.gentle[3]),
-              }}
-            >
-              Designed & Built by Vanessa Martin
-            </motion.p>
-            <p className="text-xs text-muted-foreground font-mono">© 2026 All rights reserved</p>
-          </motion.footer>
-        </motion.div>
-      </div>
+        {/* Footer — barely there */}
+        <footer
+          style={{
+            marginTop: "6rem",
+            color: "var(--itachi-ghost)",
+            fontSize: "0.6875rem",
+            letterSpacing: "0.12em",
+            fontFamily: "var(--font-mono, monospace)",
+          }}
+        >
+          <p>Designed &amp; Built by Vanessa Martin</p>
+          <p style={{ marginTop: "0.5rem", opacity: 0.6 }}>© 2026</p>
+        </footer>
+      </motion.div>
     </section>
   )
 }

@@ -1,12 +1,13 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { cubicBezier, motion } from "framer-motion"
+import { motion } from "framer-motion"
 import { FIBONACCI_MS, EASING } from "@/lib/animation-constants"
-
+import { cubicBezier } from "framer-motion"
 
 export function Navigation() {
   const [activeSection, setActiveSection] = useState("home")
+  const [scrolled, setScrolled] = useState(false)
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
 
   useEffect(() => {
@@ -19,6 +20,8 @@ export function Navigation() {
 
   useEffect(() => {
     const handleScroll = () => {
+      setScrolled(window.scrollY > 40)
+
       const sections = ["home", "about", "experience", "projects", "contact"]
       const scrollPosition = window.scrollY + 100
 
@@ -46,14 +49,13 @@ export function Navigation() {
   }
 
   const navItems = [
-    { id: "about", label: "About" },
+    { id: "about",      label: "About" },
     { id: "experience", label: "Experience" },
-    { id: "projects", label: "Projects" },
-    { id: "contact", label: "Contact" },
+    { id: "projects",   label: "Projects" },
+    { id: "contact",    label: "Contact" },
   ]
 
-  // Tsukuyomi is now dark blood-orange — no inversion needed.
-  // Navbar stays consistently dark across all sections.
+  const colorTransition = prefersReducedMotion ? "none" : "color 200ms ease, opacity 200ms ease"
 
   return (
     <motion.nav
@@ -65,26 +67,45 @@ export function Navigation() {
         ease: cubicBezier(EASING.golden[0], EASING.golden[1], EASING.golden[2], EASING.golden[3]),
       }}
     >
+      {/* Blur seeps in only when scrolled — darkness by default */}
       <div
-        className="w-full px-8 py-5"
         style={{
-          backdropFilter: "blur(12px)",
-          WebkitBackdropFilter: "blur(12px)",
-          backgroundColor: "oklch(0.08 0.02 270 / 0.85)",
-          borderBottom: "1px solid oklch(0.25 0.06 270 / 0.45)",
+          position: "absolute",
+          inset: 0,
+          backdropFilter: scrolled ? "blur(14px)" : "none",
+          WebkitBackdropFilter: scrolled ? "blur(14px)" : "none",
+          backgroundColor: scrolled ? "oklch(0.08 0.02 270 / 0.75)" : "transparent",
+          borderBottom: scrolled ? "1px solid oklch(0.20 0.05 270 / 0.35)" : "1px solid transparent",
+          transition: prefersReducedMotion
+            ? "none"
+            : "backdrop-filter 400ms ease, background-color 400ms ease, border-color 400ms ease",
+          pointerEvents: "none",
         }}
-      >
+      />
+
+      <div className="relative w-full px-8 py-5">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
-          {/* Logo */}
+
+          {/* Logo — VSM, floating in darkness */}
           <button
             onClick={() => scrollToSection("home")}
-            className="text-xs font-light tracking-[0.25em] uppercase"
-            style={{ color: "oklch(0.90 0.02 270)" }}
+            style={{
+              color: "oklch(0.90 0.02 270)",
+              fontSize: "0.6875rem",
+              fontWeight: 300,
+              letterSpacing: "0.28em",
+              textTransform: "uppercase",
+              background: "none",
+              border: "none",
+              cursor: "none",
+              padding: 0,
+              transition: colorTransition,
+            }}
           >
             VSM
           </button>
 
-          {/* Nav items */}
+          {/* Nav items — flat text, no container */}
           <div className="hidden md:flex items-center gap-10">
             {navItems.map((item) => {
               const isActive = activeSection === item.id
@@ -92,15 +113,34 @@ export function Navigation() {
                 <button
                   key={item.id}
                   onClick={() => scrollToSection(item.id)}
-                  className="text-xs tracking-[0.12em] uppercase"
                   style={{
-                    color: isActive
-                      ? "oklch(0.90 0.02 270)"
-                      : "oklch(0.55 0.03 270)",
-                    transition: prefersReducedMotion ? "none" : "color 150ms ease",
+                    position: "relative",
+                    color: isActive ? "oklch(0.45 0.18 20)" : "oklch(0.50 0.03 270)",
+                    fontSize: "0.6875rem",
+                    fontWeight: 300,
+                    letterSpacing: "0.14em",
+                    textTransform: "uppercase",
+                    background: "none",
+                    border: "none",
+                    cursor: "none",
+                    padding: "0 0 4px",
+                    transition: colorTransition,
                   }}
                 >
                   {item.label}
+                  {/* Thin crimson underline for active state */}
+                  <span
+                    style={{
+                      position: "absolute",
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      height: "1px",
+                      backgroundColor: "var(--itachi-sharingan)",
+                      opacity: isActive ? 0.5 : 0,
+                      transition: prefersReducedMotion ? "none" : "opacity 200ms ease",
+                    }}
+                  />
                 </button>
               )
             })}

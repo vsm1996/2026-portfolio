@@ -2,6 +2,8 @@
 
 import { motion, useInView } from "framer-motion"
 import { useRef, useState } from "react"
+import { ParticleField } from "@/components/particle-field"
+import { AmbientCrows } from "@/components/ambient-crows"
 
 const projects = [
   {
@@ -194,10 +196,12 @@ export function Projects() {
     <section
       id="projects"
       ref={ref}
-      className="min-h-screen flex items-center justify-center px-8 py-32"
+      className="min-h-screen flex items-center justify-center px-8 py-32 relative overflow-hidden"
       style={{ backgroundColor: "var(--itachi-base)" }}
     >
-      <div className="max-w-5xl w-full">
+      <ParticleField count={20} />
+      <AmbientCrows />
+      <div className="max-w-5xl w-full relative" style={{ zIndex: 1 }}>
 
         {/* Section title — same treatment as About */}
         <motion.h2
@@ -210,6 +214,7 @@ export function Projects() {
             letterSpacing: "0.2em",
             fontSize: "clamp(2rem, 4.5vw, 3.5rem)",
             marginBottom: "4rem",
+            textShadow: "0 0 20px oklch(0.15 0.03 270)",
           }}
         >
           Projects

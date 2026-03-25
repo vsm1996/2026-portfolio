@@ -1,11 +1,13 @@
 "use client"
 
+// Experience — minimal timeline.
+// Almost invisible structure. Information present but not performing.
+// The work speaks. The design stays out of the way.
+
 import { useState } from "react"
-import { Card } from "@/components/ui/card"
-import { motion, AnimatePresence, cubicBezier } from "framer-motion"
-import { useInView } from "framer-motion"
+import { motion, AnimatePresence, useInView } from "framer-motion"
 import { useRef } from "react"
-import { PHI_INVERSE, FIBONACCI_MS, EASING, PHI, GOLDEN_ANGLE } from "@/lib/animation-constants"
+import { ParticleField } from "@/components/particle-field"
 
 const experiences = [
   {
@@ -25,35 +27,35 @@ const experiences = [
     position: "Front-end Engineer",
     period: "2022 — 2024",
     description: [
-      "Led the successful migration of older PlayStation.com frontend from jQuery and AEM infrastructure to modern React/Next.js and Storybook infrastructure, resulting in improved site performance and maintainability. ",
-      "Worked closely with designers to implement pixel-perfect UIs",
-      "Maintained and enhanced various omni-channel/marketing websites and tools, contributing to increased user engagement and retention. ",
-      "Coordinated the creation of the annual PlayStation year-end wrap-up, receiving positive feedback from millions of users.",
+      "Led the successful migration of PlayStation.com from jQuery and AEM to React/Next.js and Storybook, improving performance and maintainability at scale.",
+      "Worked closely with designers to implement pixel-perfect UIs across omni-channel marketing surfaces.",
+      "Maintained and enhanced various marketing websites and tools, contributing to increased user engagement and retention.",
+      "Coordinated the creation of the annual PlayStation year-end wrap-up, received positively by millions of users.",
     ],
-    technologies: ["JavaScript", "React", "Next.js", "jQuery", "CSS", "Ruby", "TailwindCSS", "Storybook", "Netlify", "Git"],
+    technologies: ["JavaScript", "React", "Next.js", "jQuery", "CSS", "Ruby", "TailwindCSS", "Storybook", "Netlify"],
   },
   {
     company: "Aleph Inc",
     position: "Front-end Engineer",
     period: "2021 — 2022",
     description: [
-      "Developed pixel-perfect front-end web applications connected to a headless WordPress content management system, ensuring seamless and consistent delivery of client UI designs.",
-      "Implemented metrics standards (Lighthouse) in-house to improve SEO and page loading performance, resulting in a 20% increase in organic traffic. ",
-      "Introduced TypeScript to the team, reducing bugs and improving code quality across projects. ",
-      " Streamlined the development process by creating a company front-end boilerplate and setting up CI/CD pipelines for multiple staging environments. ",
+      "Developed pixel-perfect frontend applications connected to a headless WordPress CMS, ensuring seamless delivery of client UI designs.",
+      "Implemented Lighthouse metrics standards in-house to improve SEO and page loading performance — 20% increase in organic traffic.",
+      "Introduced TypeScript to the team, reducing bugs and improving code quality across projects.",
+      "Streamlined development by creating a company frontend boilerplate and setting up CI/CD pipelines for multiple staging environments.",
     ],
-    technologies: ["Next.js", "React", "JavaScript", "TypeScript", "SCSS/CSS", "Mapbox", "WordPress CMS", "Postman", "Google Cloud Run", "Vercel", "Docker", "AWS", "Git"],
+    technologies: ["Next.js", "React", "TypeScript", "SCSS", "Mapbox", "WordPress CMS", "Google Cloud Run", "Docker", "AWS"],
   },
   {
     company: "Altair Engineering",
     position: "Software Test Engineer",
     period: "2019 — 2020",
     description: [
-      "Spearheaded the complete redesign of testing automation from manual to fully automated API, UI end-to-end, and unit testing, achieving 100% code coverage and faster release cycles.",
-      "Integrated API tests into the CI/CD process on an automated Jenkins server, ensuring consistent testing during cloud releases.",
-      "Revamped automation procedures, making them more robust and user-friendly, resulting in reduced onboarding time for new team members.",
+      "Spearheaded the complete redesign of testing from manual to fully automated API, UI end-to-end, and unit testing — 100% code coverage.",
+      "Integrated API tests into the CI/CD process on Jenkins, ensuring consistent testing during cloud releases.",
+      "Revamped automation procedures for robustness and usability, reducing onboarding time for new team members.",
     ],
-    technologies: ["Postman", "Enzyme", "Jest", "JavaScript", "Python", "Mocha/Chai", "Runscope", "Jenkins"],
+    technologies: ["Postman", "Enzyme", "Jest", "JavaScript", "Python", "Mocha/Chai", "Jenkins"],
   },
   {
     company: "VIDA & Co",
@@ -62,298 +64,195 @@ const experiences = [
     description: [
       "Developed pixel-perfect UIs from mockups, managing the Shopify web application and contributing to the hiring process.",
       "Enhanced the database system, leading to faster product rebuilds and improved customer experience.",
-      "Led the SEO optimization efforts, resulting in a 15% increase in organic search traffic.",
-      "Created a new user-facing e-commerce dashboard with a modern UI design.",
+      "Led SEO optimization efforts — 15% increase in organic search traffic.",
     ],
-    technologies: ["Next.js", "React", "JavaScript", "CSS", "Shopify", "Git"],
+    technologies: ["Next.js", "React", "JavaScript", "CSS", "Shopify"],
   },
 ]
 
 export function Experience() {
   const [activeIndex, setActiveIndex] = useState(0)
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: "-100px" })
+  const ref = useRef<HTMLElement>(null)
+  const isInView = useInView(ref, { once: true, amount: 0.1 })
 
-  const contentVariants = {
-    hidden: {
-      opacity: 0,
-      x: 20,
-      scale: PHI_INVERSE,
-    },
-    visible: {
-      opacity: 1,
-      x: 0,
-      scale: 1,
-      transition: {
-        duration: FIBONACCI_MS.f5 / 1000,
-        ease: cubicBezier(EASING.golden[0], EASING.golden[1], EASING.golden[2], EASING.golden[3]),
-      },
-    },
-    exit: {
-      opacity: 0,
-      x: -20,
-      scale: PHI_INVERSE,
-      transition: {
-        duration: FIBONACCI_MS.f3 / 1000,
-      },
-    },
-  }
-
-  const listItemVariants = {
-    hidden: { opacity: 0, x: -20 },
-    visible: (i: number) => ({
-      opacity: 1,
-      x: 0,
-      transition: {
-        delay: i * (FIBONACCI_MS.f1 / 1000),
-        duration: FIBONACCI_MS.f3 / 1000,
-        ease: cubicBezier(EASING.gentle[0], EASING.gentle[1], EASING.gentle[2], EASING.gentle[3]),
-      },
-    }),
-  }
+  const active = experiences[activeIndex]
 
   return (
-    <section id="experience" className="min-h-screen flex items-center justify-center px-6 py-20 relative" ref={ref}>
-      <motion.div
-        className="absolute top-10 right-20 w-16 h-16 border-2 border-accent/20 rounded-full"
-        animate={{
-          scale: [1, 1.4, 1],
-          rotate: [0, 180, 360],
-          x: [0, 30, 0],
-          y: [0, -20, 0],
-        }}
-        transition={{
-          duration: 12,
-          repeat: Number.POSITIVE_INFINITY,
-          ease: "easeInOut",
-        }}
-      />
+    <section
+      id="experience"
+      ref={ref}
+      className="min-h-screen flex items-center justify-center px-8 py-32 relative overflow-hidden"
+      style={{ backgroundColor: "var(--itachi-base)" }}
+    >
+      <ParticleField count={16} />
 
-      <motion.div
-        className="absolute bottom-20 left-20 w-20 h-20 bg-primary/5 rounded-2xl"
-        animate={{
-          rotate: [0, GOLDEN_ANGLE, GOLDEN_ANGLE * 2, 360],
-          scale: [1, PHI, 1],
-          x: [0, -25, 0],
-        }}
-        transition={{
-          duration: 18,
-          repeat: Number.POSITIVE_INFINITY,
-          ease: "easeInOut",
-        }}
-      />
+      <div className="max-w-5xl w-full relative" style={{ zIndex: 1 }}>
 
-      <motion.div
-        className="absolute top-1/2 right-10 w-12 h-12 border border-primary/30"
-        style={{ borderRadius: "40% 60% 60% 40% / 60% 40% 60% 40%" }}
-        animate={{
-          rotate: [360, 0],
-          scale: [1, 1.3, 0.8, 1],
-          y: [0, 30, -30, 0],
-        }}
-        transition={{
-          duration: 14,
-          repeat: Number.POSITIVE_INFINITY,
-          ease: "easeInOut",
-        }}
-      />
+        {/* Section title */}
+        <motion.h2
+          initial={{ opacity: 0, y: 16 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+          transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+          style={{
+            color: "var(--itachi-text)",
+            fontWeight: 300,
+            letterSpacing: "0.2em",
+            fontSize: "clamp(2rem, 4.5vw, 3.5rem)",
+            marginBottom: "4rem",
+            textShadow: "0 0 20px oklch(0.15 0.03 270)",
+          }}
+        >
+          Experience
+        </motion.h2>
 
-      <div className="max-w-4xl w-full">
-        <div className="space-y-8">
-          <motion.div
-            className="space-y-2"
-            initial={{ opacity: 0, x: -50 }}
-            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
-            transition={{ duration: FIBONACCI_MS.f5 / 1000, ease: cubicBezier(EASING.golden[0], EASING.golden[1], EASING.golden[2], EASING.golden[3]), delay: FIBONACCI_MS.f3 / 1000 }}
+        <motion.div
+          className="flex flex-col md:flex-row gap-12"
+          initial={{ opacity: 0, y: 24 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+          transition={{ duration: 0.5, delay: 0.15, ease: [0.25, 0.46, 0.45, 0.94] }}
+        >
+          {/* Company list — minimal vertical tabs */}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 0,
+              minWidth: "160px",
+              borderLeft: "1px solid var(--itachi-border)",
+            }}
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground">
-              <span className="text-accent font-mono text-xl mr-2">02.</span>
-              Where I've Worked
-            </h2>
-            <motion.div
-              className="h-px bg-border"
-              initial={{ width: 0 }}
-              animate={isInView ? { width: "20rem" } : { width: 0 }}
-              transition={{ duration: FIBONACCI_MS.f6 / 1000, ease: cubicBezier(EASING.golden[0], EASING.golden[1], EASING.golden[2], EASING.golden[3]), delay: FIBONACCI_MS.f3 / 1000 }}
-            />
-          </motion.div>
-
-          <motion.div
-            className="flex flex-col md:flex-row gap-8"
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-            transition={{ duration: FIBONACCI_MS.f5 / 1000, ease: cubicBezier(EASING.golden[0], EASING.golden[1], EASING.golden[2], EASING.golden[3]), delay: FIBONACCI_MS.f4 / 1000 }}
-          >
-            <div className="flex md:flex-col gap-3 overflow-x-auto md:overflow-x-visible pb-2 md:pb-0">
-              {experiences.map((exp, index) => (
-                <motion.button
-                  key={index}
-                  onClick={() => setActiveIndex(index)}
-                  className={`
-                    relative px-6 py-3 rounded-3xl text-left whitespace-nowrap md:whitespace-normal
-                    transition-all duration-300 font-medium
-                    ${activeIndex === index
-                      ? "text-foreground font-semibold shadow-lg"
-                      : "text-muted-foreground hover:text-foreground"
-                    }
-                  `}
-                  whileHover={{ scale: 1.05, x: 5 }}
-                  whileTap={{ scale: 0.98 }}
+            {experiences.map((exp, i) => {
+              const isActive = activeIndex === i
+              return (
+                <button
+                  key={exp.company}
+                  onClick={() => setActiveIndex(i)}
+                  style={{
+                    position: "relative",
+                    padding: "0.75rem 1.25rem",
+                    textAlign: "left",
+                    background: "none",
+                    border: "none",
+                    cursor: "none",
+                    color: isActive ? "var(--itachi-text)" : "var(--itachi-ghost)",
+                    fontSize: "0.75rem",
+                    letterSpacing: "0.1em",
+                    fontWeight: 300,
+                    transition: "color 150ms ease",
+                  }}
                 >
-                  <motion.div
-                    className={`
-                      absolute inset-0 rounded-3xl backdrop-blur-sm
-                      ${activeIndex === index
-                        ? "bg-linear-to-r from-primary/20 via-accent/20 to-secondary/20"
-                        : "bg-muted/30 hover:bg-muted/50"
-                      }
-                    `}
-                    animate={
-                      activeIndex === index
-                        ? {
-                          backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
-                        }
-                        : {}
-                    }
-                    transition={{
-                      duration: 3,
-                      repeat: Number.POSITIVE_INFINITY,
-                      ease: "linear",
-                    }}
+                  {/* Active indicator — thin crimson left bar */}
+                  <span
                     style={{
-                      backgroundSize: "200% 200%",
+                      position: "absolute",
+                      left: "-1px",
+                      top: 0,
+                      bottom: 0,
+                      width: "1px",
+                      backgroundColor: "var(--itachi-sharingan)",
+                      opacity: isActive ? 0.7 : 0,
+                      transition: "opacity 150ms ease",
                     }}
                   />
+                  {exp.company}
+                </button>
+              )
+            })}
+          </div>
 
-                  {activeIndex === index && (
-                    <motion.div
-                      className="absolute inset-0 rounded-3xl"
-                      style={{
-                        background:
-                          "linear-gradient(135deg, oklch(0.68 0.32 290), oklch(0.75 0.25 45), oklch(0.68 0.32 290))",
-                        backgroundSize: "200% 200%",
-                        padding: "2px",
-                        WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-                        WebkitMaskComposite: "xor",
-                        maskComposite: "exclude",
-                      }}
-                      animate={{
-                        backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
-                      }}
-                      transition={{
-                        duration: 3,
-                        repeat: Number.POSITIVE_INFINITY,
-                        ease: "linear",
-                      }}
-                    />
-                  )}
+          {/* Content panel */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeIndex}
+              initial={{ opacity: 0, x: 12 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -8 }}
+              transition={{ duration: 0.25, ease: [0.25, 0.46, 0.45, 0.94] }}
+              style={{ flex: 1 }}
+            >
+              {/* Role + period */}
+              <div style={{ marginBottom: "1.5rem" }}>
+                <p
+                  style={{
+                    color: "var(--itachi-text)",
+                    fontWeight: 300,
+                    fontSize: "1.0625rem",
+                    letterSpacing: "0.06em",
+                    marginBottom: "0.35rem",
+                  }}
+                >
+                  {active.position}
+                  <span style={{ color: "var(--itachi-sharingan)", marginLeft: "0.5em" }}>
+                    @ {active.company}
+                  </span>
+                </p>
+                <p
+                  style={{
+                    color: "var(--itachi-ghost)",
+                    fontSize: "0.75rem",
+                    letterSpacing: "0.12em",
+                    fontFamily: "var(--font-mono, monospace)",
+                  }}
+                >
+                  {active.period}
+                </p>
+              </div>
 
-                  {activeIndex === index && (
-                    <motion.div
-                      className="absolute inset-0 rounded-xl blur-xl opacity-30"
-                      style={{
-                        background: "linear-gradient(135deg, oklch(0.68 0.32 290), oklch(0.75 0.25 45))",
-                      }}
-                      animate={{
-                        opacity: [0.2, 0.4, 0.2],
-                      }}
-                      transition={{
-                        duration: 2,
-                        repeat: Number.POSITIVE_INFINITY,
-                        ease: "easeInOut",
-                      }}
-                    />
-                  )}
-
-                  <span className="relative z-10">{exp.company}</span>
-                </motion.button>
-              ))}
-            </div>
-
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeIndex}
-                variants={contentVariants}
-                initial="hidden"
-                animate="visible"
-                exit="exit"
-                className="flex-1"
-              >
-                <Card className="rounded-3xl p-6 relative overflow-hidden">
-                  <motion.div
-                    className="absolute inset-0 opacity-30"
+              {/* Description */}
+              <ul style={{ listStyle: "none", padding: 0, margin: "0 0 1.5rem", display: "flex", flexDirection: "column", gap: "0.875rem" }}>
+                {active.description.map((item, i) => (
+                  <li
+                    key={i}
                     style={{
-                      background: "radial-gradient(circle at 50% 50%, oklch(0.68 0.32 290 / 0.05), transparent)",
+                      display: "flex",
+                      gap: "0.75rem",
+                      color: "var(--itachi-subtle)",
+                      fontSize: "0.9rem",
+                      lineHeight: "1.75",
+                      fontWeight: 300,
                     }}
-                    animate={{
-                      scale: [1, 1.5, 1],
-                      opacity: [0.2, 0.4, 0.2],
-                    }}
-                    transition={{
-                      duration: 8,
-                      repeat: Number.POSITIVE_INFINITY,
-                      ease: "easeInOut",
-                    }}
-                  />
-                  <div className="space-y-4 relative z-10">
-                    <div>
-                      <h3 className="text-xl font-semibold text-foreground">{experiences[activeIndex].position}</h3>
-                      <p className="text-accent font-mono text-sm">@ {experiences[activeIndex].company}</p>
-                      <p className="text-sm text-muted-foreground mt-1">{experiences[activeIndex].period}</p>
-                    </div>
+                  >
+                    <span
+                      style={{
+                        color: "var(--itachi-sharingan)",
+                        opacity: 0.6,
+                        flexShrink: 0,
+                        marginTop: "0.1em",
+                        fontSize: "0.6rem",
+                        letterSpacing: "0.05em",
+                      }}
+                    >
+                      ▸
+                    </span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
 
-                    <ul className="space-y-3">
-                      {experiences[activeIndex].description.map((item, i) => (
-                        <motion.li
-                          key={i}
-                          className="flex gap-3"
-                          custom={i}
-                          variants={listItemVariants}
-                          initial="hidden"
-                          animate="visible"
-                        >
-                          <motion.span
-                            className="text-accent mt-1"
-                            animate={{
-                              x: [0, 5, 0],
-                            }}
-                            transition={{
-                              duration: 2,
-                              repeat: Number.POSITIVE_INFINITY,
-                              delay: i * 0.3,
-                            }}
-                          >
-                            ▹
-                          </motion.span>
-                          <span className="text-muted-foreground leading-relaxed">{item}</span>
-                        </motion.li>
-                      ))}
-                    </ul>
-
-                    <div className="flex flex-wrap gap-2 pt-2">
-                      {experiences[activeIndex].technologies.map((tech, i) => (
-                        <motion.span
-                          key={tech}
-                          className="px-3 py-1 text-xs font-mono bg-accent/10 text-accent rounded-full"
-                          initial={{ opacity: 0, scale: 0 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          transition={{
-                            delay: (FIBONACCI_MS.f4 + i * FIBONACCI_MS.f1) / 1000,
-                            duration: FIBONACCI_MS.f3 / 1000,
-                            ease: cubicBezier(EASING.spring[0], EASING.spring[1], EASING.spring[2], EASING.spring[3]),
-                          }}
-                          whileHover={{ scale: 1.1, rotate: 3 }}
-                        >
-                          {tech}
-                        </motion.span>
-                      ))}
-                    </div>
-                  </div>
-                </Card>
-              </motion.div>
-            </AnimatePresence>
-          </motion.div>
-        </div>
+              {/* Tech tags */}
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
+                {active.technologies.map((tech) => (
+                  <span
+                    key={tech}
+                    style={{
+                      fontSize: "0.6875rem",
+                      letterSpacing: "0.08em",
+                      textTransform: "uppercase",
+                      fontFamily: "var(--font-mono, monospace)",
+                      color: "var(--itachi-ghost)",
+                      border: "1px solid var(--itachi-border)",
+                      borderRadius: "2px",
+                      padding: "0.2rem 0.5rem",
+                      fontWeight: 300,
+                    }}
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </motion.div>
       </div>
     </section>
   )
