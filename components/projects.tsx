@@ -41,8 +41,8 @@ const projects = [
   },
   {
     title: "PlayStation",
-    description: "A website for a leading gaming company, specializing in branding, product, and community first.",
-    context: "Developed for a leading gaming company focusing on branding and community engagement",
+    description: "Contributed to PlayStation.com across two years as part of the marketing engineering team, building frontend pages and real-time data pipelines for the Year in Review experience, which broke platform traffic records with millions of simultaneous users. ",
+    context: "Served as part of the proof-of-concept initiative that drove PlayStation’s migration from jQuery and ERB to React and Next.js, now live across the platform.",
     role: "Frontend Developer",
     category: "Gaming",
     outcomes: [
