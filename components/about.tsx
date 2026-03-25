@@ -3,120 +3,6 @@
 import { motion, useInView } from "framer-motion"
 import { useRef, useState, useEffect } from "react"
 
-// ─── Tsukuyomi feathers ───────────────────────────────────────────────────────
-// What remains of crows inside the genjutsu. Suspended. Floating wrong.
-// viewBox "0 0 12 36" — feather tip at top, quill at bottom.
-
-// Feather body — closed path, widest ~1/3 from tip, tapers to quill base
-const FEATHER_BODY =
-  "M 6 1.5 C 9.5 5 11.5 13 11 21 C 10.5 28 8.5 33 6 35.5 C 3.5 33 1.5 28 1 21 C 0.5 13 2.5 5 6 1.5 Z"
-
-// Rachis — central spine, tip to quill
-const FEATHER_RACHIS = "M 6 1.5 L 6 35.5"
-
-// Barbs — soft curves from rachis outward, right side
-const FEATHER_BARBS_R =
-  "M 6 7 C 7.5 7.5 9 8.5 10 9.5 M 6 12 C 7.5 12.5 9.5 13.5 10.5 15 M 6 17 C 7.5 17.5 9.5 18.5 10.5 20 M 6 22 C 7.5 22.5 9 23.5 9.5 25 M 6 27 C 7 27.5 8 28.5 8.2 30"
-
-// Barbs — left side mirror
-const FEATHER_BARBS_L =
-  "M 6 7 C 4.5 7.5 3 8.5 2 9.5 M 6 12 C 4.5 12.5 2.5 13.5 1.5 15 M 6 17 C 4.5 17.5 2.5 18.5 1.5 20 M 6 22 C 4.5 22.5 3 23.5 2.5 25 M 6 27 C 5 27.5 4 28.5 3.8 30"
-
-interface FeatherConfig {
-  id: number
-  /** Rendered height in px; width derived from viewBox (12/36 × height) */
-  size: number
-  opacity: number
-  top?: string
-  bottom?: string
-  left?: string
-  right?: string
-  /** Initial static tilt */
-  tilt: number
-  /** Rotation animation duration in seconds */
-  rotDuration: number
-  /** Animation start delay */
-  rotDelay: number
-}
-
-// Scattered asymmetrically — edges and corners, away from center text.
-// Text container occupies roughly the center 55% of the viewport width.
-const TSUKUYOMI_FEATHERS: FeatherConfig[] = [
-  { id: 0, size: 42, opacity: 0.30, top:    "7%",  left:   "5%",   tilt:  18,  rotDuration: 14, rotDelay: 0    },
-  { id: 1, size: 26, opacity: 0.28, top:   "13%",  right:  "8%",   tilt: -24,  rotDuration: 18, rotDelay: 2.8  },
-  { id: 2, size: 38, opacity: 0.25, top:   "40%",  left:   "2%",   tilt:  42,  rotDuration: 16, rotDelay: 1.2  },
-  { id: 3, size: 22, opacity: 0.33, top:   "28%",  right:  "5%",   tilt: -38,  rotDuration: 12, rotDelay: 4.5  },
-  { id: 4, size: 45, opacity: 0.26, bottom:"14%",  right:  "6%",   tilt:  26,  rotDuration: 17, rotDelay: 1.8  },
-  { id: 5, size: 30, opacity: 0.31, bottom:"22%",  left:   "9%",   tilt: -12,  rotDuration: 15, rotDelay: 3.2  },
-  { id: 6, size: 20, opacity: 0.29, top:   "68%",  right: "12%",   tilt:  55,  rotDuration: 13, rotDelay: 0.7  },
-]
-
-function TsukuyomiFeather({ cfg, reduced }: { cfg: FeatherConfig; reduced: boolean }) {
-  const { size, opacity, top, bottom, left, right, tilt, rotDuration, rotDelay } = cfg
-  const w = size * (12 / 36)
-
-  return (
-    <motion.div
-      aria-hidden="true"
-      style={{
-        position: "absolute",
-        top, bottom, left, right,
-        width: w,
-        height: size,
-        opacity,
-        pointerEvents: "none",
-      }}
-      initial={{ rotate: tilt }}
-      animate={reduced ? { rotate: tilt } : { rotate: tilt + 360 }}
-      transition={{
-        duration: rotDuration,
-        repeat: Infinity,
-        ease: "linear",
-        delay: rotDelay,
-      }}
-    >
-      <svg
-        viewBox="0 0 12 36"
-        width={w}
-        height={size}
-        style={{ overflow: "visible" }}
-      >
-        {/* Feather body — near-white fill, dark crimson-black outline */}
-        <path
-          d={FEATHER_BODY}
-          fill="oklch(0.95 0.02 35)"
-          stroke="oklch(0.08 0.10 20)"
-          strokeWidth="0.8"
-          strokeLinejoin="round"
-        />
-        {/* Rachis — dark spine */}
-        <path
-          d={FEATHER_RACHIS}
-          fill="none"
-          stroke="oklch(0.08 0.10 20)"
-          strokeWidth="0.55"
-          strokeLinecap="round"
-        />
-        {/* Barbs — delicate, dark, suggesting structure */}
-        <path
-          d={FEATHER_BARBS_R}
-          fill="none"
-          stroke="oklch(0.08 0.10 20)"
-          strokeWidth="0.4"
-          strokeLinecap="round"
-        />
-        <path
-          d={FEATHER_BARBS_L}
-          fill="none"
-          stroke="oklch(0.08 0.10 20)"
-          strokeWidth="0.4"
-          strokeLinecap="round"
-        />
-      </svg>
-    </motion.div>
-  )
-}
-
 // Tsukuyomi — deep saturated crimson, not orange.
 // Reference: dense geometric towers, lavender-mauve against a blood-red sky.
 // A reddish moon, barely desaturated against the overwhelming red.
@@ -183,8 +69,9 @@ export function About() {
   const contentTransition = prefersReducedMotion
     ? { duration: 0 }
     : {
-        delay: 0.2,
-        duration: 0.4,
+        // Wait for feathers to start clearing before content fades in
+        delay: isInView ? 0.45 : 0,
+        duration: 0.55,
         ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number],
       }
 
@@ -302,17 +189,6 @@ export function About() {
           fill="oklch(0.18 0.05 280)"
         />
       </svg>
-
-      {/* ── Layer 3b: Tsukuyomi feathers — suspended in wrong gravity ── */}
-      {/* What remains of crows inside the genjutsu. Caught. Floating. */}
-      <div
-        aria-hidden="true"
-        style={{ position: "absolute", inset: 0, pointerEvents: "none", zIndex: 3, overflow: "hidden" }}
-      >
-        {TSUKUYOMI_FEATHERS.map((cfg) => (
-          <TsukuyomiFeather key={cfg.id} cfg={cfg} reduced={prefersReducedMotion} />
-        ))}
-      </div>
 
       {/* ── Layer 4: Moon — reddish-pink, desaturated against the crimson sky ── */}
       {/* Still. Watches. Never moves.                                            */}

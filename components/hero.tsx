@@ -2,36 +2,12 @@
 
 import { motion, useReducedMotion } from "framer-motion"
 import { GithubIcon, LinkedinIcon, Mail } from "lucide-react"
-
-// ─── SVG paths ────────────────────────────────────────────────────────────────
-// viewBox: -21 -7 44 13  (44 × 13 units — horizontal, 3.4:1 ratio, bird faces right)
-// Origin (0,0) = wing attachment point at body centre.
-//
-// Wing anatomy:
-//   Each wing is a CLOSED shape: leading edge out → around pointed tip → trailing
-//   edge back. Five C-curves each; identical command structure so Framer Motion
-//   can interpolate the d attribute between UP and DOWN positions.
-//
-//   The M-shape comes from the outer panel dropping relative to the wrist:
-//   inner panel rises to wrist at y≈-5, outer panel drops to tip at y≈-3.5.
-//   This kink is the anatomical crow hallmark — a bat wing has no such inflection.
-//
-//   Chord is narrow: ~1 unit at root, ~2 at wrist, ~1.5 at tip.
-//   Span is long: 20 units per side.  Aspect ratio ≈ 13:1 (very crow-like).
-
-// Wing UP  →  wings arching above body (top of downstroke)
-// Wing DOWN →  wings sweeping below body (bottom of downstroke)
-const WING_L_UP   = "M 0 -0.5 C -4 -2 -9 -5.5 -11 -5 C -15 -4.5 -19 -4 -20 -3.5 C -20 -2 -17 -1.5 -14 -2 C -11 -2.5 -8 -2 -6 -1.5 C -3 -1 -1 0 0 0.5 Z"
-const WING_L_DOWN = "M 0 -0.5 C -4  2 -9  4.5 -11  4 C -15  3.5 -19  3 -20  2.5 C -20  1 -17  0.5 -14  1 C -11  1.5 -8  1 -6  0 C -3 -0.5 -1 0 0 0.5 Z"
-const WING_R_UP   = "M 0 -0.5 C  4 -2  9 -5.5  11 -5 C  15 -4.5  19 -4  20 -3.5 C  20 -2  17 -1.5  14 -2 C  11 -2.5  8 -2  6 -1.5 C  3 -1  1 0 0 0.5 Z"
-const WING_R_DOWN = "M 0 -0.5 C  4  2  9  4.5  11  4 C  15  3.5  19  3  20  2.5 C  20  1  17  0.5  14  1 C  11  1.5  8  1  6  0 C  3 -0.5  1 0 0 0.5 Z"
-
-// Body: elongated, front-heavy oval. x=-5 (rear) to x=7 (chest).
-const BODY = "M 7 0 C 6 -2 3 -2 0 -1.5 C -2 -1 -4 -0.5 -5 0 C -5 0.5 -4 1 -2 1 C 0 1 3 1.5 6 1.5 C 7 1.5 8 1 7 0 Z"
-// Head + short forward beak. Beak tip at x=12, roughly horizontal.
-const HEAD = "M 7 0 C 7.5 -2 9.5 -2 10 -1 C 11 -0.5 12 0.5 11 1 C 10 1.5 9 1.5 8 1.5 C 7.5 1.5 7 1 7 0 Z"
-// Tail: short squared fan. x=-5 to x=-10.
-const TAIL = "M -5 0 C -6 -0.5 -7 -1 -8 -1 C -9 -1 -10 -0.5 -10 0 C -10 0.5 -9 1 -8 1 C -7 1 -6 0.5 -5 0 Z"
+import {
+  CROW_VIEWBOX, CROW_H_RATIO,
+  WING_L_UP, WING_L_DOWN,
+  WING_R_UP, WING_R_DOWN,
+  BODY, HEAD, TAIL_UPPER, TAIL_LOWER,
+} from "@/lib/crow-paths"
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -140,25 +116,26 @@ const CROWS: CrowConfig[] = [
 
 // ─── Crow SVG ─────────────────────────────────────────────────────────────────
 
-// viewBox width=44, height=13 → aspect ratio for rendered height
-const CROW_H = (size: number) => Math.round(size * 13 / 44)
+const CROW_H = (size: number) => Math.round(size * CROW_H_RATIO)
 
 function CrowSVG({ size, wingPeriod }: { size: number; wingPeriod: number }) {
   const halfPeriod = wingPeriod / 2
 
   return (
     <svg
-      viewBox="-21 -7 44 13"
+      viewBox={CROW_VIEWBOX}
       width={size}
       height={CROW_H(size)}
       style={{ color: "var(--itachi-crow)", overflow: "visible" }}
       aria-hidden="true"
     >
       <g fill="currentColor">
-        <path d={TAIL} />
+        {/* Forked tail — two prongs */}
+        <path d={TAIL_UPPER} />
+        <path d={TAIL_LOWER} />
         <path d={BODY} />
         <path d={HEAD} />
-        {/* Left wing — up-stroke to down-stroke, reversed */}
+        {/* Wings — morph between UP (M-shape) and DOWN (deep downstroke) */}
         <motion.path
           d={WING_L_UP}
           animate={{ d: WING_L_DOWN }}
@@ -169,7 +146,6 @@ function CrowSVG({ size, wingPeriod }: { size: number; wingPeriod: number }) {
             ease: "easeInOut",
           }}
         />
-        {/* Right wing — in phase with left */}
         <motion.path
           d={WING_R_UP}
           animate={{ d: WING_R_DOWN }}
