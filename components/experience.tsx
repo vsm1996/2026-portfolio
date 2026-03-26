@@ -41,9 +41,9 @@ const experiences = [
     position: "Front-end Engineer",
     period: "2021 — 2022",
     description: [
-      "Introduced TypeScript across the entire firm — establishing type safety as standard practice before it became industry norm. Set architectural patterns that all subsequent projects inherited.",
+      "Introduced TypeScript across the entire firm, establishing type safety as standard practice before it became industry norm. Set architectural patterns that all subsequent projects inherited.",
       "Built and standardized a project templating system that became mandatory for all new client work, eliminating repetitive configuration and setup overhead across the team.",
-      "Served as sole frontend engineer for multiple client engagements including cancer research organizations, UC Berkeley Extensions, and Peak Analytics (formerly Sienna Analytics) — architecting and shipping production frontends across WordPress and Next.js.",
+      "Served as sole frontend engineer for multiple client engagements including cancer research organizations, UC Berkeley Extensions, and Peak Analytics (formerly Sienna Analytics), architecting and shipping production frontends across WordPress and Next.js.",
       "Streamlined the development process by creating a company front-end boilerplate and setting up CI/CD pipelines for multiple staging environments. ",
     ],
     technologies: ["Next.js", "React", "JavaScript", "TypeScript", "SCSS/CSS", "Mapbox", "WordPress CMS", "Postman", "Google Cloud Run", "Vercel", "Docker", "AWS", "Git"],
