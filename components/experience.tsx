@@ -13,7 +13,7 @@ const experiences = [
     position: "Senior Front-end Engineer",
     period: "2025",
     description: [
-      "Inherited a non-functional multi-tenant client dashboard mid-development and delivered a production-ready system in three months, stable enough for immediate stockholder presentation.",
+      "Inherited a non-functional multi-tenant client dashboard mid-development and delivered a production-ready system in three months, stable enough for immediate stakeholder presentation.",
       "Diagnosed and resolved a critical data persistence failure in React Query causing client profile mutations to not sync, and corrected company-level branding isolation breaking cross-tenant context boundaries.",
       "Built the entire frontend-to-backend integration from scratch against an undocumented, schema-inconsistent API, reverse-engineering data contracts in the absence of reliable backend communication.",
       "Produced handoff documentation for Persona KYC/KYB integration, providing the incoming engineer a clear implementation pathway for the platform's B2B/B2C fintech authorization layer.",
