@@ -2,7 +2,7 @@
 
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { ExternalLink, Github, TrendingUp, Users, Award, PlaneTakeoff, Brain, Sparkles, UsersRound, Shield } from "lucide-react"
+import { ExternalLink, Github, TrendingUp, Users, Award, PlaneTakeoff, Brain, Sparkles, UsersRound, Shield, Calculator } from "lucide-react"
 import { motion, AnimatePresence, cubicBezier } from "framer-motion"
 import { useInView } from "framer-motion"
 import { useRef, useState } from "react"
@@ -16,8 +16,8 @@ const projects = [
     role: "Systems Designer & Frontend Architect",
     category: "Framework",
     outcomes: [
-      { label: "Visual", value: "Stunning", icon: Sparkles },
-      { label: "Philosophy", value: "Framework", icon: Brain },
+      { label: "UI", value: "Innovative", icon: Sparkles },
+      { label: "Philosophy", value: "Human-Computer", icon: Brain },
     ],
     technologies: ["Claude Code", "Next.js", "React.js", "TailwindCSS", "Framer", "Vercel"],
     github: "https://github.com/vsm1996/harmonia-ui",
@@ -31,8 +31,8 @@ const projects = [
     role: "Systems Designer & Frontend Architect",
     category: "Framework",
     outcomes: [
-      { label: "Visual", value: "Polished", icon: Sparkles },
-      { label: "Philosophy", value: "Framework", icon: Brain },
+      { label: "Based", value: "Natural Math", icon: Calculator },
+      { label: "Stunning", value: "Visual", icon: Sparkles },
     ],
     technologies: ["Claude Code", "Next.js", "TypeScript", "React", "TailwindCSS", "Vercel"],
     github: "https://github.com/vsm1996/renge",
