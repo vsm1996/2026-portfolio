@@ -20,8 +20,8 @@ const jetbrainsMono = JetBrains_Mono({
 })
 
 export const metadata: Metadata = {
-  title: "Vanessa Martin - Frontend Architect & Systems Builder",
-  description: "Software engineer specializing in building exceptional digital experiences",
+  title: "Vanessa Martin - Frontend Architect",
+  description: "Frontend Architect. Harmonia UI (capacity-adaptive framework), Renge Design System (φ-proportional tokens). 8 years: PlayStation, aviation rescue, npm. Systems from first principles.",
   icons: {
     icon: "/favicon.ico",
   },

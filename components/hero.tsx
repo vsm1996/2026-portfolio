@@ -1,9 +1,8 @@
 "use client"
 
-import { ArrowRight, Github, Linkedin, Mail, Twitter } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { ExternalLink, Github, Mail } from "lucide-react"
 import { motion, useMotionValue, useTransform, useSpring, cubicBezier } from "framer-motion"
-import { PHI_INVERSE, FIBONACCI_MS, EASING, STAGGER, GOLDEN_ANGLE } from "@/lib/animation-constants"
+import { PHI_INVERSE, FIBONACCI_MS, EASING } from "@/lib/animation-constants"
 import { useEffect, useState } from "react"
 
 export function Hero() {
@@ -18,7 +17,6 @@ export function Hero() {
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
     setPrefersReducedMotion(mediaQuery.matches)
-
     const handleMotionChange = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches)
     mediaQuery.addEventListener("change", handleMotionChange)
 
@@ -28,7 +26,6 @@ export function Hero() {
         mouseY.set(e.clientY / window.innerHeight)
       }
     }
-
     window.addEventListener("mousemove", handleMouseMove)
     return () => {
       window.removeEventListener("mousemove", handleMouseMove)
@@ -36,60 +33,49 @@ export function Hero() {
     }
   }, [mouseX, mouseY, prefersReducedMotion])
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: STAGGER.children,
-        delayChildren: FIBONACCI_MS.f2 / 1000,
-      },
-    },
-  }
-
-  const itemVariants = {
-    hidden: {
-      opacity: 0,
-      y: 30,
-      scale: PHI_INVERSE,
-    },
+  const lineIn = (delay: number) => ({
+    hidden: { opacity: 0, y: 24 },
     visible: {
       opacity: 1,
       y: 0,
-      scale: 1,
       transition: {
         duration: FIBONACCI_MS.f5 / 1000,
-        ease: cubicBezier(EASING.golden[0], EASING.golden[1], EASING.golden[2], EASING.golden[3])
+        delay,
+        ease: cubicBezier(EASING.golden[0], EASING.golden[1], EASING.golden[2], EASING.golden[3]),
       },
     },
-  }
+  })
 
-  const socialVariants = {
-    hidden: { opacity: 0, scale: 0, rotate: -GOLDEN_ANGLE },
-    visible: (i: number) => ({
-      opacity: 1,
-      scale: 1,
-      rotate: 0,
-      transition: {
-        delay: (FIBONACCI_MS.f4 + i * FIBONACCI_MS.f2) / 1000,
-        duration: FIBONACCI_MS.f4 / 1000,
-        ease: cubicBezier(EASING.spring[0], EASING.spring[1], EASING.spring[2], EASING.spring[3]),
-      },
-    }),
-  }
+  const systems = [
+    {
+      title: "Harmonia",
+      desc: "capacity \u2192 tokens \u2192 components",
+      detail: "cognitive \xd7 temporal \xd7 emotional \u2192 4-layer framework",
+    },
+    {
+      title: "Renge",
+      desc: "\u03c6 / Fibonacci / OKLCH \u2192 production",
+      detail: "100+ CSS vars, 6 profiles, runtime switching",
+    },
+    {
+      title: "8 years",
+      desc: "PlayStation \u2192 aviation \u2192 npm",
+      detail: "traffic records, 3-month rescues, open-source",
+    },
+  ]
 
-  const gradientFlow = {
-    keyframes: [{ backgroundPosition: "0% 50%" }, { backgroundPosition: "100% 50%" }],
-    duration: 3000,
-    ease: "linear",
-    iterations: Number.POSITIVE_INFINITY,
-  }
+  const demos = [
+    { label: "Harmonia UI", href: "https://harmonia-ui.vercel.app/", sub: "capacity-adaptive framework" },
+    { label: "Renge Design", href: "https://renge-ui.vercel.app/", sub: "\u03c6-proportional design system" },
+    { label: "The Hondana", href: "https://the-hondana.vercel.app/", sub: "Renge-powered reading tracker" },
+  ]
 
   return (
     <section
       id="home"
       className="min-h-screen flex items-center justify-center px-6 pt-32 pb-20 relative overflow-hidden"
     >
+      {/* Mouse-tracking orb */}
       <motion.div
         className="absolute top-1/2 left-1/2 w-[800px] h-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-15"
         style={{
@@ -103,21 +89,13 @@ export function Hero() {
           opacity: prefersReducedMotion ? 0.1 : [0.1, 0.25, 0.12, 0.2, 0.1],
           rotate: prefersReducedMotion ? 0 : [0, 90, 180, 270, 360],
         }}
-        transition={{
-          duration: 12,
-          repeat: prefersReducedMotion ? 0 : Number.POSITIVE_INFINITY,
-          ease: "easeInOut",
-        }}
+        transition={{ duration: 12, repeat: prefersReducedMotion ? 0 : Number.POSITIVE_INFINITY, ease: "easeInOut" }}
       />
 
+      {/* Floating shapes */}
       <motion.div
         className="absolute top-40 right-20 w-24 h-24 border rounded-3xl opacity-20"
-        style={{
-          borderColor: "oklch(0.68 0.18 280 / 0.3)",
-          boxShadow: "0 0 30px oklch(0.68 0.18 280 / 0.1)",
-          x: prefersReducedMotion ? 0 : xTransform.get() * 0.5,
-          y: prefersReducedMotion ? 0 : yTransform.get() * -0.5,
-        }}
+        style={{ borderColor: "oklch(0.68 0.18 280 / 0.3)", boxShadow: "0 0 30px oklch(0.68 0.18 280 / 0.1)" }}
         animate={{
           rotate: prefersReducedMotion ? 0 : [0, 360],
           y: prefersReducedMotion ? 0 : [0, -35, 10, -25, 0],
@@ -125,201 +103,179 @@ export function Hero() {
           opacity: prefersReducedMotion ? 0.15 : [0.15, 0.3, 0.18, 0.25, 0.15],
         }}
         transition={{
-          rotate: {
-            duration: 15,
-            repeat: prefersReducedMotion ? 0 : Number.POSITIVE_INFINITY,
-            ease: "easeInOut",
-          },
-          y: {
-            duration: 6,
-            repeat: prefersReducedMotion ? 0 : Number.POSITIVE_INFINITY,
-            ease: "easeInOut",
-          },
-          scale: {
-            duration: 6,
-            repeat: prefersReducedMotion ? 0 : Number.POSITIVE_INFINITY,
-            ease: "easeInOut",
-          },
+          rotate: { duration: 15, repeat: prefersReducedMotion ? 0 : Number.POSITIVE_INFINITY, ease: "linear" },
+          y: { duration: 6, repeat: prefersReducedMotion ? 0 : Number.POSITIVE_INFINITY, ease: "easeInOut" },
+          scale: { duration: 6, repeat: prefersReducedMotion ? 0 : Number.POSITIVE_INFINITY, ease: "easeInOut" },
           opacity: { duration: 6, repeat: prefersReducedMotion ? 0 : Number.POSITIVE_INFINITY, ease: "easeInOut" },
         }}
       />
-
       <motion.div
         className="absolute bottom-40 left-20 w-20 h-20 border rounded-full opacity-25"
-        style={{
-          borderColor: "oklch(0.75 0.16 170 / 0.35)",
-          boxShadow: "0 0 25px oklch(0.75 0.16 170 / 0.12)",
-        }}
+        style={{ borderColor: "oklch(0.75 0.16 170 / 0.35)" }}
         animate={{
           scale: prefersReducedMotion ? 1 : [1, 1.4, 0.85, 1.3, 1],
           x: prefersReducedMotion ? 0 : [0, 35, -25, 20, 0],
           y: prefersReducedMotion ? 0 : [0, -25, 20, -15, 0],
           opacity: prefersReducedMotion ? 0.2 : [0.2, 0.35, 0.18, 0.28, 0.2],
         }}
-        transition={{
-          duration: 10,
-          repeat: prefersReducedMotion ? 0 : Number.POSITIVE_INFINITY,
-          ease: "easeInOut",
-        }}
+        transition={{ duration: 10, repeat: prefersReducedMotion ? 0 : Number.POSITIVE_INFINITY, ease: "easeInOut" }}
       />
-
       <motion.div
         className="absolute top-1/3 left-1/4 w-16 h-16 border-2 rounded-2xl opacity-18"
-        style={{
-          borderColor: "oklch(0.72 0.18 60 / 0.3)",
-          boxShadow: "0 0 20px oklch(0.72 0.18 60 / 0.1)",
-        }}
+        style={{ borderColor: "oklch(0.72 0.18 60 / 0.3)" }}
         animate={{
           rotate: prefersReducedMotion ? 0 : [0, -360],
           scale: prefersReducedMotion ? 1 : [1, 1.3, 0.8, 1.2, 1],
-          x: prefersReducedMotion ? 0 : [0, 20, -15, 12, 0],
-          y: prefersReducedMotion ? 0 : [0, -15, 12, -8, 0],
         }}
-        transition={{
-          duration: 13,
-          repeat: prefersReducedMotion ? 0 : Number.POSITIVE_INFINITY,
-          ease: "easeInOut",
-        }}
+        transition={{ duration: 13, repeat: prefersReducedMotion ? 0 : Number.POSITIVE_INFINITY, ease: "easeInOut" }}
       />
 
       <div className="max-w-6xl w-full relative z-10">
-        <motion.div className="space-y-8" variants={containerVariants} initial="hidden" animate="visible">
-          <div className="space-y-4">
-            <motion.p variants={itemVariants} className="text-accent text-base font-mono font-medium tracking-wide">
-              Hi, my name is
-            </motion.p>
+        <div className="space-y-10">
+          {/* Name label */}
+          <motion.p
+            variants={lineIn(0)}
+            initial="hidden"
+            animate="visible"
+            className="text-accent font-mono text-sm font-medium tracking-widest uppercase"
+          >
+            Vanessa Martin
+          </motion.p>
+
+          {/* Headline */}
+          <div className="space-y-2">
             <motion.h1
-              variants={itemVariants}
-              className="text-6xl md:text-8xl lg:text-9xl font-extrabold text-foreground text-balance leading-[0.9]"
-              style={{
-                textShadow: "0 0 40px oklch(0.72 0.22 280 / 0.2)",
-                willChange: "transform",
-              }}
-              whileHover={{ scale: 1.02, x: 10 }}
-              transition={{ type: "spring", stiffness: 300 }}
+              variants={lineIn(0.1)}
+              initial="hidden"
+              animate="visible"
+              className="text-6xl md:text-8xl lg:text-9xl font-light tracking-tight text-foreground leading-[0.95]"
             >
-              {"Vanessa.".split("").map((char, i) => (
-                <motion.span
-                  key={i}
-                  initial={{ opacity: 0, y: 50 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{
-                    delay: 0.5 + i * 0.035,
-                    duration: 0.25,
-                    ease: "easeOut",
-                  }}
-                  whileHover={{
-                    y: prefersReducedMotion ? 0 : -10,
-                    color: "oklch(0.72 0.22 280)",
-                    transition: { duration: 0.2 },
-                  }}
-                  style={{ display: "inline-block", willChange: "transform" }}
-                >
-                  {char}
-                </motion.span>
-              ))}
+              Frontend Architect.
             </motion.h1>
             <motion.h2
-              variants={itemVariants}
-              className="text-4xl md:text-6xl lg:text-7xl font-semibold text-balance leading-tight relative inline-block cursor-default group"
-              whileHover={{ scale: 1.02, x: 10 }}
-              transition={{ type: "spring", stiffness: 300 }}
+              variants={lineIn(0.25)}
+              initial="hidden"
+              animate="visible"
+              className="text-3xl md:text-5xl lg:text-6xl font-light text-muted-foreground leading-tight"
             >
-              <motion.span
-                className="bg-linear-to-r from-muted-foreground via-orange-300 via-55% to-muted-foreground bg-clip-text text-transparent"
-                style={{
-                  backgroundSize: "200% 100%",
-                  backgroundPosition: "-100% 0",
-                  willChange: "background-position",
-                }}
-                whileHover={{
-                  backgroundPosition: ["200% 0", "-100% 0"],
-                  transition: {
-                    duration: 1.5,
-                    ease: [0.65, 0, 0.35, 1],
-                  },
-                }}
-              >
-                I build frontend systems that think.
-              </motion.span>
+              Systems from first principles.
             </motion.h2>
           </div>
 
-          <motion.p
-            variants={itemVariants}
-            className="text-xl md:text-2xl text-muted-foreground max-w-3xl leading-relaxed font-normal group cursor-default"
-          >
-            <motion.span
-              className="text-balance inline-block transition-all duration-500 bg-linear-to-r from-muted-foreground to-muted-foreground bg-clip-text group-hover:from-primary group-hover:via-accent group-hover:to-secondary group-hover:text-transparent"
-              style={{ backgroundSize: "200% 200%", backgroundPosition: "0% 50%" }}
-              whileHover={{
-                backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
-                transition: { duration: 2, ease: "easeInOut", repeat: Number.POSITIVE_INFINITY },
-              }}
-            >
-              Capacity-adaptive interfaces, proportional design systems, and the infrastructure that makes both
-              possible. Based in Oakland.
-            </motion.span>
-          </motion.p>
-
+          {/* System callout cards */}
           <motion.div
-            variants={itemVariants}
-            className="flex flex-col sm:flex-row items-start sm:items-center gap-6 pt-6"
+            className="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-3xl"
+            initial="hidden"
+            animate="visible"
+            variants={{
+              hidden: {},
+              visible: { transition: { staggerChildren: 0.09, delayChildren: 0.4 } },
+            }}
           >
-            <motion.div
-              whileHover={{ scale: 1.05, rotate: 2 }}
-              whileTap={{ scale: 0.95, rotate: -2 }}
-              transition={{ type: "spring", stiffness: 400 }}
-            >
-              <Button
-                size="lg"
-                className="group rounded-full px-8 h-14 text-base relative overflow-hidden shadow-lg shadow-primary/20"
+            {systems.map((s) => (
+              <motion.div
+                key={s.title}
+                variants={{
+                  hidden: { opacity: 0, y: 16, scale: PHI_INVERSE },
+                  visible: {
+                    opacity: 1,
+                    y: 0,
+                    scale: 1,
+                    transition: {
+                      duration: FIBONACCI_MS.f5 / 1000,
+                      ease: cubicBezier(EASING.golden[0], EASING.golden[1], EASING.golden[2], EASING.golden[3]),
+                    },
+                  },
+                }}
+                whileHover={{
+                  scale: 1.04,
+                  y: -4,
+                  transition: {
+                    duration: FIBONACCI_MS.f3 / 1000,
+                    ease: cubicBezier(EASING.spring[0], EASING.spring[1], EASING.spring[2], EASING.spring[3]),
+                  },
+                }}
+                whileTap={{ scale: 0.97 }}
+                className="border border-border/40 rounded-xl px-4 py-3 bg-card/30 backdrop-blur-sm hover:border-accent/40 hover:bg-card/60 hover:shadow-lg hover:shadow-accent/5 transition-colors duration-300 cursor-default"
               >
-                <motion.span
-                  className="absolute inset-0 bg-linear-to-r from-primary/0 via-accent/30 to-primary/0"
-                  animate={{ x: ["-100%", "100%"] }}
-                  transition={{ duration: 3, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
-                />
-                <span className="relative z-10 flex items-center">
-                  View My Work
-                  <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
-                </span>
-              </Button>
-            </motion.div>
-            <div className="flex items-center gap-4">
-              {[
-                { icon: Github, href: "https://github.com/vsm1996", label: "GitHub" },
-                { icon: Linkedin, href: "https://linkedin.com/in/vsm1996", label: "LinkedIn" },
-                { icon: Mail, href: "mailto:vanessa.s.martin96@gmail.com", label: "Email" },
-              ].map((social, i) => (
-                <motion.a
-                  key={social.label}
-                  href={social.href}
-                  target={social.label !== 'Email' ? "_blank" : "initial"}
-                  rel={social.label !== 'Email' ? "noopener noreferrer" : "initial"}
-                  className="text-muted-foreground hover:text-accent transition-colors relative"
-                  custom={i}
-                  variants={socialVariants}
-                  whileHover={{
-                    scale: 1.3,
-                    rotate: [0, -10, 10, 0],
-                    y: -5,
-                  }}
-                  whileTap={{ scale: 0.9 }}
-                  transition={{ stiffness: 400 }}
-                >
-                  <motion.div
-                    className="absolute inset-0 rounded-full bg-accent/20 blur-xl"
-                    initial={{ opacity: 0 }}
-                    whileHover={{ opacity: 1 }}
-                  />
-                  <social.icon className="h-6 w-6 relative z-10" />
-                  <span className="sr-only">{social.label}</span>
-                </motion.a>
-              ))}
-            </div>
+                <p className="text-foreground font-mono text-sm font-semibold">{s.title}</p>
+                <p className="text-muted-foreground text-xs mt-1 font-mono">{s.desc}</p>
+                <p className="text-muted-foreground/60 text-xs mt-1">{s.detail}</p>
+              </motion.div>
+            ))}
           </motion.div>
-        </motion.div>
+
+          {/* Demo links */}
+          <motion.div
+            className="flex flex-wrap gap-3 items-center"
+            variants={lineIn(0.65)}
+            initial="hidden"
+            animate="visible"
+          >
+            <p className="text-muted-foreground/40 text-xs font-mono self-center mr-1">live</p>
+            {demos.map((demo) => (
+              <motion.a
+                key={demo.label}
+                href={demo.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{
+                  scale: 1.05,
+                  y: -3,
+                  transition: {
+                    duration: FIBONACCI_MS.f3 / 1000,
+                    ease: cubicBezier(EASING.spring[0], EASING.spring[1], EASING.spring[2], EASING.spring[3]),
+                  },
+                }}
+                whileTap={{ scale: 0.96 }}
+                className="group flex items-center gap-2 px-4 py-2 rounded-full border border-border/50 bg-card/30 hover:border-accent/50 hover:bg-accent/5 hover:shadow-md hover:shadow-accent/10 transition-colors duration-300 text-sm font-medium text-muted-foreground hover:text-foreground"
+              >
+                {demo.label}
+                <ExternalLink className="h-3 w-3 opacity-40 group-hover:opacity-100 transition-opacity duration-200" />
+              </motion.a>
+            ))}
+          </motion.div>
+
+          {/* Social links */}
+          <motion.div
+            className="flex items-center gap-5"
+            variants={lineIn(0.75)}
+            initial="hidden"
+            animate="visible"
+          >
+            {[
+              { href: "https://github.com/vsm1996", Icon: Github, label: "GitHub", external: true },
+              { href: "mailto:vanessa.s.martin96@gmail.com", Icon: Mail, label: "Email", external: false },
+            ].map(({ href, Icon, label, external }) => (
+              <motion.a
+                key={label}
+                href={href}
+                target={external ? "_blank" : undefined}
+                rel={external ? "noopener noreferrer" : undefined}
+                aria-label={label}
+                whileHover={{
+                  scale: 1.3,
+                  y: -5,
+                  rotate: [0, -10, 10, 0],
+                  transition: {
+                    duration: FIBONACCI_MS.f4 / 1000,
+                    ease: cubicBezier(EASING.spring[0], EASING.spring[1], EASING.spring[2], EASING.spring[3]),
+                  },
+                }}
+                whileTap={{ scale: 0.9 }}
+                className="relative text-muted-foreground hover:text-accent transition-colors duration-200"
+              >
+                <motion.div
+                  className="absolute inset-0 rounded-full bg-accent/20 blur-xl"
+                  initial={{ opacity: 0 }}
+                  whileHover={{ opacity: 1 }}
+                  transition={{ duration: FIBONACCI_MS.f3 / 1000 }}
+                />
+                <Icon className="h-5 w-5 relative z-10" />
+              </motion.a>
+            ))}
+          </motion.div>
+        </div>
       </div>
     </section>
   )

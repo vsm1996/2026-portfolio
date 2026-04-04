@@ -1,669 +1,352 @@
 "use client"
 
-import { Card } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { ExternalLink, Github, TrendingUp, Users, Award, PlaneTakeoff, Brain, Sparkles, UsersRound, Shield, Calculator } from "lucide-react"
-import { motion, AnimatePresence, cubicBezier } from "framer-motion"
+import { ExternalLink, Github } from "lucide-react"
+import { motion, cubicBezier } from "framer-motion"
 import { useInView } from "framer-motion"
-import { useRef, useState } from "react"
-import { PHI_INVERSE, FIBONACCI_MS, EASING, STAGGER, GOLDEN_ANGLE } from "@/lib/animation-constants"
+import { useRef } from "react"
+import { PHI_INVERSE, FIBONACCI_MS, EASING, GOLDEN_ANGLE } from "@/lib/animation-constants"
 
-const projects = [
-  {
-    title: "Harmonia UI",
-    description: "A framework for building interfaces that adapt to a user's current cognitive, temporal, and emotional capacity. Instead of inferring or profiling users, Harmonia uses explicit inputs to derive coherent interface modes that affect layout density, content length, motion, and tone.",
-    context: "Instead of inferring or profiling users, Harmonia uses explicit inputs to derive coherent interface modes that affect layout density, content length, motion, and tone. Open-source and powered by the Renge design token system.",
-    role: "Systems Designer & Frontend Architect",
-    category: "Framework",
-    outcomes: [
-      { label: "UI", value: "Innovative", icon: Sparkles },
-      { label: "Philosophy", value: "Human-Computer", icon: Brain },
-    ],
-    technologies: ["Claude Code", "Next.js", "React.js", "TailwindCSS", "Framer", "Vercel"],
-    github: "https://github.com/vsm1996/harmonia-ui",
-    external: "https://harmonia-ui.vercel.app/",
-    image: "/portfolio/harmonia-ui.png",
-  },
-  {
-    title: "Renge UI",
-    description: "A design system built on natural mathematics. PHI, Fibonacci, and phyllotaxis — the ratios that appear in every living thing — expressed as a complete token system. Six color profiles, a live proportional scale, and 18 React components. Every token derived. Nothing arbitrary.",
-    context: "Designed and built a full-featured UI framework to standardize component patterns across projects with an opinionated but flexible design language.",
-    role: "Systems Designer & Frontend Architect",
-    category: "Framework",
-    outcomes: [
-      { label: "Based", value: "Natural Math", icon: Calculator },
-      { label: "Stunning", value: "Visual", icon: Sparkles },
-    ],
-    technologies: ["Claude Code", "Next.js", "TypeScript", "React", "TailwindCSS", "Vercel"],
-    github: "https://github.com/vsm1996/renge",
-    external: "https://renge-ui.vercel.app/",
-    image: "/portfolio/renge-ui.png",
-  },
-  {
-    title: "PlayStation",
-    description: "Contributed to PlayStation.com across two years as part of the marketing engineering team, building frontend pages and real-time data pipelines for the Year in Review experience, which broke platform traffic records with millions of simultaneous users. ",
-    context: "Served as part of the proof-of-concept initiative that drove PlayStation’s migration from jQuery and ERB to React and Next.js, now live across the platform.",
-    role: "Frontend Developer",
-    category: "Gaming",
-    outcomes: [
-      { label: "Gaming", value: "Leading", icon: Award },
-      { label: "First", value: "Community", icon: Users },
-    ],
-    technologies: ["JavaScript", "React", "Next.js", "jQuery", "CSS", "Ruby", "TailwindCSS", "Storybook", "Netlify", "Git"],
-    // github: "https://github.com",
-    external: "https://www.playstation.com/",
-    image: "/portfolio/playstation.png",
-  },
-  {
-    title: "Hello Goodwin",
-    description: "A breakthrough in private charter aviation allowing for aviation to quickly source operators for high-end travelers.",
-    context: "Led engineering and stabilization of core frontend architecture for a key internal platform, resolving major rendering and state management issues impacting production.",
-    role: "Front-end Engineer",
-    category: "Corporate",
-    outcomes: [
-      { label: "Industry", value: "Private Charter", icon: PlaneTakeoff },
-      { label: "Product", value: "Innovation", icon: Award },
-    ],
-    technologies: ["Next.js", "TypeScript", "MantineUI", "Vercel", "CSS", "React", "Figma"],
-    // github: "https://github.com",
-    external: "https://app.hellogoodwin.com/",
-    image: "/portfolio/goodwin.png",
-  },
-  {
-    title: "Grove",
-    description: "A career intelligence system that scores job opportunities on alignment, energy cost, signal strength, and positioning gaps instead of just tracking application status.",
-    context: "Built to solve the problem that job searching treats candidates as static. Confidence, energy, and narrative clarity fluctuate. The tracker should adapt.",
-    role: "Architect / Front-end Engineer",
-    category: "Web App",
-    outcomes: [
-      { label: "Scoring Dimensions", value: "4", icon: TrendingUp },
-      { label: "Adaptive Views", value: "Capacity-based", icon: Award },
-      { label: "Auth", value: "Google OAuth", icon: Shield },
-    ],
-    technologies: ["Claude Code", "React.js", "Next.js 16", "TypeScript", "TailwindCSS", "Supabase", "Vercel"],
-    github: "https://github.com/vsm1996/grove",
-    external: "https://grove-intel.vercel.app",
-    image: "/portfolio/grove.png",
-  },
-  {
-    title: "Anime Sync Circle",
-    description: "Plan out your anime watchlist with your friend circle!",
-    context: "Built to provide friend groups an organized means to plan watch parties",
-    role: "Front-end Systems Engineer",
-    category: "Web App",
-    outcomes: [
-      { label: "Community", value: "Building", icon: UsersRound },
-      { label: "Real-TIme", value: "Communication", icon: Award },
-    ],
-    technologies: ["Claude Code", "React.js", "Next.js", "TailwindCSS", "PartyKit", "Lovable",],
-    github: "",
-    external: "https://anime-sync-circle.vercel.app/",
-    image: "/portfolio/anime-sync.png",
-  },
-  // {
-  //   title: "Sincerely Grateful - Internet Practitioners",
-  //   description: "A social media site for a global Buddhist organization.",
-  //   context: "Developed for a global Buddhist organization to connect practitioners worldwide",
-  //   role: "Full-Stack Developer",
-  //   category: "Community",
-  //   outcomes: [
-  //     { label: "Global Reach", value: "Worldwide", icon: Users },
-  //     { label: "Community", value: "Social", icon: Award },
-  //   ],
-  //   technologies: ["Next.js", "TailwindCSS", "PrismaORM", "Vercel", "React.js", "JavaScript", "Postgres", "Node.js",],
-  //   github: "https://github.com/vsm1996/SGIP",
-  //   external: "https://sgip.vercel.app/",
-  //   image: "/portfolio/sgip.png",
-  // },
-  {
-    title: "The Traveler",
-    description: "Display latest travel and aviation news using the New York Times API in a sleek, beautiful design.",
-    context: "Built to provide users with curated travel and aviation news in an elegant interface",
-    role: "Front-end Engineer",
-    category: "Web App",
-    outcomes: [
-      { label: "API Integration", value: "NYT API", icon: TrendingUp },
-      { label: "Design", value: "Sleek UI", icon: Award },
-    ],
-    technologies: ["React.js", "Next.js", "TailwindCSS", "Vercel", "JavaScript",],
-    github: "https://github.com/vsm1996/the-traveler",
-    external: "https://thetraveler.vercel.app/",
-    image: "/portfolio/thetraveler.png",
-  },
-  {
-    title: "Nium",
-    description: "A website redesign for a global fintech company.",
-    context: "Redesigned website for a global fintech company to modernize their online presence",
-    role: "Frontend Developer",
-    category: "Corporate",
-    outcomes: [
-      { label: "Redesign", value: "Modern", icon: Award },
-      { label: "Fintech", value: "Global", icon: Users },
-    ],
-    technologies: ["Next.js", "React.js", "SCSS", "Node.js", "Vercel"],
-    // github: "https://github.com",
-    external: "https://www.nium.com/",
-    image: "/portfolio/nium.png",
-  },
+const scaleRows = [
+  { step: "4xl", formula: "16 \xd7 \u03c6\u2075", px: "177px", token: "--renge-text-4xl" },
+  { step: "3xl", formula: "16 \xd7 \u03c6\u2074", px: "110px", token: "--renge-text-3xl" },
+  { step: "2xl", formula: "16 \xd7 \u03c6\u00b3", px: "68px", token: "--renge-text-2xl" },
+  { step: "xl", formula: "16 \xd7 \u03c6\u00b2", px: "42px", token: "--renge-text-xl" },
+  { step: "lg", formula: "16 \xd7 \u03c6\u00b9", px: "26px", token: "--renge-text-lg" },
+  { step: "base", formula: "16px", px: "16px", token: "--renge-text-base", base: true },
+  { step: "sm", formula: "16 \xd7 \u03c6\u207b\u00b9", px: "10px", token: "--renge-text-sm" },
 ]
 
-const categories = ["All", "Web App", "Framework", "Corporate", "Gaming"]
+const spacingRows = [
+  { step: "fib-11", fib: "89", px: "356px" },
+  { step: "fib-10", fib: "55", px: "220px" },
+  { step: "fib-9", fib: "34", px: "136px" },
+  { step: "fib-8", fib: "21", px: "84px" },
+  { step: "fib-7", fib: "13", px: "52px" },
+  { step: "fib-6", fib: "8", px: "32px" },
+  { step: "fib-5", fib: "5", px: "20px" },
+  { step: "fib-4", fib: "3", px: "12px" },
+  { step: "fib-3", fib: "2", px: "8px" },
+]
+
+const runtimeStats = [
+  { label: "color profiles", value: "6 named themes" },
+  { label: "colors", value: "OKLCH perceptual uniformity" },
+  { label: "motion", value: "\u03c6-derived easing curves" },
+]
+
+const productionProofs = [
+  {
+    name: "The Hondana",
+    desc: "Reading tracker built on Renge tokens. Full profile switching in production. All spacing, typography, and color from the system.",
+    href: "https://the-hondana.vercel.app/",
+    linkLabel: "the-hondana.vercel.app",
+  },
+  {
+    name: "This portfolio",
+    desc: "Built on Renge tokens. The color system, type scale, and spacing you are reading right now are Renge-derived.",
+    href: null,
+    linkLabel: null,
+  },
+]
 
 export function Projects() {
   const ref = useRef<HTMLDivElement>(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
-  const [expandedProject, setExpandedProject] = useState<number | null>(null)
-  const [showAllProjects, setShowAllProjects] = useState(false)
-  const [selectedCategory, setSelectedCategory] = useState("All")
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
+  const fadeUp = (delay = 0) => ({
+    hidden: { opacity: 0, y: 32 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: STAGGER.items,
-      },
-    },
-  }
-
-  const cardVariants = {
-    hidden: {
-      opacity: 0,
-      y: 60,
-      scale: PHI_INVERSE,
-      rotateX: 10,
-    },
-    visible: (i: number) => ({
-      opacity: 1,
       y: 0,
-      scale: 1,
-      rotateX: 0,
       transition: {
-        delay: i * (FIBONACCI_MS.f2 / 1000),
-        duration: FIBONACCI_MS.f6 / 1000,
-        ease: cubicBezier(EASING.golden[0], EASING.golden[1], EASING.golden[2], EASING.golden[3])
+        duration: FIBONACCI_MS.f5 / 1000,
+        delay,
+        ease: cubicBezier(EASING.golden[0], EASING.golden[1], EASING.golden[2], EASING.golden[3]),
       },
-    }),
-  }
+    },
+  })
 
-  const filteredProjects =
-    selectedCategory === "All" ? projects : projects.filter((project) => project.category === selectedCategory)
-
-  const visibleProjects = filteredProjects.slice(0, 3)
-  const hiddenProjects = filteredProjects.slice(3)
-
-  const handleToggleProjects = () => {
-    if (showAllProjects) {
-      setShowAllProjects(false)
-      setTimeout(() => {
-        ref.current?.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        })
-      }, 400)
-    } else {
-      setShowAllProjects(true)
-    }
+  const cardHover = {
+    scale: 1.03,
+    y: -3,
+    transition: {
+      duration: FIBONACCI_MS.f3 / 1000,
+      ease: cubicBezier(EASING.spring[0], EASING.spring[1], EASING.spring[2], EASING.spring[3]),
+    },
   }
 
   return (
-    <section id="projects" className="min-h-screen flex items-center justify-center px-6 py-32" ref={ref}>
-      <div className="max-w-7xl w-full">
+    <section id="renge" className="min-h-screen flex items-center justify-center px-6 py-32 relative" ref={ref}>
+      {/* Floating decorative shapes */}
+      <motion.div
+        className="absolute bottom-20 left-10 w-16 h-16 border border-primary/20 rounded-2xl"
+        animate={{
+          rotate: [0, 360],
+          scale: [1, 1.3, 1],
+          y: [0, -20, 0],
+        }}
+        transition={{ duration: 16, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+      />
+      <motion.div
+        className="absolute top-24 right-16 w-12 h-12 border border-accent/15 rounded-full"
+        animate={{
+          scale: [1, 1.5, 1],
+          rotate: [0, GOLDEN_ANGLE, GOLDEN_ANGLE * 2, 360],
+          opacity: [0.2, 0.4, 0.2],
+        }}
+        transition={{ duration: 10, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+      />
+      <motion.div
+        className="absolute top-1/3 right-24 w-8 h-8 bg-secondary/10 rounded-lg"
+        animate={{
+          rotate: [0, 90, 180, 270, 360],
+          scale: [1, 1.2, 0.8, 1.2, 1],
+          x: [0, 20, -20, 0],
+        }}
+        transition={{ duration: 13, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+      />
+
+      <div className="max-w-5xl w-full">
         <div className="space-y-16">
+          {/* Header */}
           <motion.div
-            className="space-y-3"
-            initial={{ opacity: 0, x: -50 }}
-            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
-            transition={{ duration: FIBONACCI_MS.f5 / 1000, ease: cubicBezier(EASING.golden[0], EASING.golden[1], EASING.golden[2], EASING.golden[3]) }}
+            className="space-y-4"
+            variants={fadeUp(0)}
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
           >
-            <h2 className="text-5xl md:text-6xl font-extrabold text-foreground text-balance">
-              {"Featured Work".split("").map((char, i) => (
-                <motion.span
-                  key={i}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                  transition={{
-                    delay: i * 0.03,
-                    duration: 0.3,
-                  }}
-                  style={{ display: char === " " ? "inline" : "inline-block" }}
-                >
-                  {char === " " ? "\u00A0" : char}
-                </motion.span>
-              ))}
+            <p className="text-accent font-mono text-sm font-medium tracking-widest uppercase">Design System</p>
+            <h2 className="text-5xl md:text-7xl font-light tracking-tight text-foreground leading-none">
+              Renge Design System
             </h2>
-            <div className="h-1 bg-linear-to-r from-accent to-transparent max-w-xs rounded-full" />
+            <p className="text-2xl md:text-3xl text-muted-foreground font-light">
+              Proportion as first principle.
+            </p>
+            <p className="text-muted-foreground max-w-2xl leading-relaxed">
+              Every token in Renge is derived, not chosen. Typography from the golden ratio. Spacing from the Fibonacci sequence. Colors in OKLCH for perceptual uniformity. Motion curves from phi-derived easing. Nothing arbitrary.
+            </p>
           </motion.div>
 
-          <motion.div
-            className="flex flex-wrap gap-3 justify-center"
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            {categories.map((category, index) => (
-              <motion.button
-                key={category}
-                onClick={() => setSelectedCategory(category)}
-                className={`px-6 py-2.5 rounded-full font-medium text-sm transition-all duration-300 ${selectedCategory === category
-                  ? "bg-accent text-accent-foreground shadow-lg shadow-accent/30"
-                  : "bg-card/50 text-muted-foreground hover:bg-card hover:text-foreground border border-border/50"
-                  }`}
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: index * 0.05, type: "spring", stiffness: 300 }}
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                {category}
-              </motion.button>
-            ))}
-          </motion.div>
-
-          <AnimatePresence mode="wait">
+          {/* Scale tables */}
+          <div className="grid lg:grid-cols-2 gap-8">
             <motion.div
-              key={selectedCategory}
-              className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr"
-              variants={containerVariants}
+              className="space-y-3"
+              variants={fadeUp(0.15)}
               initial="hidden"
-              animate="visible"
-              exit="hidden"
+              animate={isInView ? "visible" : "hidden"}
             >
+              <p className="text-muted-foreground/60 font-mono text-xs uppercase tracking-widest">
+                Typography &mdash; \u03c6 scale from 16px
+              </p>
               <motion.div
-                custom={0}
-                variants={cardVariants}
-                className="md:col-span-2 lg:row-span-2"
-                onHoverStart={() => setExpandedProject(0)}
-                onHoverEnd={() => setExpandedProject(null)}
                 whileHover={{
-                  scale: 1.03,
-                  rotateY: 3,
-                  rotateX: 2,
-                  transition: { duration: FIBONACCI_MS.f3 / 1000, ease: [0.34, 1.56, 0.64, 1] },
+                  scale: 1.01,
+                  transition: { duration: FIBONACCI_MS.f3 / 1000 },
                 }}
+                className="border border-border/30 rounded-2xl overflow-hidden bg-card/20 hover:border-accent/20 hover:shadow-xl hover:shadow-accent/5 transition-colors duration-300"
               >
-                <Card className="h-full group pb-0 overflow-hidden backdrop-blur-xl bg-card/50 border-border/50 rounded-3xl hover:shadow-2xl hover:shadow-accent/10 transition-all duration-500">
-                  <div className="h-full flex flex-col">
-                    <div className="relative aspect-video lg:aspect-16/10 overflow-hidden">
-                      <motion.img
-                        src={filteredProjects[0]?.image || "/placeholder.svg"}
-                        alt={filteredProjects[0]?.title}
-                        className="w-full h-full object-cover opacity-90"
-                        whileHover={{ scale: 1.1, opacity: 1 }}
-                        transition={{ duration: FIBONACCI_MS.f6 / 1000, ease: cubicBezier(EASING.golden[0], EASING.golden[1], EASING.golden[2], EASING.golden[3]) }}
-                        style={{ willChange: "transform" }}
-                      />
-                      <div className="absolute inset-0 bg-linear-to-t from-card via-card/50 to-transparent" />
-                      <AnimatePresence>
-                        {expandedProject === 0 && (
-                          <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            className="absolute inset-0 bg-card/95 backdrop-blur-sm flex items-center justify-center p-8"
-                          >
-                            <div className="space-y-4 text-center">
-                              <motion.p
-                                initial={{ y: 20, opacity: 0 }}
-                                animate={{ y: 0, opacity: 1 }}
-                                transition={{ delay: 0.1 }}
-                                className="text-sm text-muted-foreground"
-                              >
-                                {filteredProjects[0]?.context}
-                              </motion.p>
-                              <motion.p
-                                initial={{ y: 20, opacity: 0 }}
-                                animate={{ y: 0, opacity: 1 }}
-                                transition={{ delay: 0.15 }}
-                                className="text-accent font-medium"
-                              >
-                                Role: {filteredProjects[0]?.role}
-                              </motion.p>
-                              <div className="flex gap-6 justify-center">
-                                {filteredProjects[0]?.outcomes.map((outcome, i) => (
-                                  <motion.div
-                                    key={i}
-                                    initial={{ scale: 0, opacity: 0 }}
-                                    animate={{ scale: 1, opacity: 1 }}
-                                    transition={{ delay: 0.2 + i * 0.1, type: "spring" }}
-                                    className="text-center"
-                                  >
-                                    <outcome.icon className="h-6 w-6 mx-auto mb-2 text-accent" />
-                                    <p className="text-2xl font-bold text-foreground">{outcome.value}</p>
-                                    <p className="text-xs text-muted-foreground">{outcome.label}</p>
-                                  </motion.div>
-                                ))}
-                              </div>
-                            </div>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </div>
-
-                    <div className="flex-1 p-8 space-y-4">
-                      <div>
-                        <p className="text-accent font-mono text-sm font-semibold mb-2">Featured Project</p>
-                        <h3 className="text-3xl font-bold text-foreground">{filteredProjects[0]?.title}</h3>
-                      </div>
-
-                      <p className="text-muted-foreground leading-relaxed text-lg font-normal">
-                        {filteredProjects[0]?.description}
-                      </p>
-
-                      <div className="flex flex-wrap gap-2">
-                        {filteredProjects[0]?.technologies.map((tech, i) => (
-                          <motion.span
-                            key={tech}
-                            className="px-3 py-1 text-sm font-mono text-accent bg-accent/10 rounded-full"
-                            initial={{ opacity: 0, scale: 0 }}
-                            animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }}
-                            transition={{
-                              delay: (FIBONACCI_MS.f5 + i * FIBONACCI_MS.f1) / 1000,
-                              duration: FIBONACCI_MS.f3 / 1000,
-                              ease: cubicBezier(EASING.spring[0], EASING.spring[1], EASING.spring[2], EASING.spring[3]),
-                            }}
-                            whileHover={{ scale: 1.1, rotate: GOLDEN_ANGLE / 20 }}
-                          >
-                            {tech}
-                          </motion.span>
-                        ))}
-                      </div>
-
-                      <div className="flex items-center gap-4 pt-2">
-                        <motion.a
-                          href={filteredProjects[0]?.github}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-muted-foreground hover:text-accent transition-all"
-                          whileHover={{ scale: 1.2, rotate: GOLDEN_ANGLE / 10 }}
-                          whileTap={{ scale: 0.9 }}
-                        >
-                          <Github className="h-6 w-6" />
-                          <span className="sr-only">GitHub</span>
-                        </motion.a>
-                        <motion.a
-                          href={filteredProjects[0]?.external}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-muted-foreground hover:text-accent transition-all"
-                          whileHover={{ scale: 1.2, rotate: -GOLDEN_ANGLE / 10 }}
-                          whileTap={{ scale: 0.9 }}
-                        >
-                          <ExternalLink className="h-6 w-6" />
-                          <span className="sr-only">External Link</span>
-                        </motion.a>
-                      </div>
-                    </div>
-                  </div>
-                </Card>
+                <table className="w-full text-sm font-mono">
+                  <thead>
+                    <tr className="border-b border-border/20">
+                      <th className="text-left px-4 py-2 text-muted-foreground/50 font-normal text-xs">step</th>
+                      <th className="text-left px-4 py-2 text-muted-foreground/50 font-normal text-xs">formula</th>
+                      <th className="text-right px-4 py-2 text-muted-foreground/50 font-normal text-xs">value</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {scaleRows.map((row) => (
+                      <tr
+                        key={row.step}
+                        className={`border-b border-border/10 last:border-0 hover:bg-accent/5 transition-colors duration-150 ${row.base ? "bg-accent/5" : ""}`}
+                      >
+                        <td className={`px-4 py-2 ${row.base ? "text-accent" : "text-muted-foreground/70"}`}>
+                          {row.step}
+                        </td>
+                        <td className="px-4 py-2 text-muted-foreground/50 text-xs">{row.formula}</td>
+                        <td className="px-4 py-2 text-right text-foreground/80">{row.px}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </motion.div>
+            </motion.div>
 
-              {visibleProjects.slice(1).map((project, index) => (
+            <motion.div
+              className="space-y-3"
+              variants={fadeUp(0.25)}
+              initial="hidden"
+              animate={isInView ? "visible" : "hidden"}
+            >
+              <p className="text-muted-foreground/60 font-mono text-xs uppercase tracking-widest">
+                Spacing &mdash; Fibonacci \xd7 4px base unit
+              </p>
+              <motion.div
+                whileHover={{
+                  scale: 1.01,
+                  transition: { duration: FIBONACCI_MS.f3 / 1000 },
+                }}
+                className="border border-border/30 rounded-2xl overflow-hidden bg-card/20 hover:border-accent/20 hover:shadow-xl hover:shadow-accent/5 transition-colors duration-300"
+              >
+                <table className="w-full text-sm font-mono">
+                  <thead>
+                    <tr className="border-b border-border/20">
+                      <th className="text-left px-4 py-2 text-muted-foreground/50 font-normal text-xs">token</th>
+                      <th className="text-left px-4 py-2 text-muted-foreground/50 font-normal text-xs">fib</th>
+                      <th className="text-right px-4 py-2 text-muted-foreground/50 font-normal text-xs">value</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {spacingRows.map((row) => (
+                      <tr
+                        key={row.step}
+                        className="border-b border-border/10 last:border-0 hover:bg-accent/5 transition-colors duration-150"
+                      >
+                        <td className="px-4 py-2 text-muted-foreground/70">{row.step}</td>
+                        <td className="px-4 py-2 text-muted-foreground/50 text-xs">{row.fib}</td>
+                        <td className="px-4 py-2 text-right text-foreground/80">{row.px}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </motion.div>
+            </motion.div>
+          </div>
+
+          {/* Runtime injection */}
+          <motion.div
+            className="space-y-4"
+            variants={fadeUp(0.35)}
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+          >
+            <p className="text-muted-foreground/60 font-mono text-xs uppercase tracking-widest">Runtime injection</p>
+            <motion.code
+              whileHover={{
+                scale: 1.01,
+                transition: { duration: FIBONACCI_MS.f3 / 1000 },
+              }}
+              className="block font-mono text-sm text-accent/80 bg-card/40 border border-border/30 hover:border-accent/30 hover:bg-card/60 hover:shadow-lg hover:shadow-accent/5 px-5 py-4 rounded-xl transition-colors duration-300 cursor-default"
+            >
+              createRengeTheme(&apos;ocean&apos;) &rarr; 100+ CSS custom properties &rarr; production
+            </motion.code>
+            <div className="grid sm:grid-cols-3 gap-4">
+              {runtimeStats.map((stat, i) => (
                 <motion.div
-                  key={index}
-                  custom={index + 1}
-                  variants={cardVariants}
-                  onHoverStart={() => setExpandedProject(index + 1)}
-                  onHoverEnd={() => setExpandedProject(null)}
-                  whileHover={{
-                    scale: 1.08,
-                    rotateY: 4,
-                    rotateZ: 2,
-                    transition: { duration: FIBONACCI_MS.f3 / 1000, ease: [0.68, -0.6, 0.32, 1.6] },
+                  key={stat.label}
+                  initial={{ opacity: 0, y: 16, scale: PHI_INVERSE }}
+                  animate={isInView ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 16, scale: PHI_INVERSE }}
+                  transition={{
+                    delay: 0.35 + i * (FIBONACCI_MS.f2 / 1000),
+                    duration: FIBONACCI_MS.f5 / 1000,
+                    ease: cubicBezier(EASING.golden[0], EASING.golden[1], EASING.golden[2], EASING.golden[3]),
                   }}
+                  whileHover={cardHover}
+                  whileTap={{ scale: 0.97 }}
+                  className="border border-border/30 rounded-xl px-4 py-3 bg-card/20 hover:border-accent/30 hover:bg-card/40 hover:shadow-lg hover:shadow-accent/5 transition-colors duration-300 cursor-default"
                 >
-                  <Card className="h-full group pb-0 overflow-hidden backdrop-blur-xl bg-card/50 border-border/50 rounded-3xl hover:shadow-2xl hover:shadow-accent/10 transition-all duration-500">
-                    <div className="h-full flex flex-col">
-                      <div className="relative aspect-video overflow-hidden">
-                        <motion.img
-                          src={project.image || "/placeholder.svg"}
-                          alt={project.title}
-                          className="w-full h-full object-cover opacity-90"
-                          whileHover={{ scale: 1.15, opacity: 1 }}
-                          transition={{ duration: FIBONACCI_MS.f6 / 1000, ease: cubicBezier(EASING.golden[0], EASING.golden[1], EASING.golden[2], EASING.golden[3]) }}
-                          style={{ willChange: "transform" }}
-                        />
-                        <div className="absolute inset-0 bg-linear-to-t from-card via-card/50 to-transparent" />
-                        <AnimatePresence>
-                          {expandedProject === index + 1 && (
-                            <motion.div
-                              initial={{ opacity: 0 }}
-                              animate={{ opacity: 1 }}
-                              exit={{ opacity: 0 }}
-                              className="absolute inset-0 bg-card/95 backdrop-blur-sm flex items-center justify-center p-4"
-                            >
-                              <div className="space-y-3 text-center">
-                                <motion.p
-                                  initial={{ y: 10, opacity: 0 }}
-                                  animate={{ y: 0, opacity: 1 }}
-                                  className="text-xs text-muted-foreground"
-                                >
-                                  {project.context}
-                                </motion.p>
-                                <div className="flex gap-4 justify-center">
-                                  {project.outcomes.map((outcome, i) => (
-                                    <motion.div
-                                      key={i}
-                                      initial={{ scale: 0 }}
-                                      animate={{ scale: 1 }}
-                                      transition={{ delay: 0.1 + i * 0.05, type: "spring" }}
-                                      className="text-center"
-                                    >
-                                      <outcome.icon className="h-4 w-4 mx-auto mb-1 text-accent" />
-                                      <p className="text-lg font-bold text-foreground">{outcome.value}</p>
-                                      <p className="text-[10px] text-muted-foreground">{outcome.label}</p>
-                                    </motion.div>
-                                  ))}
-                                </div>
-                              </div>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </div>
-
-                      <div className="flex-1 p-6 space-y-3">
-                        <h3 className="text-xl font-bold text-foreground">{project.title}</h3>
-                        <p className="text-muted-foreground leading-relaxed text-sm font-normal line-clamp-3">
-                          {project.description}
-                        </p>
-
-                        <div className="flex flex-wrap gap-2">
-                          {project.technologies.slice(0, 4).map((tech) => (
-                            <motion.span
-                              key={tech}
-                              className="px-2 py-1 text-xs font-mono text-accent bg-accent/10 rounded-full"
-                              whileHover={{ scale: 1.1, rotate: 3 }}
-                            >
-                              {tech}
-                            </motion.span>
-                          ))}
-                        </div>
-
-                        <div className="flex items-center gap-3 pt-2">
-                          <motion.a
-                            href={project.github}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-muted-foreground hover:text-accent transition-all"
-                            whileHover={{ scale: 1.2, rotate: 5 }}
-                            whileTap={{ scale: 0.9 }}
-                          >
-                            <Github className="h-5 w-5" />
-                            <span className="sr-only">GitHub</span>
-                          </motion.a>
-                          <motion.a
-                            href={project.external}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-muted-foreground hover:text-accent transition-all"
-                            whileHover={{ scale: 1.2, rotate: -5 }}
-                            whileTap={{ scale: 0.9 }}
-                          >
-                            <ExternalLink className="h-5 w-5" />
-                            <span className="sr-only">External Link</span>
-                          </motion.a>
-                        </div>
-                      </div>
-                    </div>
-                  </Card>
+                  <p className="text-muted-foreground/60 text-xs font-mono uppercase tracking-wide">{stat.label}</p>
+                  <p className="text-foreground font-medium mt-1 text-sm">{stat.value}</p>
                 </motion.div>
               ))}
+            </div>
+          </motion.div>
 
-              <AnimatePresence mode="popLayout">
-                {showAllProjects &&
-                  hiddenProjects.map((project, index) => (
-                    <motion.div
-                      key={`hidden-${index}`}
-                      initial={{ opacity: 0, y: 60, scale: 0.8 }}
-                      animate={{
-                        opacity: 1,
-                        y: 0,
-                        scale: 1,
-                        transition: {
-                          delay: index * 0.15,
-                          duration: 0.6,
-                          ease: [0.34, 1.56, 0.64, 1],
-                        },
-                      }}
-                      exit={{
-                        opacity: 0,
-                        y: 40,
-                        scale: 0.9,
-                        transition: {
-                          duration: 0.5,
-                          ease: [0.4, 0, 0.2, 1],
-                          delay: (hiddenProjects.length - index - 1) * 0.08, // Stagger in reverse
-                        },
-                      }}
-                      onHoverStart={() => setExpandedProject(visibleProjects.length + index)}
-                      onHoverEnd={() => setExpandedProject(null)}
-                      whileHover={{
-                        scale: 1.08,
-                        rotateY: 4,
-                        rotateZ: 2,
-                        transition: { duration: FIBONACCI_MS.f3 / 1000, ease: [0.68, -0.6, 0.32, 1.6] },
-                      }}
-                    >
-                      <Card className="h-full group pb-0 overflow-hidden backdrop-blur-xl bg-card/50 border-border/50 rounded-3xl hover:shadow-2xl hover:shadow-accent/10 transition-all duration-500">
-                        <div className="h-full flex flex-col">
-                          <div className="relative aspect-video overflow-hidden">
-                            <motion.img
-                              src={project.image || "/placeholder.svg"}
-                              alt={project.title}
-                              className="w-full h-full object-cover opacity-90"
-                              whileHover={{ scale: 1.15, opacity: 1 }}
-                              transition={{ duration: FIBONACCI_MS.f6 / 1000, ease: cubicBezier(EASING.golden[0], EASING.golden[1], EASING.golden[2], EASING.golden[3]) }}
-                              style={{ willChange: "transform" }}
-                            />
-                            <div className="absolute inset-0 bg-linear-to-t from-card via-card/50 to-transparent" />
-                            <AnimatePresence>
-                              {expandedProject === visibleProjects.length + index && (
-                                <motion.div
-                                  initial={{ opacity: 0 }}
-                                  animate={{ opacity: 1 }}
-                                  exit={{ opacity: 0 }}
-                                  className="absolute inset-0 bg-card/95 backdrop-blur-sm flex items-center justify-center p-4"
-                                >
-                                  <div className="space-y-3 text-center">
-                                    <motion.p
-                                      initial={{ y: 10, opacity: 0 }}
-                                      animate={{ y: 0, opacity: 1 }}
-                                      className="text-xs text-muted-foreground"
-                                    >
-                                      {project.context}
-                                    </motion.p>
-                                    <div className="flex gap-4 justify-center">
-                                      {project.outcomes.map((outcome, i) => (
-                                        <motion.div
-                                          key={i}
-                                          initial={{ scale: 0 }}
-                                          animate={{ scale: 1 }}
-                                          transition={{ delay: 0.1 + i * 0.05, type: "spring" }}
-                                          className="text-center"
-                                        >
-                                          <outcome.icon className="h-4 w-4 mx-auto mb-1 text-accent" />
-                                          <p className="text-lg font-bold text-foreground">{outcome.value}</p>
-                                          <p className="text-[10px] text-muted-foreground">{outcome.label}</p>
-                                        </motion.div>
-                                      ))}
-                                    </div>
-                                  </div>
-                                </motion.div>
-                              )}
-                            </AnimatePresence>
-                          </div>
-
-                          <div className="flex-1 p-6 space-y-3">
-                            <h3 className="text-xl font-bold text-foreground">{project.title}</h3>
-                            <p className="text-muted-foreground leading-relaxed text-sm font-normal line-clamp-3">
-                              {project.description}
-                            </p>
-
-                            <div className="flex flex-wrap gap-2">
-                              {project.technologies.slice(0, 4).map((tech) => (
-                                <motion.span
-                                  key={tech}
-                                  className="px-2 py-1 text-xs font-mono text-accent bg-accent/10 rounded-full"
-                                  whileHover={{ scale: 1.1, rotate: 3 }}
-                                >
-                                  {tech}
-                                </motion.span>
-                              ))}
-                            </div>
-
-                            <div className="flex items-center gap-3 pt-2">
-                              <motion.a
-                                href={project.github}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-muted-foreground hover:text-accent transition-all"
-                                whileHover={{ scale: 1.2, rotate: 5 }}
-                                whileTap={{ scale: 0.9 }}
-                              >
-                                <Github className="h-5 w-5" />
-                                <span className="sr-only">GitHub</span>
-                              </motion.a>
-                              <motion.a
-                                href={project.external}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-muted-foreground hover:text-accent transition-all"
-                                whileHover={{ scale: 1.2, rotate: -5 }}
-                                whileTap={{ scale: 0.9 }}
-                              >
-                                <ExternalLink className="h-5 w-5" />
-                                <span className="sr-only">External Link</span>
-                              </motion.a>
-                            </div>
-                          </div>
-                        </div>
-                      </Card>
-                    </motion.div>
-                  ))}
-              </AnimatePresence>
-            </motion.div>
-          </AnimatePresence>
-
+          {/* Production proof */}
           <motion.div
-            className="text-center pt-8"
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-            transition={{
-              delay: FIBONACCI_MS.f6 / 1000,
-              duration: FIBONACCI_MS.f5 / 1000,
-              ease: cubicBezier(EASING.golden[0], EASING.golden[1], EASING.golden[2], EASING.golden[3]),
+            className="border border-border/30 rounded-2xl p-5 bg-card/20 space-y-3 hover:border-accent/20 hover:bg-card/30 hover:shadow-xl hover:shadow-accent/5 transition-colors duration-300"
+            variants={fadeUp(0.45)}
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+            whileHover={{
+              scale: 1.01,
+              transition: { duration: FIBONACCI_MS.f3 / 1000 },
             }}
           >
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button
-                variant="outline"
-                size="lg"
-                onClick={handleToggleProjects}
-                className="rounded-full px-8 h-14 text-base backdrop-blur-xl bg-background/50 border-border/50 hover:bg-accent/10 hover:border-accent/50 transition-colors"
-              >
-                {showAllProjects ? "Show Less" : "View All Projects"}
-              </Button>
-            </motion.div>
+            <p className="text-muted-foreground/60 font-mono text-xs uppercase tracking-widest">Production proof</p>
+            <div className="grid sm:grid-cols-2 gap-4">
+              {productionProofs.map((proof) => (
+                <div key={proof.name}>
+                  <p className="text-foreground font-medium">{proof.name}</p>
+                  <p className="text-muted-foreground text-sm mt-1">{proof.desc}</p>
+                  {proof.href && (
+                    <motion.a
+                      href={proof.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      whileHover={{
+                        x: 4,
+                        transition: { duration: FIBONACCI_MS.f3 / 1000 },
+                      }}
+                      className="group inline-flex items-center gap-1.5 mt-2 text-accent text-sm hover:text-accent/80 transition-colors duration-200"
+                    >
+                      {proof.linkLabel}
+                      <ExternalLink className="h-3 w-3 opacity-60 group-hover:opacity-100 transition-opacity duration-200" />
+                    </motion.a>
+                  )}
+                </div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Footer links */}
+          <motion.div
+            className="flex items-center gap-4 flex-wrap"
+            variants={fadeUp(0.55)}
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+          >
+            <motion.a
+              href="https://renge-ui.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{
+                scale: 1.05,
+                y: -3,
+                transition: {
+                  duration: FIBONACCI_MS.f3 / 1000,
+                  ease: cubicBezier(EASING.spring[0], EASING.spring[1], EASING.spring[2], EASING.spring[3]),
+                },
+              }}
+              whileTap={{ scale: 0.96 }}
+              className="group flex items-center gap-2 px-5 py-2.5 rounded-full border border-border/50 bg-card/30 hover:border-accent/50 hover:bg-accent/5 hover:shadow-md hover:shadow-accent/10 transition-colors duration-300 text-sm font-medium text-muted-foreground hover:text-foreground"
+            >
+              Live demo
+              <ExternalLink className="h-3.5 w-3.5 opacity-40 group-hover:opacity-100 transition-opacity duration-200" />
+            </motion.a>
+            <motion.a
+              href="https://github.com/vsm1996/renge"
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{
+                scale: 1.3,
+                y: -4,
+                rotate: [0, -10, 10, 0],
+                transition: {
+                  duration: FIBONACCI_MS.f4 / 1000,
+                  ease: cubicBezier(EASING.spring[0], EASING.spring[1], EASING.spring[2], EASING.spring[3]),
+                },
+              }}
+              whileTap={{ scale: 0.9 }}
+              className="relative text-muted-foreground hover:text-accent transition-colors duration-200"
+              aria-label="Renge GitHub"
+            >
+              <motion.div
+                className="absolute inset-0 rounded-full bg-accent/20 blur-xl"
+                initial={{ opacity: 0 }}
+                whileHover={{ opacity: 1 }}
+                transition={{ duration: FIBONACCI_MS.f3 / 1000 }}
+              />
+              <Github className="h-5 w-5 relative z-10" />
+            </motion.a>
+            <motion.span
+              whileHover={{
+                scale: 1.04,
+                transition: { duration: FIBONACCI_MS.f3 / 1000 },
+              }}
+              className="font-mono text-xs text-muted-foreground/60 border border-border/30 hover:border-accent/30 hover:text-muted-foreground/80 px-3 py-1 rounded-full transition-colors duration-300 cursor-default"
+            >
+              npm: @renge-ui/tokens
+            </motion.span>
           </motion.div>
         </div>
       </div>

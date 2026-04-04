@@ -1,391 +1,273 @@
 "use client"
 
-import { Card } from "@/components/ui/card"
-import { cubicBezier, motion } from "framer-motion"
+import { ExternalLink, Github } from "lucide-react"
+import { motion, cubicBezier } from "framer-motion"
 import { useInView } from "framer-motion"
-import { useRef, useState, useEffect } from "react"
-import { PHI_INVERSE, FIBONACCI_MS, EASING, STAGGER, PHI, GOLDEN_ANGLE } from "@/lib/animation-constants"
-import { Code2, FileType, Component, Layers, Server, Palette, Database, GitBranch, Box } from "lucide-react"
+import { useRef } from "react"
+import { PHI_INVERSE, FIBONACCI_MS, EASING, GOLDEN_ANGLE } from "@/lib/animation-constants"
+
+const layers = [
+  {
+    index: "01",
+    name: "Inputs",
+    type: "explicit",
+    spec: "cognitive: 0\u2013100  /  temporal: 0\u2013100  /  emotional: 0\u2013100",
+    note: "No inference. No profiling. The user declares their state directly.",
+  },
+  {
+    index: "02",
+    name: "FieldManager",
+    type: "computation",
+    spec: "energy = \u221b(cognitive \xd7 temporal \xd7 emotional)",
+    note: "EMA smoothing prevents style thrashing on rapid input changes.",
+  },
+  {
+    index: "03",
+    name: "AmbientContext",
+    type: "context",
+    spec: "deriveMode() \u2192 density | motion | focus | tone tokens",
+    note: "React context layer. Components read tokens. No prop drilling.",
+  },
+  {
+    index: "04",
+    name: "Components",
+    type: "output",
+    spec: "layout density  /  content length  /  motion level  /  color tone",
+    note: "prefers-reduced-motion hard override at this layer. Always respected.",
+  },
+]
+
+const stats = [
+  { label: "npm", value: "@harmonia-ui/core", mono: true, href: null },
+  { label: "production", value: "Grove", mono: false, href: "https://grove-intel.vercel.app/" },
+  { label: "monorepo", value: "4 packages", mono: false, href: null },
+]
 
 export function About() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false)
 
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
-    setPrefersReducedMotion(mediaQuery.matches)
-    const handleChange = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches)
-    mediaQuery.addEventListener("change", handleChange)
-    return () => mediaQuery.removeEventListener("change", handleChange)
-  }, [])
-
-  const skills = [
-    { name: "Next.js", icon: Layers },
-    { name: "React", icon: Component },
-    { name: "TypeScript", icon: FileType },
-    { name: "Tailwind CSS", icon: Palette },
-    { name: "Supabase", icon: Database },
-    { name: "Zustand", icon: Box },
-    { name: "JavaScript (ES6+)", icon: Code2 },
-    { name: "Node.js", icon: Server },
-    { name: "Prisma ORM", icon: Database },
-    { name: "Git", icon: GitBranch },
-  ]
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: STAGGER.items,
-      },
-    },
-  }
-
-  const cardVariants = {
-    hidden: {
-      opacity: 0,
-      y: 50,
-      scale: PHI_INVERSE,
-    },
+  const fadeUp = (delay = 0) => ({
+    hidden: { opacity: 0, y: 32 },
     visible: {
       opacity: 1,
       y: 0,
-      scale: 1,
       transition: {
-        duration: FIBONACCI_MS.f6 / 1000,
+        duration: FIBONACCI_MS.f5 / 1000,
+        delay,
         ease: cubicBezier(EASING.golden[0], EASING.golden[1], EASING.golden[2], EASING.golden[3]),
       },
     },
-  }
-
-  const skillVariants = {
-    hidden: { opacity: 0, x: -20 },
-    visible: (i: number) => ({
-      opacity: 1,
-      x: 0,
-      transition: {
-        delay: i * (FIBONACCI_MS.f1 / 1000),
-        duration: FIBONACCI_MS.f3 / 1000,
-        ease: cubicBezier(EASING.gentle[0], EASING.gentle[1], EASING.gentle[2], EASING.gentle[3]),
-      },
-    }),
-  }
+  })
 
   return (
-    <section id="about" className="min-h-screen flex items-center justify-center px-6 py-32 relative" ref={ref}>
+    <section id="harmonia" className="min-h-screen flex items-center justify-center px-6 py-32 relative" ref={ref}>
+      {/* Floating decorative shapes */}
       <motion.div
-        className="absolute top-20 right-10 w-24 h-24 border-2 border-primary/20 rounded-3xl"
-        animate={
-          prefersReducedMotion
-            ? {}
-            : {
-              rotate: [0, 360],
-              scale: [1, PHI, 1],
-              x: [0, 20, 0],
-              y: [0, -15, 0],
-            }
-        }
-        transition={{
-          rotate: { duration: 21, repeat: Number.POSITIVE_INFINITY, ease: "linear" },
-          scale: { duration: 8, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" },
-          x: { duration: 5, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" },
-          y: { duration: 7, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" },
+        className="absolute top-20 right-20 w-20 h-20 border border-accent/15 rounded-full"
+        animate={{
+          scale: [1, 1.4, 1],
+          rotate: [0, 180, 360],
+          x: [0, 25, 0],
+          y: [0, -18, 0],
         }}
-        style={{ willChange: prefersReducedMotion ? "auto" : "transform" }}
+        transition={{ duration: 14, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+      />
+      <motion.div
+        className="absolute bottom-32 left-16 w-14 h-14 border-2 border-primary/20 rounded-2xl"
+        animate={{
+          rotate: [0, GOLDEN_ANGLE, GOLDEN_ANGLE * 2, 360],
+          scale: [1, 1.2, 0.9, 1],
+          y: [0, -20, 0],
+        }}
+        transition={{ duration: 16, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+      />
+      <motion.div
+        className="absolute top-1/2 right-8 w-10 h-10 border border-secondary/20"
+        style={{ borderRadius: "40% 60% 60% 40% / 60% 40% 60% 40%" }}
+        animate={{
+          rotate: [360, 0],
+          scale: [1, 1.3, 0.8, 1],
+          y: [0, 30, -30, 0],
+        }}
+        transition={{ duration: 11, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
       />
 
-      <motion.div
-        className="absolute bottom-20 left-10 w-16 h-16 border-2 border-accent/30"
-        style={{ borderRadius: "30% 70% 70% 30% / 30% 30% 70% 70%" }}
-        animate={
-          prefersReducedMotion
-            ? {}
-            : {
-              rotate: [360, 0],
-              scale: [1, 1.3, 1],
-              y: [0, -30, 0],
-              x: [0, 15, 0],
-            }
-        }
-        transition={{
-          rotate: { duration: 13, repeat: Number.POSITIVE_INFINITY, ease: "linear" },
-          scale: { duration: 5, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" },
-          y: { duration: 8, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" },
-          x: { duration: 6, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" },
-        }}
-      />
-
-      <motion.div
-        className="absolute top-1/3 left-1/4 w-20 h-20 border border-accent/20 rounded-full"
-        animate={
-          prefersReducedMotion
-            ? {}
-            : {
-              scale: [1, 1.5, 1],
-              rotate: [0, GOLDEN_ANGLE, GOLDEN_ANGLE * 2, 360],
-              opacity: [0.2, 0.4, 0.2],
-            }
-        }
-        transition={{
-          duration: 10,
-          repeat: Number.POSITIVE_INFINITY,
-          ease: "easeInOut",
-        }}
-      />
-
-      <motion.div
-        className="absolute bottom-1/3 right-1/4 w-12 h-12 bg-primary/10 rounded-lg"
-        animate={
-          prefersReducedMotion
-            ? {}
-            : {
-              rotate: [0, 90, 180, 270, 360],
-              scale: [1, 1.2, 0.8, 1.2, 1],
-              x: [0, 20, -20, 0],
-              y: [0, -20, 20, 0],
-            }
-        }
-        transition={{
-          duration: 15,
-          repeat: Number.POSITIVE_INFINITY,
-          ease: "easeInOut",
-        }}
-      />
-
-      <div className="max-w-6xl w-full">
-        <div className="space-y-12">
+      <div className="max-w-5xl w-full">
+        <div className="space-y-16">
+          {/* Header */}
           <motion.div
-            className="space-y-3"
-            initial={{ opacity: 0, x: -50 }}
-            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
-            transition={{ duration: FIBONACCI_MS.f5 / 1000, ease: cubicBezier(EASING.golden[0], EASING.golden[1], EASING.golden[2], EASING.golden[3]) }}
-          >
-            <h2 className="text-5xl md:text-6xl font-extrabold text-foreground text-balance group cursor-default">
-              <span
-                className="transition-all duration-500 bg-linear-to-r from-foreground to-foreground bg-clip-text group-hover:from-primary group-hover:via-accent group-hover:to-secondary group-hover:text-transparent"
-                style={{ backgroundSize: "300% 300%" }}
-              >
-                {"About Me".split("").map((char, i) => (
-                  <motion.span
-                    key={i}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                    transition={{
-                      delay: i * 0.05,
-                      duration: 0.3,
-                    }}
-                    style={{ display: char === " " ? "inline" : "inline-block" }}
-                    whileHover={{
-                      backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
-                      transition: { duration: 2, ease: "easeInOut", repeat: Number.POSITIVE_INFINITY },
-                    }}
-                  >
-                    {char === " " ? "\u00A0" : char}
-                  </motion.span>
-                ))}
-              </span>
-            </h2>
-            <motion.div
-              className="h-1 bg-linear-to-r from-accent to-transparent rounded-full"
-              initial={{ width: 0 }}
-              animate={isInView ? { width: "20rem" } : { width: 0 }}
-              transition={{ duration: FIBONACCI_MS.f6 / 1000, ease: cubicBezier(EASING.golden[0], EASING.golden[1], EASING.golden[2], EASING.golden[3]), delay: FIBONACCI_MS.f3 / 1000 }}
-            />
-          </motion.div>
-
-          <motion.div
-            className="grid lg:grid-cols-5 gap-8"
-            variants={containerVariants}
+            className="space-y-4"
+            variants={fadeUp(0)}
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
           >
-            <div className="lg:col-span-3 space-y-6">
-              <motion.div
-                variants={cardVariants}
-                whileHover={{
-                  scale: 1.02,
-                  rotateX: 2,
-                  rotateY: -2,
-                  transition: { duration: FIBONACCI_MS.f3 / 1000 },
-                }}
-              >
-                <Card className="p-8 backdrop-blur-xl bg-card/50 border-border/50 rounded-3xl hover:shadow-xl hover:shadow-primary/5 transition-shadow relative overflow-hidden group">
-                  <motion.div
-                    className="absolute inset-0 rounded-3xl"
-                    style={{
-                      background: "linear-gradient(90deg, transparent, oklch(0.68 0.32 290 / 0.1), transparent)",
-                    }}
-                    animate={{
-                      x: ["-100%", "100%"],
-                    }}
-                    transition={{
-                      duration: 3,
-                      repeat: Number.POSITIVE_INFINITY,
-                      ease: "linear",
-                    }}
-                  />
-                  <p
-                    className="text-lg text-muted-foreground font-normal leading-relaxed relative z-10 transition-all duration-500 bg-linear-to-r from-muted-foreground to-muted-foreground bg-clip-text group-hover:from-primary group-hover:via-accent group-hover:to-secondary group-hover:text-transparent"
-                    style={{ backgroundSize: "200% 200%", backgroundPosition: "0% 50%" }}
-                  >
-                    <motion.span
-                      className="inline-block"
-                      whileHover={{
-                        backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
-                        transition: { duration: 2, ease: "easeInOut", repeat: Number.POSITIVE_INFINITY },
-                      }}
-                    >
-                      I'm a frontend architect specializing in systems design, component architecture, and the kind of engineering that makes other engineers stop and ask how it works.<br /><br />My practice sits at the intersection of mathematics and interface design. I build things grounded in first principles, not convention. If there's a more structurally sound way to do something, I'll find it.
-                    </motion.span>
-                  </p>
-                </Card>
-              </motion.div>
+            <p className="text-accent font-mono text-sm font-medium tracking-widest uppercase">Framework</p>
+            <h2 className="text-5xl md:text-7xl font-light tracking-tight text-foreground leading-none">
+              Harmonia UI
+            </h2>
+            <p className="text-2xl md:text-3xl text-muted-foreground font-light">
+              Capacity as first-class input.
+            </p>
+            <p className="text-muted-foreground max-w-2xl leading-relaxed">
+              Most adaptive interfaces infer state from behavior. Harmonia inverts this. The user declares cognitive load, available time, and emotional state explicitly. The framework derives everything else.
+            </p>
+          </motion.div>
 
+          {/* Architecture layers */}
+          <motion.div
+            className="space-y-3"
+            variants={{
+              hidden: {},
+              visible: { transition: { staggerChildren: 0.1, delayChildren: 0.2 } },
+            }}
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+          >
+            <p className="text-muted-foreground/60 font-mono text-xs uppercase tracking-widest mb-6">
+              4-layer architecture
+            </p>
+            {layers.map((layer) => (
               <motion.div
-                variants={cardVariants}
+                key={layer.index}
+                variants={{
+                  hidden: { opacity: 0, y: 20, scale: PHI_INVERSE },
+                  visible: {
+                    opacity: 1,
+                    y: 0,
+                    scale: 1,
+                    transition: {
+                      duration: FIBONACCI_MS.f5 / 1000,
+                      ease: cubicBezier(EASING.golden[0], EASING.golden[1], EASING.golden[2], EASING.golden[3]),
+                    },
+                  },
+                }}
                 whileHover={{
                   scale: 1.02,
-                  rotateX: -2,
-                  rotateY: 2,
-                  transition: { duration: FIBONACCI_MS.f3 / 1000 },
+                  rotateX: 1,
+                  rotateY: -1,
+                  y: -2,
+                  transition: {
+                    duration: FIBONACCI_MS.f3 / 1000,
+                    ease: cubicBezier(EASING.spring[0], EASING.spring[1], EASING.spring[2], EASING.spring[3]),
+                  },
                 }}
+                style={{ transformStyle: "preserve-3d" }}
+                className="group grid grid-cols-[2rem_1fr] gap-6 p-5 rounded-2xl border border-border/30 bg-card/20 hover:border-accent/30 hover:bg-card/50 hover:shadow-xl hover:shadow-accent/5 transition-colors duration-300"
               >
-                <Card className="p-8 backdrop-blur-xl bg-card/50 border-border/50 rounded-3xl hover:shadow-xl hover:shadow-primary/5 transition-shadow group">
-                  <p
-                    className="text-lg text-muted-foreground font-normal leading-relaxed transition-all duration-500 bg-linear-to-r from-muted-foreground to-muted-foreground bg-clip-text group-hover:from-primary group-hover:via-accent group-hover:to-secondary group-hover:text-transparent"
-                    style={{ backgroundSize: "200% 200%", backgroundPosition: "0% 50%" }}
-                  >
+                <div className="font-mono text-accent/50 text-xs pt-1 group-hover:text-accent/80 transition-colors duration-200">
+                  {layer.index}
+                </div>
+                <div className="space-y-2">
+                  <div className="flex items-baseline gap-3">
+                    <span className="text-foreground font-semibold">{layer.name}</span>
                     <motion.span
-                      className="inline-block"
-                      whileHover={{
-                        backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
-                        transition: { duration: 2, ease: "easeInOut", repeat: Number.POSITIVE_INFINITY },
-                      }}
+                      className="font-mono text-xs text-muted-foreground/50 border border-border/40 px-2 py-0.5 rounded-full"
+                      whileHover={{ scale: 1.08 }}
                     >
-                      I'm the creator of Harmonia UI, a capacity-adaptive interface framework, and Renge, a design system built on natural mathematics. Both are part of the Soka Labs ecosystem, a Human-Computer Interaction research and developer training institution I'm building to change how the industry produces architects.<br /><br />
-                      I've taken a non-functional aviation platform from zero to stakeholder-ready in three months. I've shipped real-time experiences to millions of concurrent users. I've introduced standards to teams that had none and left documentation that outlasted my tenure. I build things that hold.
+                      {layer.type}
                     </motion.span>
-                  </p>
-                </Card>
-              </motion.div>
-
-              <motion.div
-                variants={cardVariants}
-                whileHover={{
-                  scale: 1.02,
-                  rotateX: 2,
-                  rotateY: 2,
-                  transition: { duration: FIBONACCI_MS.f3 / 1000 },
-                }}
-              >
-                <Card className="p-8 backdrop-blur-xl bg-card/50 border-border/50 rounded-3xl hover:shadow-xl hover:shadow-primary/5 transition-shadow">
-                  <p className="text-lg text-foreground font-semibold mb-4">Technologies I work with:</p>
-                  <div className="grid grid-cols-2 gap-3">
-                    {skills.map((skill, i) => {
-                      const Icon = skill.icon
-                      return (
-                        <motion.div
-                          key={skill.name}
-                          className="flex items-center gap-3 group"
-                          custom={i}
-                          variants={skillVariants}
-                          initial="hidden"
-                          animate={isInView ? "visible" : "hidden"}
-                          whileHover={{ x: 10, scale: 1.05 }}
-                        >
-                          <motion.div
-                            className="text-accent"
-                            animate={{
-                              scale: [1, 1.2, 1],
-                              rotate: [0, 5, -5, 0],
-                            }}
-                            transition={{
-                              duration: 2,
-                              repeat: Number.POSITIVE_INFINITY,
-                              delay: i * 0.2,
-                            }}
-                          >
-                            <Icon className="w-5 h-5" />
-                          </motion.div>
-                          <span className="text-base text-muted-foreground font-mono group-hover:text-foreground transition-colors">
-                            {skill.name}
-                          </span>
-                        </motion.div>
-                      )
-                    })}
                   </div>
-                </Card>
+                  <code className="block font-mono text-sm text-accent/80 bg-accent/5 px-3 py-2 rounded-lg group-hover:bg-accent/10 transition-colors duration-200">
+                    {layer.spec}
+                  </code>
+                  <p className="text-muted-foreground text-sm">{layer.note}</p>
+                </div>
               </motion.div>
-            </div>
+            ))}
+          </motion.div>
 
-            <motion.div
-              variants={cardVariants}
-              className="lg:col-span-2"
+          {/* Stats */}
+          <motion.div
+            className="grid sm:grid-cols-3 gap-4"
+            variants={fadeUp(0.4)}
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+          >
+            {stats.map((stat) => (
+              <motion.div
+                key={stat.label}
+                whileHover={{
+                  scale: 1.04,
+                  y: -3,
+                  transition: {
+                    duration: FIBONACCI_MS.f3 / 1000,
+                    ease: cubicBezier(EASING.spring[0], EASING.spring[1], EASING.spring[2], EASING.spring[3]),
+                  },
+                }}
+                whileTap={{ scale: 0.97 }}
+                className="border border-border/30 rounded-xl px-4 py-3 bg-card/20 hover:border-accent/30 hover:bg-card/40 hover:shadow-lg hover:shadow-accent/5 transition-colors duration-300"
+              >
+                <p className="text-muted-foreground/60 text-xs font-mono uppercase tracking-wide">{stat.label}</p>
+                {stat.href ? (
+                  <a
+                    href={stat.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group inline-flex items-center gap-1.5 text-foreground font-medium mt-1 hover:text-accent transition-colors duration-200"
+                  >
+                    {stat.value}
+                    <ExternalLink className="h-3 w-3 opacity-40 group-hover:opacity-100 transition-opacity duration-200" />
+                  </a>
+                ) : (
+                  <p className={`text-foreground mt-1 ${stat.mono ? "font-mono text-sm" : "font-medium"}`}>
+                    {stat.value}
+                  </p>
+                )}
+              </motion.div>
+            ))}
+          </motion.div>
+
+          {/* Links */}
+          <motion.div
+            className="flex items-center gap-4"
+            variants={fadeUp(0.5)}
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+          >
+            <motion.a
+              href="https://harmonia-ui.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
               whileHover={{
                 scale: 1.05,
-                rotateY: 5,
-                transition: { duration: FIBONACCI_MS.f4 / 1000 },
+                y: -3,
+                transition: {
+                  duration: FIBONACCI_MS.f3 / 1000,
+                  ease: cubicBezier(EASING.spring[0], EASING.spring[1], EASING.spring[2], EASING.spring[3]),
+                },
               }}
+              whileTap={{ scale: 0.96 }}
+              className="group flex items-center gap-2 px-5 py-2.5 rounded-full border border-border/50 bg-card/30 hover:border-accent/50 hover:bg-accent/5 hover:shadow-md hover:shadow-accent/10 transition-colors duration-300 text-sm font-medium text-muted-foreground hover:text-foreground"
             >
-              <Card className="relative group pb-0 overflow-hidden backdrop-blur-xl bg-card/50 border-border/50 rounded-3xl">
-                <div className="aspect-square lg:aspect-auto lg:h-full bg-linear-to-br from-accent/20 to-primary/20 flex items-center justify-center">
-                  <div className="text-center space-y-4 md:pb-6 md:pt-8 md:px-4">
-                    <motion.div
-                      className="w-48 h-48 rounded-full bg-accent/30 mx-auto backdrop-blur-sm relative overflow-hidden"
-                      animate={
-                        prefersReducedMotion
-                          ? {}
-                          : {
-                            rotate: [0, 7, -7, 0],
-                            y: [0, -7, 0],
-                          }
-                      }
-                      transition={{
-                        rotate: {
-                          duration: FIBONACCI_MS.f7 / 1000,
-                          repeat: Number.POSITIVE_INFINITY,
-                          ease: cubicBezier(EASING.gentle[0], EASING.gentle[1], EASING.gentle[2], EASING.gentle[3]),
-                        },
-                        y: { duration: FIBONACCI_MS.f5 / 500, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" },
-                      }}
-                    >
-                      <motion.div
-                        className="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent"
-                        animate={{
-                          x: ["-100%", "100%"],
-                        }}
-                        transition={{
-                          duration: 3,
-                          repeat: Number.POSITIVE_INFINITY,
-                          ease: "linear",
-                        }}
-                      />
-                      <motion.img
-                        src={"/self.jpeg"}
-                        alt="picture of Vanessa"
-                        className="w-full h-full object-cover opacity-90"
-                        whileHover={{ scale: 1.1, opacity: 1 }}
-                        transition={{ duration: FIBONACCI_MS.f6 / 1000, ease: cubicBezier(EASING.golden[0], EASING.golden[1], EASING.golden[2], EASING.golden[3]) }}
-                        style={{ willChange: "transform" }}
-                      />
-                    </motion.div>
-                  </div>
-                </div>
-                <motion.div
-                  className="absolute inset-0 bg-linear-to-br from-accent/10 to-primary/10 opacity-0 group-hover:opacity-100 transition-opacity"
-                  animate={{
-                    backgroundPosition: ["0% 0%", "100% 100%"],
-                  }}
-                  transition={{
-                    duration: 5,
-                    repeat: Number.POSITIVE_INFINITY,
-                    ease: "linear",
-                  }}
-                />
-              </Card>
-            </motion.div>
+              Live demo
+              <ExternalLink className="h-3.5 w-3.5 opacity-40 group-hover:opacity-100 transition-opacity duration-200" />
+            </motion.a>
+            <motion.a
+              href="https://github.com/vsm1996/harmonia-ui"
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{
+                scale: 1.3,
+                y: -4,
+                rotate: [0, -10, 10, 0],
+                transition: {
+                  duration: FIBONACCI_MS.f4 / 1000,
+                  ease: cubicBezier(EASING.spring[0], EASING.spring[1], EASING.spring[2], EASING.spring[3]),
+                },
+              }}
+              whileTap={{ scale: 0.9 }}
+              className="relative text-muted-foreground hover:text-accent transition-colors duration-200"
+              aria-label="Harmonia GitHub"
+            >
+              <motion.div
+                className="absolute inset-0 rounded-full bg-accent/20 blur-xl"
+                initial={{ opacity: 0 }}
+                whileHover={{ opacity: 1 }}
+                transition={{ duration: FIBONACCI_MS.f3 / 1000 }}
+              />
+              <Github className="h-5 w-5 relative z-10" />
+            </motion.a>
           </motion.div>
         </div>
       </div>
