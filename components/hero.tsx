@@ -5,6 +5,9 @@ import { motion, useMotionValue, useTransform, useSpring, cubicBezier } from "fr
 import { PHI_INVERSE, FIBONACCI_MS, EASING } from "@/lib/animation-constants"
 import { useEffect, useState } from "react"
 
+// Shared breathing easing — matches EASING.breathing
+const BREATH = [0.37, 0, 0.63, 1] as const
+
 export function Hero() {
   const mouseX = useMotionValue(0)
   const mouseY = useMotionValue(0)
@@ -19,7 +22,6 @@ export function Hero() {
     setPrefersReducedMotion(mediaQuery.matches)
     const handleMotionChange = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches)
     mediaQuery.addEventListener("change", handleMotionChange)
-
     const handleMouseMove = (e: MouseEvent) => {
       if (!prefersReducedMotion) {
         mouseX.set(e.clientX / window.innerWidth)
@@ -65,8 +67,9 @@ export function Hero() {
   ]
 
   const demos = [
-    { label: "Harmonia UI", href: "https://harmonia-ui.vercel.app/", sub: "capacity-adaptive framework" },
+    { label: "Harmonia UI", href: "https://harmonia-ui.dev/", sub: "capacity-adaptive framework" },
     { label: "Renge Design", href: "https://renge-ui.vercel.app/", sub: "\u03c6-proportional design system" },
+    { label: "Grove", href: "https://grove-intel.vercel.app/", sub: "Harmonia-powered career system" },
     { label: "The Hondana", href: "https://the-hondana.vercel.app/", sub: "Renge-powered reading tracker" },
   ]
 
@@ -75,64 +78,72 @@ export function Hero() {
       id="home"
       className="min-h-screen flex items-center justify-center px-6 pt-32 pb-20 relative overflow-hidden"
     >
-      {/* Mouse-tracking orb */}
+      {/* Mouse-tracking orb — breathes while tracking */}
       <motion.div
-        className="absolute top-1/2 left-1/2 w-[800px] h-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-15"
+        className="absolute top-1/2 left-1/2 w-[800px] h-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full"
         style={{
-          background: "radial-gradient(circle, oklch(0.68 0.18 280 / 0.2) 0%, transparent 70%)",
+          background: "radial-gradient(circle, oklch(0.68 0.18 280 / 0.45) 0%, transparent 70%)",
           filter: "blur(80px)",
           x: prefersReducedMotion ? 0 : x,
           y: prefersReducedMotion ? 0 : y,
         }}
-        animate={{
-          scale: prefersReducedMotion ? 1 : [1, 1.3, 0.9, 1.2, 1],
-          opacity: prefersReducedMotion ? 0.1 : [0.1, 0.25, 0.12, 0.2, 0.1],
-          rotate: prefersReducedMotion ? 0 : [0, 90, 180, 270, 360],
-        }}
-        transition={{ duration: 12, repeat: prefersReducedMotion ? 0 : Number.POSITIVE_INFINITY, ease: "easeInOut" }}
-      />
-
-      {/* Floating shapes */}
-      <motion.div
-        className="absolute top-40 right-20 w-24 h-24 border rounded-3xl opacity-20"
-        style={{ borderColor: "oklch(0.68 0.18 280 / 0.3)", boxShadow: "0 0 30px oklch(0.68 0.18 280 / 0.1)" }}
-        animate={{
-          rotate: prefersReducedMotion ? 0 : [0, 360],
-          y: prefersReducedMotion ? 0 : [0, -35, 10, -25, 0],
-          scale: prefersReducedMotion ? 1 : [1, 1.2, 0.9, 1.15, 1],
-          opacity: prefersReducedMotion ? 0.15 : [0.15, 0.3, 0.18, 0.25, 0.15],
+        animate={prefersReducedMotion ? {} : {
+          scale: [1, 1.12, 1],
+          opacity: [0.3, 0.55, 0.3],
+          rotate: [0, 360],
         }}
         transition={{
-          rotate: { duration: 15, repeat: prefersReducedMotion ? 0 : Number.POSITIVE_INFINITY, ease: "linear" },
-          y: { duration: 6, repeat: prefersReducedMotion ? 0 : Number.POSITIVE_INFINITY, ease: "easeInOut" },
-          scale: { duration: 6, repeat: prefersReducedMotion ? 0 : Number.POSITIVE_INFINITY, ease: "easeInOut" },
-          opacity: { duration: 6, repeat: prefersReducedMotion ? 0 : Number.POSITIVE_INFINITY, ease: "easeInOut" },
+          scale: { duration: 8, repeat: Number.POSITIVE_INFINITY, ease: BREATH, times: [0, 0.5, 1] },
+          opacity: { duration: 8, repeat: Number.POSITIVE_INFINITY, ease: BREATH, times: [0, 0.5, 1] },
+          rotate: { duration: 34, repeat: Number.POSITIVE_INFINITY, ease: "linear" },
         }}
       />
+
+      {/* Floating shapes — each breathes at a different Fibonacci period */}
+      {/* Top-right: slow spin + 8s breath */}
       <motion.div
-        className="absolute bottom-40 left-20 w-20 h-20 border rounded-full opacity-25"
-        style={{ borderColor: "oklch(0.75 0.16 170 / 0.35)" }}
-        animate={{
-          scale: prefersReducedMotion ? 1 : [1, 1.4, 0.85, 1.3, 1],
-          x: prefersReducedMotion ? 0 : [0, 35, -25, 20, 0],
-          y: prefersReducedMotion ? 0 : [0, -25, 20, -15, 0],
-          opacity: prefersReducedMotion ? 0.2 : [0.2, 0.35, 0.18, 0.28, 0.2],
+        className="absolute top-40 right-20 w-24 h-24 border rounded-3xl"
+        style={{ borderColor: "oklch(0.68 0.18 280 / 0.6)", boxShadow: "0 0 30px oklch(0.68 0.18 280 / 0.15)" }}
+        animate={prefersReducedMotion ? {} : {
+          rotate: [0, 360],
+          scale: [1, 1.06, 1],
+          opacity: [0.4, 0.7, 0.4],
         }}
-        transition={{ duration: 10, repeat: prefersReducedMotion ? 0 : Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+        transition={{
+          rotate: { duration: 21, repeat: Number.POSITIVE_INFINITY, ease: "linear" },
+          scale: { duration: 8, repeat: Number.POSITIVE_INFINITY, ease: BREATH, times: [0, 0.5, 1] },
+          opacity: { duration: 8, repeat: Number.POSITIVE_INFINITY, ease: BREATH, times: [0, 0.5, 1] },
+        }}
       />
+      {/* Bottom-left: float + 13s breath, delay 3 */}
       <motion.div
-        className="absolute top-1/3 left-1/4 w-16 h-16 border-2 rounded-2xl opacity-18"
-        style={{ borderColor: "oklch(0.72 0.18 60 / 0.3)" }}
-        animate={{
-          rotate: prefersReducedMotion ? 0 : [0, -360],
-          scale: prefersReducedMotion ? 1 : [1, 1.3, 0.8, 1.2, 1],
+        className="absolute bottom-40 left-20 w-20 h-20 border rounded-full"
+        style={{ borderColor: "oklch(0.75 0.16 170 / 0.6)" }}
+        animate={prefersReducedMotion ? {} : {
+          y: [0, -14, 0],
+          scale: [1, 1.08, 1],
+          opacity: [0.4, 0.65, 0.4],
         }}
-        transition={{ duration: 13, repeat: prefersReducedMotion ? 0 : Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+        transition={{ duration: 13, repeat: Number.POSITIVE_INFINITY, ease: BREATH, delay: 3, times: [0, 0.5, 1] }}
+      />
+      {/* Mid-left: slow counter-spin + 5s breath, delay 1 */}
+      <motion.div
+        className="absolute top-1/3 left-1/4 w-16 h-16 border-2 rounded-2xl"
+        style={{ borderColor: "oklch(0.72 0.18 60 / 0.55)" }}
+        animate={prefersReducedMotion ? {} : {
+          rotate: [0, -360],
+          scale: [1, 1.05, 1],
+          opacity: [0.4, 0.65, 0.4],
+        }}
+        transition={{
+          rotate: { duration: 21, repeat: Number.POSITIVE_INFINITY, ease: "linear" },
+          scale: { duration: 5, repeat: Number.POSITIVE_INFINITY, ease: BREATH, delay: 1, times: [0, 0.5, 1] },
+          opacity: { duration: 5, repeat: Number.POSITIVE_INFINITY, ease: BREATH, delay: 1, times: [0, 0.5, 1] },
+        }}
       />
 
       <div className="max-w-6xl w-full relative z-10">
         <div className="space-y-10">
-          {/* Name label */}
           <motion.p
             variants={lineIn(0)}
             initial="hidden"
@@ -142,7 +153,6 @@ export function Hero() {
             Vanessa Martin
           </motion.p>
 
-          {/* Headline */}
           <div className="space-y-2">
             <motion.h1
               variants={lineIn(0.1)}
@@ -162,7 +172,6 @@ export function Hero() {
             </motion.h2>
           </div>
 
-          {/* System callout cards */}
           <motion.div
             className="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-3xl"
             initial="hidden"
@@ -172,7 +181,7 @@ export function Hero() {
               visible: { transition: { staggerChildren: 0.09, delayChildren: 0.4 } },
             }}
           >
-            {systems.map((s) => (
+            {systems.map((s, i) => (
               <motion.div
                 key={s.title}
                 variants={{
@@ -196,16 +205,22 @@ export function Hero() {
                   },
                 }}
                 whileTap={{ scale: 0.97 }}
-                className="border border-border/40 rounded-xl px-4 py-3 bg-card/30 backdrop-blur-sm hover:border-accent/40 hover:bg-card/60 hover:shadow-lg hover:shadow-accent/5 transition-colors duration-300 cursor-default"
+                className="relative border border-border/40 rounded-xl px-4 py-3 bg-card/30 backdrop-blur-sm hover:border-accent/40 hover:bg-card/60 hover:shadow-lg hover:shadow-accent/5 transition-colors duration-300 cursor-default"
               >
-                <p className="text-foreground font-mono text-sm font-semibold">{s.title}</p>
-                <p className="text-muted-foreground text-xs mt-1 font-mono">{s.desc}</p>
-                <p className="text-muted-foreground/60 text-xs mt-1">{s.detail}</p>
+                {/* Ambient card pulse — each card breathes at a different Fibonacci delay */}
+                <motion.div
+                  className="absolute inset-0 rounded-xl pointer-events-none"
+                  style={{ background: "radial-gradient(ellipse at 50% 50%, oklch(0.75 0.22 285 / 0.04) 0%, transparent 70%)" }}
+                  animate={prefersReducedMotion ? {} : { opacity: [0.4, 1, 0.4] }}
+                  transition={{ duration: 8, repeat: Number.POSITIVE_INFINITY, ease: BREATH, delay: i * 2, times: [0, 0.5, 1] }}
+                />
+                <p className="text-foreground font-mono text-sm font-semibold relative">{s.title}</p>
+                <p className="text-muted-foreground text-xs mt-1 font-mono relative">{s.desc}</p>
+                <p className="text-muted-foreground/60 text-xs mt-1 relative">{s.detail}</p>
               </motion.div>
             ))}
           </motion.div>
 
-          {/* Demo links */}
           <motion.div
             className="flex flex-wrap gap-3 items-center"
             variants={lineIn(0.65)}
@@ -236,7 +251,6 @@ export function Hero() {
             ))}
           </motion.div>
 
-          {/* Social links */}
           <motion.div
             className="flex items-center gap-5"
             variants={lineIn(0.75)}

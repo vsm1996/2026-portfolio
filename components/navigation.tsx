@@ -96,47 +96,50 @@ export function Navigation() {
           transition={{ duration: 3, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
         />
         <div className="flex items-center gap-1 relative z-10">
-          <motion.button
-            onClick={() => scrollToSection("home")}
-            className="text-lg font-semibold text-foreground hover:text-accent transition-colors px-3"
-            whileHover={{ scale: 1.05, rotate: 2 }}
-            whileTap={{ scale: 0.95 }}
-            variants={itemVariants}
-            animate={{ y: [0, -2, 0] }}
-            transition={{ y: { duration: 3, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" } }}
-          >
-            VSM
-          </motion.button>
+          {/* VSM logo — entrance via variants, bounce in separate inner element */}
+          <motion.div variants={itemVariants}>
+            <motion.button
+              onClick={() => scrollToSection("home")}
+              className="text-lg font-semibold text-foreground hover:text-accent transition-colors px-3"
+              whileHover={{ scale: 1.05, rotate: 2 }}
+              whileTap={{ scale: 0.95 }}
+              animate={{ y: [0, -2, 0] }}
+              transition={{ y: { duration: 3, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" } }}
+            >
+              VSM
+            </motion.button>
+          </motion.div>
           <div className="hidden md:flex items-center gap-1">
             {navItems.map((item, i) => (
-              <motion.div
-                key={item.id}
-                variants={itemVariants}
-                custom={i}
-                whileHover={{ y: -2 }}
-                animate={{
-                  y: activeSection === item.id ? [0, -3, 0] : 0,
-                }}
-                transition={{
-                  y: {
-                    duration: 2,
-                    repeat: activeSection === item.id ? Number.POSITIVE_INFINITY : 0,
-                    ease: "easeInOut",
-                  },
-                }}
-              >
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => scrollToSection(item.id)}
-                  className={`text-sm transition-colors rounded-full ${
-                    activeSection === item.id
-                      ? "text-accent bg-accent/10"
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
+              // Outer div: entrance via variant propagation only
+              // Inner div: active bounce animation (separate, no variant conflict)
+              <motion.div key={item.id} variants={itemVariants} custom={i}>
+                <motion.div
+                  whileHover={{ y: -2 }}
+                  animate={{
+                    y: activeSection === item.id ? [0, -3, 0] : 0,
+                  }}
+                  transition={{
+                    y: {
+                      duration: 2,
+                      repeat: activeSection === item.id ? Number.POSITIVE_INFINITY : 0,
+                      ease: "easeInOut",
+                    },
+                  }}
                 >
-                  {item.label}
-                </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => scrollToSection(item.id)}
+                    className={`text-sm transition-colors rounded-full ${
+                      activeSection === item.id
+                        ? "text-accent bg-accent/10"
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    {item.label}
+                  </Button>
+                </motion.div>
               </motion.div>
             ))}
           </div>

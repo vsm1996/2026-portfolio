@@ -100,7 +100,7 @@ export default function HarmoniaPage() {
             </p>
             <div className="flex flex-wrap gap-3 pt-2">
               <a
-                href="https://harmonia-ui.vercel.app/"
+                href="https://harmonia-ui.dev/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border/50 text-sm text-muted-foreground hover:text-foreground hover:border-accent/50 transition-all"

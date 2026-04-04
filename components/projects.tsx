@@ -6,6 +6,8 @@ import { useInView } from "framer-motion"
 import { useRef } from "react"
 import { PHI_INVERSE, FIBONACCI_MS, EASING, GOLDEN_ANGLE } from "@/lib/animation-constants"
 
+const BREATH = [0.37, 0, 0.63, 1] as const
+
 const scaleRows = [
   { step: "4xl", formula: "16 \xd7 \u03c6\u2075", px: "177px", token: "--renge-text-4xl" },
   { step: "3xl", formula: "16 \xd7 \u03c6\u2074", px: "110px", token: "--renge-text-3xl" },
@@ -77,33 +79,45 @@ export function Projects() {
 
   return (
     <section id="renge" className="min-h-screen flex items-center justify-center px-6 py-32 relative" ref={ref}>
-      {/* Floating decorative shapes */}
+      {/* Floating shapes — breathing */}
       <motion.div
-        className="absolute bottom-20 left-10 w-16 h-16 border border-primary/20 rounded-2xl"
+        className="absolute bottom-20 left-10 w-16 h-16 border border-primary/50 rounded-2xl"
         animate={{
           rotate: [0, 360],
-          scale: [1, 1.3, 1],
-          y: [0, -20, 0],
+          y: [0, -12, 0],
+          opacity: [0.4, 0.65, 0.4],
         }}
-        transition={{ duration: 16, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+        transition={{
+          rotate: { duration: 21, repeat: Number.POSITIVE_INFINITY, ease: "linear" },
+          y: { duration: 13, repeat: Number.POSITIVE_INFINITY, ease: BREATH, delay: 3, times: [0, 0.5, 1] },
+          opacity: { duration: 13, repeat: Number.POSITIVE_INFINITY, ease: BREATH, delay: 3, times: [0, 0.5, 1] },
+        }}
       />
       <motion.div
-        className="absolute top-24 right-16 w-12 h-12 border border-accent/15 rounded-full"
+        className="absolute top-24 right-16 w-12 h-12 border border-accent/50 rounded-full"
         animate={{
-          scale: [1, 1.5, 1],
-          rotate: [0, GOLDEN_ANGLE, GOLDEN_ANGLE * 2, 360],
-          opacity: [0.2, 0.4, 0.2],
+          rotate: [0, 360],
+          scale: [1, 1.08, 1],
+          opacity: [0.4, 0.7, 0.4],
         }}
-        transition={{ duration: 10, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+        transition={{
+          rotate: { duration: 21, repeat: Number.POSITIVE_INFINITY, ease: "linear" },
+          scale: { duration: 8, repeat: Number.POSITIVE_INFINITY, ease: BREATH, delay: 1, times: [0, 0.5, 1] },
+          opacity: { duration: 8, repeat: Number.POSITIVE_INFINITY, ease: BREATH, delay: 1, times: [0, 0.5, 1] },
+        }}
       />
       <motion.div
-        className="absolute top-1/3 right-24 w-8 h-8 bg-secondary/10 rounded-lg"
+        className="absolute top-1/3 right-24 w-8 h-8 bg-secondary/30 rounded-lg"
         animate={{
-          rotate: [0, 90, 180, 270, 360],
-          scale: [1, 1.2, 0.8, 1.2, 1],
-          x: [0, 20, -20, 0],
+          rotate: [0, 360],
+          scale: [1, 1.06, 1],
+          opacity: [0.4, 0.65, 0.4],
         }}
-        transition={{ duration: 13, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+        transition={{
+          rotate: { duration: 13, repeat: Number.POSITIVE_INFINITY, ease: "linear" },
+          scale: { duration: 5, repeat: Number.POSITIVE_INFINITY, ease: BREATH, delay: 2, times: [0, 0.5, 1] },
+          opacity: { duration: 5, repeat: Number.POSITIVE_INFINITY, ease: BREATH, delay: 2, times: [0, 0.5, 1] },
+        }}
       />
 
       <div className="max-w-5xl w-full">
@@ -225,6 +239,16 @@ export function Projects() {
                 scale: 1.01,
                 transition: { duration: FIBONACCI_MS.f3 / 1000 },
               }}
+              animate={{
+                boxShadow: [
+                  "0 0 0px oklch(0.72 0.18 60 / 0)",
+                  "0 0 18px oklch(0.72 0.18 60 / 0.14)",
+                  "0 0 0px oklch(0.72 0.18 60 / 0)",
+                ],
+              }}
+              transition={{
+                boxShadow: { duration: 8, repeat: Number.POSITIVE_INFINITY, ease: BREATH, times: [0, 0.5, 1] },
+              }}
               className="block font-mono text-sm text-accent/80 bg-card/40 border border-border/30 hover:border-accent/30 hover:bg-card/60 hover:shadow-lg hover:shadow-accent/5 px-5 py-4 rounded-xl transition-colors duration-300 cursor-default"
             >
               createRengeTheme(&apos;ocean&apos;) &rarr; 100+ CSS custom properties &rarr; production
@@ -242,10 +266,17 @@ export function Projects() {
                   }}
                   whileHover={cardHover}
                   whileTap={{ scale: 0.97 }}
-                  className="border border-border/30 rounded-xl px-4 py-3 bg-card/20 hover:border-accent/30 hover:bg-card/40 hover:shadow-lg hover:shadow-accent/5 transition-colors duration-300 cursor-default"
+                  className="relative border border-border/30 rounded-xl px-4 py-3 bg-card/20 hover:border-accent/30 hover:bg-card/40 hover:shadow-lg hover:shadow-accent/5 transition-colors duration-300 cursor-default"
                 >
-                  <p className="text-muted-foreground/60 text-xs font-mono uppercase tracking-wide">{stat.label}</p>
-                  <p className="text-foreground font-medium mt-1 text-sm">{stat.value}</p>
+                  {/* Stat card ambient glow — each staggered by Fibonacci delay */}
+                  <motion.div
+                    className="absolute inset-0 rounded-xl pointer-events-none"
+                    style={{ background: "radial-gradient(ellipse at 50% 50%, oklch(0.72 0.18 60 / 0.05) 0%, transparent 65%)" }}
+                    animate={{ opacity: [0.2, 0.8, 0.2] }}
+                    transition={{ duration: 8, repeat: Number.POSITIVE_INFINITY, ease: BREATH, delay: i * 1.5, times: [0, 0.5, 1] }}
+                  />
+                  <p className="text-muted-foreground/60 text-xs font-mono uppercase tracking-wide relative">{stat.label}</p>
+                  <p className="text-foreground font-medium mt-1 text-sm relative">{stat.value}</p>
                 </motion.div>
               ))}
             </div>
@@ -253,7 +284,7 @@ export function Projects() {
 
           {/* Production proof */}
           <motion.div
-            className="border border-border/30 rounded-2xl p-5 bg-card/20 space-y-3 hover:border-accent/20 hover:bg-card/30 hover:shadow-xl hover:shadow-accent/5 transition-colors duration-300"
+            className="relative border border-border/30 rounded-2xl p-5 bg-card/20 space-y-3 hover:border-accent/20 hover:bg-card/30 hover:shadow-xl hover:shadow-accent/5 transition-colors duration-300"
             variants={fadeUp(0.45)}
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
@@ -262,6 +293,13 @@ export function Projects() {
               transition: { duration: FIBONACCI_MS.f3 / 1000 },
             }}
           >
+            {/* Production proof card ambient pulse */}
+            <motion.div
+              className="absolute inset-0 rounded-2xl pointer-events-none"
+              style={{ background: "radial-gradient(ellipse at 40% 50%, oklch(0.75 0.22 285 / 0.04) 0%, transparent 65%)" }}
+              animate={{ opacity: [0.2, 0.7, 0.2] }}
+              transition={{ duration: 13, repeat: Number.POSITIVE_INFINITY, ease: BREATH, delay: 3, times: [0, 0.5, 1] }}
+            />
             <p className="text-muted-foreground/60 font-mono text-xs uppercase tracking-widest">Production proof</p>
             <div className="grid sm:grid-cols-2 gap-4">
               {productionProofs.map((proof) => (
@@ -342,6 +380,16 @@ export function Projects() {
               whileHover={{
                 scale: 1.04,
                 transition: { duration: FIBONACCI_MS.f3 / 1000 },
+              }}
+              animate={{
+                boxShadow: [
+                  "0 0 0px oklch(0.72 0.18 60 / 0)",
+                  "0 0 10px oklch(0.72 0.18 60 / 0.10)",
+                  "0 0 0px oklch(0.72 0.18 60 / 0)",
+                ],
+              }}
+              transition={{
+                boxShadow: { duration: 5, repeat: Number.POSITIVE_INFINITY, ease: BREATH, delay: 1, times: [0, 0.5, 1] },
               }}
               className="font-mono text-xs text-muted-foreground/60 border border-border/30 hover:border-accent/30 hover:text-muted-foreground/80 px-3 py-1 rounded-full transition-colors duration-300 cursor-default"
             >

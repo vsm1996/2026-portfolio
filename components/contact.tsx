@@ -4,6 +4,8 @@ import { motion, cubicBezier } from "framer-motion"
 import { useInView } from "framer-motion"
 import { useRef } from "react"
 import { PHI_INVERSE, FIBONACCI_MS, EASING, GOLDEN_ANGLE } from "@/lib/animation-constants"
+
+const BREATH = [0.37, 0, 0.63, 1] as const
 import { ExternalLink, Github, Mail } from "lucide-react"
 
 const principles = [
@@ -54,36 +56,46 @@ export function Contact() {
 
   return (
     <section id="principles" className="min-h-screen flex items-center justify-center px-6 py-20 relative" ref={ref}>
-      {/* Floating decorative shapes */}
+      {/* Floating shapes — breathing */}
       <motion.div
-        className="absolute top-20 left-1/4 w-20 h-20 border border-accent/15 rounded-full"
+        className="absolute top-20 left-1/4 w-20 h-20 border border-accent/50 rounded-full"
         animate={{
-          scale: [1, 1.5, 1],
           rotate: [0, 360],
-          x: [0, 35, 0],
-          y: [0, -25, 0],
+          y: [0, -14, 0],
+          opacity: [0.4, 0.7, 0.4],
         }}
-        transition={{ duration: 16, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+        transition={{
+          rotate: { duration: 21, repeat: Number.POSITIVE_INFINITY, ease: "linear" },
+          y: { duration: 13, repeat: Number.POSITIVE_INFINITY, ease: BREATH, delay: 8, times: [0, 0.5, 1] },
+          opacity: { duration: 13, repeat: Number.POSITIVE_INFINITY, ease: BREATH, delay: 8, times: [0, 0.5, 1] },
+        }}
       />
       <motion.div
-        className="absolute bottom-1/4 right-1/4 w-14 h-14 bg-primary/8 rounded-2xl"
+        className="absolute bottom-1/4 right-1/4 w-14 h-14 bg-primary/30 rounded-2xl"
         animate={{
-          rotate: [0, GOLDEN_ANGLE, GOLDEN_ANGLE * 2, 360],
-          scale: [1, 1.2, 0.85, 1],
-          x: [0, -25, 0],
-          y: [0, 18, 0],
+          rotate: [0, 360],
+          scale: [1, 1.07, 1],
+          opacity: [0.35, 0.6, 0.35],
         }}
-        transition={{ duration: 14, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+        transition={{
+          rotate: { duration: 21, repeat: Number.POSITIVE_INFINITY, ease: "linear" },
+          scale: { duration: 8, repeat: Number.POSITIVE_INFINITY, ease: BREATH, delay: GOLDEN_ANGLE / 100, times: [0, 0.5, 1] },
+          opacity: { duration: 8, repeat: Number.POSITIVE_INFINITY, ease: BREATH, delay: GOLDEN_ANGLE / 100, times: [0, 0.5, 1] },
+        }}
       />
       <motion.div
-        className="absolute top-1/3 right-20 w-16 h-16 border border-secondary/20"
+        className="absolute top-1/3 right-20 w-16 h-16 border border-secondary/50"
         style={{ borderRadius: "50% 50% 30% 70% / 30% 70% 50% 50%" }}
         animate={{
           rotate: [360, 0],
-          scale: [1, 1.3, 1],
-          y: [0, -35, 0],
+          scale: [1, 1.06, 1],
+          opacity: [0.4, 0.65, 0.4],
         }}
-        transition={{ duration: 12, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+        transition={{
+          rotate: { duration: 13, repeat: Number.POSITIVE_INFINITY, ease: "linear" },
+          scale: { duration: 5, repeat: Number.POSITIVE_INFINITY, ease: BREATH, delay: 3, times: [0, 0.5, 1] },
+          opacity: { duration: 5, repeat: Number.POSITIVE_INFINITY, ease: BREATH, delay: 3, times: [0, 0.5, 1] },
+        }}
       />
 
       <div className="max-w-3xl w-full">
@@ -137,11 +149,37 @@ export function Contact() {
                 }}
                 whileTap={{ scale: 0.99 }}
                 style={{ transformStyle: "preserve-3d" }}
-                className="group grid grid-cols-[2rem_1fr] gap-6 p-5 rounded-2xl border border-border/30 bg-card/20 hover:border-accent/30 hover:bg-card/50 hover:shadow-xl hover:shadow-accent/5 transition-colors duration-300 cursor-default"
+                className="relative group grid grid-cols-[2rem_1fr] gap-6 p-5 rounded-2xl border border-border/30 bg-card/20 hover:border-accent/30 hover:bg-card/50 hover:shadow-xl hover:shadow-accent/5 transition-colors duration-300 cursor-default"
               >
-                <div className="font-mono text-accent/50 text-xs pt-1 group-hover:text-accent/80 transition-colors duration-200">
+                {/* Card ambient glow — staggered by index */}
+                <motion.div
+                  className="absolute inset-0 rounded-2xl pointer-events-none"
+                  style={{
+                    background: "radial-gradient(ellipse at 30% 50%, oklch(0.75 0.22 285 / 0.05) 0%, transparent 65%)",
+                  }}
+                  animate={{ opacity: [0.2, 0.8, 0.2] }}
+                  transition={{
+                    duration: 8,
+                    repeat: Number.POSITIVE_INFINITY,
+                    ease: BREATH,
+                    delay: parseInt(p.index) * 1.5,
+                    times: [0, 0.5, 1],
+                  }}
+                />
+                <motion.div
+                  className="font-mono text-xs pt-1 group-hover:text-accent/80 transition-colors duration-200"
+                  animate={{ opacity: [0.35, 0.75, 0.35] }}
+                  transition={{
+                    duration: 8,
+                    repeat: Number.POSITIVE_INFINITY,
+                    ease: BREATH,
+                    delay: parseInt(p.index) * 1.5,
+                    times: [0, 0.5, 1],
+                  }}
+                  style={{ color: "oklch(0.72 0.18 60)" }}
+                >
                   {p.index}
-                </div>
+                </motion.div>
                 <div className="space-y-2">
                   <p className="text-foreground font-semibold">{p.title}</p>
                   <p className="text-muted-foreground text-sm leading-relaxed">{p.body}</p>

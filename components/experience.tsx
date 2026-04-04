@@ -7,6 +7,8 @@ import { useInView } from "framer-motion"
 import { useRef } from "react"
 import { PHI_INVERSE, FIBONACCI_MS, EASING } from "@/lib/animation-constants"
 
+const BREATH = [0.37, 0, 0.63, 1] as const
+
 const experiences = [
   {
     company: "Hello Goodwin",
@@ -88,9 +90,17 @@ export function Experience() {
   return (
     <section id="production" className="min-h-screen flex items-center justify-center px-6 py-20 relative" ref={ref}>
       <motion.div
-        className="absolute top-10 right-20 w-16 h-16 border border-accent/15 rounded-full"
-        animate={{ scale: [1, 1.4, 1], rotate: [0, 180, 360], x: [0, 30, 0], y: [0, -20, 0] }}
-        transition={{ duration: 12, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+        className="absolute top-10 right-20 w-16 h-16 border border-accent/50 rounded-full"
+        animate={{
+          rotate: [0, 360],
+          scale: [1, 1.07, 1],
+          opacity: [0.4, 0.7, 0.4],
+        }}
+        transition={{
+          rotate: { duration: 21, repeat: Number.POSITIVE_INFINITY, ease: "linear" },
+          scale: { duration: 8, repeat: Number.POSITIVE_INFINITY, ease: BREATH, delay: 5, times: [0, 0.5, 1] },
+          opacity: { duration: 8, repeat: Number.POSITIVE_INFINITY, ease: BREATH, delay: 5, times: [0, 0.5, 1] },
+        }}
       />
 
       <div className="max-w-4xl w-full">
@@ -191,13 +201,14 @@ export function Experience() {
                 className="flex-1"
               >
                 <Card className="rounded-3xl p-6 relative overflow-hidden">
+                  {/* Card ambient breath — uses Fibonacci breathing easing */}
                   <motion.div
-                    className="absolute inset-0 opacity-30"
+                    className="absolute inset-0"
                     style={{
-                      background: "radial-gradient(circle at 50% 50%, oklch(0.68 0.32 290 / 0.05), transparent)",
+                      background: "radial-gradient(circle at 50% 50%, oklch(0.68 0.32 290 / 0.06), transparent)",
                     }}
-                    animate={{ scale: [1, 1.5, 1], opacity: [0.2, 0.4, 0.2] }}
-                    transition={{ duration: 8, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+                    animate={{ opacity: [0.2, 0.5, 0.2], scale: [1, 1.08, 1] }}
+                    transition={{ duration: 8, repeat: Number.POSITIVE_INFINITY, ease: BREATH, times: [0, 0.5, 1] }}
                   />
                   <div className="space-y-4 relative z-10">
                     <div>
@@ -226,9 +237,12 @@ export function Experience() {
                       {experiences[activeIndex].technologies.map((tech, i) => (
                         <motion.span
                           key={tech}
-                          className="px-3 py-1 text-xs font-mono bg-accent/10 text-accent rounded-full"
+                          className="relative px-3 py-1 text-xs font-mono bg-accent/10 text-accent rounded-full"
                           initial={{ opacity: 0, scale: 0 }}
-                          animate={{ opacity: 1, scale: 1 }}
+                          animate={{
+                            opacity: [null, 1],
+                            scale: [null, 1],
+                          }}
                           transition={{
                             delay: (FIBONACCI_MS.f4 + i * FIBONACCI_MS.f1) / 1000,
                             duration: FIBONACCI_MS.f3 / 1000,
@@ -236,7 +250,25 @@ export function Experience() {
                           }}
                           whileHover={{ scale: 1.1 }}
                         >
-                          {tech}
+                          {/* Subtle glow pulse on each tag, staggered */}
+                          <motion.span
+                            className="absolute inset-0 rounded-full pointer-events-none"
+                            animate={{
+                              boxShadow: [
+                                "0 0 0px oklch(0.72 0.18 60 / 0)",
+                                "0 0 8px oklch(0.72 0.18 60 / 0.20)",
+                                "0 0 0px oklch(0.72 0.18 60 / 0)",
+                              ],
+                            }}
+                            transition={{
+                              duration: 5,
+                              repeat: Number.POSITIVE_INFINITY,
+                              ease: BREATH,
+                              delay: i * 0.5,
+                              times: [0, 0.5, 1],
+                            }}
+                          />
+                          <span className="relative">{tech}</span>
                         </motion.span>
                       ))}
                     </div>
