@@ -278,14 +278,14 @@ export function Experience() {
             </AnimatePresence>
           </motion.div>
 
-          <motion.p
+          {/* <motion.p
             className="text-muted-foreground/50 font-mono text-xs border-t border-border/20 pt-6"
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : { opacity: 0 }}
             transition={{ delay: 0.6 }}
           >
             Self-taught. Coding Dojo 2018. CSUEB health interruption year 2.
-          </motion.p>
+          </motion.p> */}
         </div>
       </div>
     </section>
