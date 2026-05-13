@@ -148,7 +148,7 @@ export function Experience() {
                   onClick={() => setActiveIndex(index)}
                   className={`
                     relative px-6 py-3 rounded-3xl text-left whitespace-nowrap md:whitespace-normal
-                    transition-all duration-300 font-medium
+                    transition-all duration-300 font-medium cursor-pointer
                     ${activeIndex === index
                       ? "text-foreground font-semibold shadow-lg"
                       : "text-muted-foreground hover:text-foreground"
