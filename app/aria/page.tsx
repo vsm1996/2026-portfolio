@@ -3,9 +3,9 @@ import Link from "next/link"
 import { ArrowLeft, ExternalLink } from "lucide-react"
 
 export const metadata: Metadata = {
-  title: "Aria — Vanessa Martin",
+  title: "Aria - Vanessa Martin",
   description:
-    "The accessibility formatter. A meaning-preserving format tier that gates CI, and a lint tier for every guess — split by one gate: a fix auto-applies only if its basis is native or declared.",
+    "The accessibility formatter. A meaning-preserving format tier that gates CI, and a lint tier for every guess. One gate splits them: a fix auto-applies only when its basis is native or declared.",
 }
 
 const gateRows = [
@@ -30,29 +30,29 @@ const lintRules = [
 
 const decisions = [
   {
-    decision: "One gate: semantic source decides the tier",
+    decision: "Basis decides the tier",
     rationale:
-      "Every accessibility fact is classified by where its semantics came from — native (real HTML), declared (author ARIA or config), or inferred (a guess). A fix may run in the auto-applied format tier only if its basis is native or declared. Anything inferred is lint, surfaced as a suggestion a human approves. That single sentence is what makes the tool safe to run on save.",
+      "Every accessibility fact carries a basis. Native means real HTML. Declared means author ARIA or config. Inferred means a guess. A fix auto-applies only when its basis is native or declared. Everything inferred is a suggestion a human approves. That one sentence is what makes the tool safe to run on save.",
   },
   {
-    decision: "The format tier is subtractive, never authorial",
+    decision: "Subtraction, not authorship",
     rationale:
-      "Meaning-preservation is the contract: the computed accessibility tree after a fix is identical, or strictly more spec-conformant, with zero change to name, role, or state. So format fixes only delete redundant or forbidden ARIA and normalize syntax. The moment a fix would author a label, alt, or description — asserting a fact that could be a lie — it is lint, because a wrong label is worse than none.",
+      "The contract is meaning-preservation. After a fix the accessibility tree is identical, or strictly more conformant, with no change to name, role, or state. So format fixes only delete redundant or forbidden ARIA and normalize syntax. The moment a fix would write a label or an alt, it stops. A wrong label is worse than none, and the tool refuses to put words in your mouth.",
   },
   {
-    decision: "When more than one correct fix exists, it is lint",
+    decision: "Detection is certain. Repair is not.",
     rationale:
-      "aria-hidden on a focusable node has several valid repairs (remove the attribute, remove focusability); an unresolved idref may legitimately point across files. The detection is a certain native fact, but the tool refuses to pick a repair it can't prove, so these stay advisory — never CI-failing. A false positive on correct code is the one thing the format tier may never produce.",
+      "aria-hidden on a focusable node has several valid repairs. An unresolved idref might legitimately point across files. The problem is a fact. The fix is a judgment. So these stay advisory and never fail CI. A false positive on correct code is the one thing the format tier may never produce.",
   },
   {
-    decision: "Plugin-first, and the gate maps onto the host",
+    decision: "Write once, gate twice",
     rationale:
-      "Rules are written once against the ESLint-compatible API and run unchanged in ESLint, in oxlint via jsPlugins, and in a thin zero-config CLI. The hosts already distinguish an auto-applied fix from a surfaced suggestion — so the semantic-source gate is enforced twice: once by Aria's own tests, once by the host's fix model.",
+      "Rules are written once against the ESLint API. They run unchanged in ESLint, in oxlint through jsPlugins, and in a zero-config CLI. The hosts already separate an applied fix from a surfaced suggestion. So the gate is enforced twice. Once by Aria's own tests, once by the host itself.",
   },
   {
-    decision: "Config grows the safe tier over time",
+    decision: "Config moves the line",
     rationale:
-      "The line between guess and known is not fixed. When a design system declares that IconButton is a button, the basis for that component moves from inferred to declared — and its diagnostics graduate from suggestion to a real, CI-failing gate. The mechanical slice of accessibility that can run automatically expands as the design system matures.",
+      "The line between guess and known is not fixed. Declare that IconButton is a button and its basis moves from inferred to declared. Its diagnostics graduate from suggestion to a CI-failing gate. The slice that runs automatically grows as the design system matures. It reads like the weakest claim on paper. It is the strongest mechanism in practice.",
   },
 ]
 
@@ -60,17 +60,17 @@ const verification = [
   {
     label: "Meaning-preservation, tested as a property",
     detail:
-      "An accessibility-tree oracle asserts aatree(x) equals aatree(fmt(x)) for every fixture, plus idempotence — fmt(fmt(x)) === fmt(x). A format rule that fails is demoted to lint by the test itself.",
+      "An accessibility-tree oracle asserts aatree(x) equals aatree(fmt(x)) on every fixture. Idempotence holds too: fmt(fmt(x)) equals fmt(x). A format rule that fails either check is demoted to lint by the test.",
   },
   {
-    label: "ESLint ↔ oxlint parity, zero drift",
+    label: "ESLint and oxlint parity, zero drift",
     detail:
-      "A required CI check re-runs every fixture on both hosts on each commit and asserts byte-identical output. A second gate packs, installs, and imports the real tarballs to catch publish-only breakage.",
+      "A required CI check re-runs every fixture on both hosts and asserts byte-identical output. A second gate packs, installs, and imports the real tarballs, so publish-only breakage cannot slip through.",
   },
   {
     label: "Validated on real code, then published",
     detail:
-      "Run against five OSS React repos with hand-reviewed findings — which surfaced and fixed two rule bugs, now regression-fixtured. Shipped to npm as eslint-plugin-aria-a11y and @aria-a11y/cli, both at 0.2.0.",
+      "Run against five open-source React repos with hand-reviewed findings. That pass surfaced two rule bugs, both now regression-fixtured. Shipped to npm as eslint-plugin-aria-a11y and @aria-a11y/cli, both at 0.2.0.",
   },
 ]
 
@@ -127,20 +127,19 @@ export default function AriaPage() {
             <h2 className="text-2xl font-light text-foreground">The premise</h2>
             <div className="space-y-4 text-muted-foreground leading-relaxed">
               <p>
-                Code formatters won because they made a class of argument extinct. Nobody debates brace style anymore
-                because <code className="font-mono text-accent/80">prettier --check</code> turns the debate into a
-                failing build. The discipline behind that is a single contract: a formatter never changes what the code
-                means.
+                Code formatters won because they made an argument extinct. Nobody debates brace style anymore.{" "}
+                <code className="font-mono text-accent/80">prettier --check</code> turns the debate into a failing
+                build. Behind that is one contract: a formatter never changes what the code means.
               </p>
               <p>
                 Accessibility has no such tool, and the absence is the excuse. &ldquo;I&apos;ll add a11y later&rdquo;
-                survives because a11y looks like judgment work. Aria&apos;s thesis is that a real, defensible slice of it
-                is mechanical &mdash; and that slice can be held to the formatter contract, run on save, and gate CI.
+                survives because a11y looks like judgment work. Not all of it is. A real, defensible slice is mechanical,
+                and mechanical work can be held to the formatter contract. Run it on save. Gate it in CI.
               </p>
               <p>
                 The catch is that accessibility breaks the contract the instant you guess. Put{" "}
                 <code className="font-mono text-accent/80">role=&quot;button&quot;</code> on a div and you changed
-                behavior. So Aria is built around one hard line, and finding that line is the entire design.
+                behavior. So Aria is built around one hard line. Finding that line is the whole design.
               </p>
             </div>
           </div>
@@ -149,8 +148,8 @@ export default function AriaPage() {
           <div className="space-y-4">
             <h2 className="text-2xl font-light text-foreground">The gate</h2>
             <code className="block font-mono text-sm text-accent/80 bg-card/40 border border-border/30 px-5 py-4 rounded-xl">
-              a fix auto-applies only if its basis is <span className="text-foreground">native</span> or{" "}
-              <span className="text-foreground">declared</span> &mdash; inference is never silent
+              a fix auto-applies only when its basis is <span className="text-foreground">native</span> or{" "}
+              <span className="text-foreground">declared</span>. never on a guess.
             </code>
             <div className="border border-border/30 rounded-2xl overflow-hidden bg-card/20">
               <table className="w-full text-sm font-mono">
@@ -193,7 +192,7 @@ export default function AriaPage() {
             <div className="grid lg:grid-cols-2 gap-8">
               <div className="space-y-3">
                 <h3 className="text-muted-foreground/60 font-mono text-xs uppercase tracking-widest">
-                  Format &mdash; auto-fixed on save
+                  Format · auto-fixed on save
                 </h3>
                 {formatRules.map((rule) => (
                   <div key={rule.id} className="p-4 rounded-xl border border-border/30 bg-card/20">
@@ -207,7 +206,7 @@ export default function AriaPage() {
               </div>
               <div className="space-y-3">
                 <h3 className="text-muted-foreground/60 font-mono text-xs uppercase tracking-widest">
-                  Lint &mdash; located, human-reviewed
+                  Lint · located, human-reviewed
                 </h3>
                 {lintRules.map((rule) => (
                   <div key={rule.id} className="p-4 rounded-xl border border-border/30 bg-card/20">

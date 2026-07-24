@@ -71,7 +71,7 @@ export function Aria() {
       animate={isInView ? "visible" : "hidden"}
     >
       <p className="text-muted-foreground/60 font-mono text-xs uppercase tracking-widest">
-        {title} <span className="text-muted-foreground/40 normal-case tracking-normal">— {caption}</span>
+        {title} <span className="text-muted-foreground/40 normal-case tracking-normal">· {caption}</span>
       </p>
       {rules.map((rule) => (
         <motion.div
@@ -157,9 +157,9 @@ export function Aria() {
               It never changes what the code means.
             </p>
             <p className="text-muted-foreground max-w-2xl leading-relaxed">
-              Prettier killed brace-style debates by turning them into a failing build. Aria applies the same contract
-              to the mechanical slice of accessibility &mdash; the redundant, conflicting, and broken ARIA in most
-              codebases. It runs on save and gates CI, and every guess stays out of the automatic path by construction.
+              Prettier ended brace-style debates by turning them into a failing build. Aria does the same for the
+              mechanical slice of accessibility: the redundant, conflicting, and broken ARIA in most codebases. It runs
+              on save. It gates CI. Every guess stays out of the automatic path by construction.
             </p>
           </motion.div>
 
@@ -171,7 +171,7 @@ export function Aria() {
             animate={isInView ? "visible" : "hidden"}
           >
             <p className="text-muted-foreground/60 font-mono text-xs uppercase tracking-widest">
-              The gate &mdash; one rule governs the whole system
+              The gate. One rule governs everything.
             </p>
             <motion.code
               whileHover={{ scale: 1.01, transition: { duration: FIBONACCI_MS.f3 / 1000 } }}
@@ -185,8 +185,8 @@ export function Aria() {
               transition={{ boxShadow: { duration: 8, repeat: Number.POSITIVE_INFINITY, ease: BREATH, times: [0, 0.5, 1] } }}
               className="block font-mono text-sm text-accent/80 bg-card/40 border border-border/30 hover:border-accent/30 hover:bg-card/60 px-5 py-4 rounded-xl transition-colors duration-300 cursor-default"
             >
-              a fix auto-applies only if its basis is <span className="text-foreground">native</span> or{" "}
-              <span className="text-foreground">declared</span> &mdash; inference is never silent
+              a fix auto-applies only when its basis is <span className="text-foreground">native</span> or{" "}
+              <span className="text-foreground">declared</span>. never on a guess.
             </motion.code>
 
             <motion.div
@@ -228,10 +228,10 @@ export function Aria() {
               </table>
             </motion.div>
             <p className="text-muted-foreground/70 text-sm max-w-2xl">
-              The formatter acts only on semantics it <span className="text-foreground/80">knows</span>. Format-tier
-              fixes are subtractive &mdash; they delete redundant or forbidden ARIA and normalize syntax; they never
-              author a label or assert a fact. A design-system config can declare a component&apos;s semantics, moving
-              work from guess to known &mdash; the safe tier grows as the system matures.
+              The formatter acts only on semantics it <span className="text-foreground/80">knows</span>. Format fixes
+              are subtractive. They delete redundant or forbidden ARIA and normalize syntax. They never author a label
+              or assert a fact, because a wrong label is worse than none. Declare a component&apos;s semantics in config
+              and the guess becomes known. The safe tier grows as the design system matures.
             </p>
           </motion.div>
 
@@ -243,7 +243,7 @@ export function Aria() {
             animate={isInView ? "visible" : "hidden"}
           >
             <p className="text-muted-foreground/60 font-mono text-xs uppercase tracking-widest">
-              Two tiers &mdash; eight rules, shipped &amp; CI-gated
+              Two tiers. Eight rules, shipped &amp; CI-gated.
             </p>
             <div className="grid md:grid-cols-2 gap-8">
               {ruleColumn("Format", "auto-fixed on save", formatRules, false)}
