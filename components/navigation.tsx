@@ -13,7 +13,7 @@ export function Navigation() {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50)
 
-      const sections = ["home", "harmonia", "renge", "production", "principles"]
+      const sections = ["home", "harmonia", "renge", "aria", "production", "principles"]
       const scrollPosition = window.scrollY + 100
 
       for (const section of sections) {
@@ -43,6 +43,7 @@ export function Navigation() {
     { id: "home", label: "Home" },
     { id: "harmonia", label: "Harmonia" },
     { id: "renge", label: "Renge" },
+    { id: "aria", label: "Aria" },
     { id: "production", label: "Production" },
     { id: "principles", label: "Principles" },
   ]
